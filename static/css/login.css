@@ -1,0 +1,56 @@
+* {
+	color: #555;
+}
+
+h2[id="caption"] {
+	text-align: center;
+	margin: 0 auto;
+	margin-top: 80px;
+	color: gray;
+}
+
+h4[id="tip"] {
+	text-align: center;
+	margin: 0 auto;
+	margin-top: auto;
+	color: red;
+}
+
+#login_form {
+	-webkit-box-shadow: #C8C8C8 0px 4px 18px;
+	background: white;
+	border: 1px solid #E5E5E5;
+	border-bottom-left-radius: 5px 5px;
+	border-bottom-right-radius: 5px 5px;
+	border-top-left-radius: 5px 5px;
+	border-top-right-radius: 5px 5px;
+	font-weight: normal;
+	margin-left: 8px;
+	padding: 16px 16px 40px;
+	display:block;
+	width: 300px;
+	margin: 0 auto;
+	margin-top: 30px;
+}
+
+#login_form label {
+	color: #777;
+	font-size: 13px;
+	cursor: default;
+}
+
+#username, #password {
+	background: #FBFBFB;
+	border: 1px solid #E5E5E5;
+	font-size: 24px;
+	margin-bottom: 16px;
+	margin-right: 6px;
+	margin-top: 2px;
+	padding: 3px;
+	width: 97%;
+}
+
+#login_form input[type="submit"]{
+	float: right;
+    margin:0 auto;
+}

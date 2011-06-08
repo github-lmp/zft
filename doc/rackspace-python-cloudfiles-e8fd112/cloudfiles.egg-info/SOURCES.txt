@@ -1,0 +1,17 @@
+setup.py
+cloudfiles/__init__.py
+cloudfiles/authentication.py
+cloudfiles/connection.py
+cloudfiles/consts.py
+cloudfiles/container.py
+cloudfiles/errors.py
+cloudfiles/fjson.py
+cloudfiles/storage_object.py
+cloudfiles/utils.py
+cloudfiles.egg-info/PKG-INFO
+cloudfiles.egg-info/SOURCES.txt
+cloudfiles.egg-info/dependency_links.txt
+cloudfiles.egg-info/entry_points.txt
+cloudfiles.egg-info/namespace_packages.txt
+cloudfiles.egg-info/not-zip-safe
+cloudfiles.egg-info/top_level.txt

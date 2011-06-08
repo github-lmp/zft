@@ -1,0 +1,24 @@
+代码地址：
+http://www.svnchina.com/svn/swift_demo/
+
+到当前目录下运行python swift_demo.py 8000
+即可访问:http://0.0.0.0:8000
+
+程序需要有一个swift服务器。common/config.py里面描述了配置
+
+1,
+	要修改common/config.py里面的内容。config.py里面有说明
+
+2,
+这个是为了学习swift而编写的，参考swift提供的REST接口。 
+通过界面在swift集群中创建一个容器，上传下载文件。
+
+更多swift相关内容请参考下面网址
+http://swift.openstack.org/
+http://blog.sina.com.cn/s/articlelist_1805154091_2_1.html
+
+3, docs/目录下有openstack object storage 的rest接口手册
+
+
+##########################
+zft 目录---开始挖井，，，proxy,
