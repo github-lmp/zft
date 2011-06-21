@@ -63,14 +63,14 @@ setup(
         ],
     entry_points={
         'paste.app_factory': [
-            'proxy=swift.proxy.server:app_factory',
+            'proxy=zft.proxy:app_factory',
 #            'object=swift.obj.server:app_factory',
 #            'container=swift.container.server:app_factory',
 #            'account=swift.account.server:app_factory',
 #            'auth=swift.auth.server:app_factory',
             ],
         'paste.filter_factory': [
-#            'auth=swift.common.middleware.auth:filter_factory',
+            'auth=zft.auth:filter_factory',
 #            'swauth=swift.common.middleware.swauth:filter_factory',
 #            'healthcheck=swift.common.middleware.healthcheck:filter_factory',
 #            'memcache=swift.common.middleware.memcache:filter_factory',
