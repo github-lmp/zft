@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #coding:utf-8 
+from webob import Request, Response
 
 class Auth(object):
     def __init__(self, app, allowed_username):
@@ -7,8 +8,7 @@ class Auth(object):
         self.allowed_usernames = allowed_username
  
     def __call__(self, env, start_response):
-        print env
-        if env.get('REMOTE_USER') in self.allowed_usernames:
+        if env.get('REMOTE_USER') not in self.allowed_usernames:
             return self.app(env, start_response)
         status = '403 Forbidden'
         response_header = [('Content-type', 'text/plain')] 
