@@ -1,0 +1,274 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Large Object Support &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Development Guidelines" href="development_guidelines.html" />
+    <link rel="prev" title="Rate Limiting" href="ratelimit.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="development_guidelines.html" title="Development Guidelines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ratelimit.html" title="Rate Limiting"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Large Object Support</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#using-st-for-segmented-objects">Using <tt class="docutils literal"><span class="pre">st</span></tt> for Segmented Objects</a></li>
+<li><a class="reference internal" href="#direct-api">Direct API</a></li>
+<li><a class="reference internal" href="#additional-notes">Additional Notes</a></li>
+<li><a class="reference internal" href="#history">History</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ratelimit.html"
+                        title="previous chapter">Rate Limiting</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="development_guidelines.html"
+                        title="next chapter">Development Guidelines</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/overview_large_objects.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="large-object-support">
+<h1>Large Object Support<a class="headerlink" href="#large-object-support" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Swift has a limit on the size of a single uploaded object; by default this is
+5GB. However, the download size of a single object is virtually unlimited with
+the concept of segmentation. Segments of the larger object are uploaded and a
+special manifest file is created that, when downloaded, sends all the segments
+concatenated as a single object. This also offers much greater upload speed
+with the possibility of parallel uploads of the segments.</p>
+</div>
+<div class="section" id="using-st-for-segmented-objects">
+<h2>Using <tt class="docutils literal"><span class="pre">st</span></tt> for Segmented Objects<a class="headerlink" href="#using-st-for-segmented-objects" title="Permalink to this headline">¶</a></h2>
+<p>The quickest way to try out this feature is use the included <tt class="docutils literal"><span class="pre">st</span></tt> Swift Tool.
+You can use the <tt class="docutils literal"><span class="pre">-S</span></tt> option to specify the segment size to use when splitting
+a large file. For example:</p>
+<div class="highlight-python"><pre>st upload test_container -S 1073741824 large_file</pre>
+</div>
+<p>This would split the large_file into 1G segments and begin uploading those
+segments in parallel. Once all the segments have been uploaded, <tt class="docutils literal"><span class="pre">st</span></tt> will
+then create the manifest file so the segments can be downloaded as one.</p>
+<p>So now, the following <tt class="docutils literal"><span class="pre">st</span></tt> command would download the entire large object:</p>
+<div class="highlight-python"><pre>st download test_container large_file</pre>
+</div>
+<p><tt class="docutils literal"><span class="pre">st</span></tt> uses a strict convention for its segmented object support. In the above
+example it will upload all the segments into a second container named
+test_container_segments. These segments will have names like
+large_file/1290206778.25/21474836480/00000000,
+large_file/1290206778.25/21474836480/00000001, etc.</p>
+<p>The main benefit for using a separate container is that the main container
+listings will not be polluted with all the segment names. The reason for using
+the segment name format of &lt;name&gt;/&lt;timestamp&gt;/&lt;size&gt;/&lt;segment&gt; is so that an
+upload of a new file with the same name won&#8217;t overwrite the contents of the
+first until the last moment when the manifest file is updated.</p>
+<p><tt class="docutils literal"><span class="pre">st</span></tt> will manage these segment files for you, deleting old segments on
+deletes and overwrites, etc. You can override this behavior with the
+<tt class="docutils literal"><span class="pre">--leave-segments</span></tt> option if desired; this is useful if you want to have
+multiple versions of the same large object available.</p>
+</div>
+<div class="section" id="direct-api">
+<h2>Direct API<a class="headerlink" href="#direct-api" title="Permalink to this headline">¶</a></h2>
+<p>You can also work with the segments and manifests directly with HTTP requests
+instead of having <tt class="docutils literal"><span class="pre">st</span></tt> do that for you. You can just upload the segments like
+you would any other object and the manifest is just a zero-byte file with an
+extra <tt class="docutils literal"><span class="pre">X-Object-Manifest</span></tt> header.</p>
+<p>All the object segments need to be in the same container, have a common object
+name prefix, and their names sort in the order they should be concatenated.
+They don&#8217;t have to be in the same container as the manifest file will be, which
+is useful to keep container listings clean as explained above with <tt class="docutils literal"><span class="pre">st</span></tt>.</p>
+<p>The manifest file is simply a zero-byte file with the extra
+<tt class="docutils literal"><span class="pre">X-Object-Manifest:</span> <span class="pre">&lt;container&gt;/&lt;prefix&gt;</span></tt> header, where <tt class="docutils literal"><span class="pre">&lt;container&gt;</span></tt> is
+the container the object segments are in and <tt class="docutils literal"><span class="pre">&lt;prefix&gt;</span></tt> is the common prefix
+for all the segments.</p>
+<p>It is best to upload all the segments first and then create or update the
+manifest. In this way, the full object won&#8217;t be available for downloading until
+the upload is complete. Also, you can upload a new set of segments to a second
+location and then update the manifest to point to this new location. During the
+upload of the new segments, the original manifest will still be available to
+download the first set of segments.</p>
+<p>Here&#8217;s an example using <tt class="docutils literal"><span class="pre">curl</span></tt> with tiny 1-byte segments:</p>
+<div class="highlight-python"><pre># First, upload the segments
+curl -X PUT -H 'X-Auth-Token: &lt;token&gt;' \
+    http://&lt;storage_url&gt;/container/myobject/1 --data-binary '1'
+curl -X PUT -H 'X-Auth-Token: &lt;token&gt;' \
+    http://&lt;storage_url&gt;/container/myobject/2 --data-binary '2'
+curl -X PUT -H 'X-Auth-Token: &lt;token&gt;' \
+    http://&lt;storage_url&gt;/container/myobject/3 --data-binary '3'
+
+# Next, create the manifest file
+curl -X PUT -H 'X-Auth-Token: &lt;token&gt;' \
+    -H 'X-Object-Manifest: container/myobject/' \
+    http://&lt;storage_url&gt;/container/myobject --data-binary ''
+
+# And now we can download the segments as a single object
+curl -H 'X-Auth-Token: &lt;token&gt;' \
+    http://&lt;storage_url&gt;/container/myobject</pre>
+</div>
+</div>
+<div class="section" id="additional-notes">
+<h2>Additional Notes<a class="headerlink" href="#additional-notes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>With a <tt class="docutils literal"><span class="pre">GET</span></tt> or <tt class="docutils literal"><span class="pre">HEAD</span></tt> of a manifest file, the <tt class="docutils literal"><span class="pre">X-Object-Manifest:</span>
+<span class="pre">&lt;container&gt;/&lt;prefix&gt;</span></tt> header will be returned with the concatenated object
+so you can tell where it&#8217;s getting its segments from.</li>
+<li>The response&#8217;s <tt class="docutils literal"><span class="pre">Content-Length</span></tt> for a <tt class="docutils literal"><span class="pre">GET</span></tt> or <tt class="docutils literal"><span class="pre">HEAD</span></tt> on the manifest
+file will be the sum of all the segments in the <tt class="docutils literal"><span class="pre">&lt;container&gt;/&lt;prefix&gt;</span></tt>
+listing, dynamically. So, uploading additional segments after the manifest is
+created will cause the concatenated object to be that much larger; there&#8217;s no
+need to recreate the manifest file.</li>
+<li>The response&#8217;s <tt class="docutils literal"><span class="pre">Content-Type</span></tt> for a <tt class="docutils literal"><span class="pre">GET</span></tt> or <tt class="docutils literal"><span class="pre">HEAD</span></tt> on the manifest
+will be the same as the <tt class="docutils literal"><span class="pre">Content-Type</span></tt> set during the <tt class="docutils literal"><span class="pre">PUT</span></tt> request that
+created the manifest. You can easily change the <tt class="docutils literal"><span class="pre">Content-Type</span></tt> by reissuing
+the <tt class="docutils literal"><span class="pre">PUT</span></tt>.</li>
+<li>The response&#8217;s <tt class="docutils literal"><span class="pre">ETag</span></tt> for a <tt class="docutils literal"><span class="pre">GET</span></tt> or <tt class="docutils literal"><span class="pre">HEAD</span></tt> on the manifest file will
+be the MD5 sum of the concatenated string of ETags for each of the segments
+in the <tt class="docutils literal"><span class="pre">&lt;container&gt;/&lt;prefix&gt;</span></tt> listing, dynamically. Usually in Swift the
+ETag is the MD5 sum of the contents of the object, and that holds true for
+each segment independently. But, it&#8217;s not feasible to generate such an ETag
+for the manifest itself, so this method was chosen to at least offer change
+detection.</li>
+</ul>
+</div>
+<div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>Large object support has gone through various iterations before settling on
+this implementation.</p>
+<p>The primary factor driving the limitation of object size in swift is
+maintaining balance among the partitions of the ring.  To maintain an even
+dispersion of disk usage throughout the cluster the obvious storage pattern
+was to simply split larger objects into smaller segments, which could then be
+glued together during a read.</p>
+<p>Before the introduction of large object support some applications were already
+splitting their uploads into segments and re-assembling them on the client
+side after retrieving the individual pieces.  This design allowed the client
+to support backup and archiving of large data sets, but was also frequently
+employed to improve performance or reduce errors due to network interruption.
+The major disadvantage of this method is that knowledge of the original
+partitioning scheme is required to properly reassemble the object, which is
+not practical for some use cases, such as CDN origination.</p>
+<p>In order to eliminate any barrier to entry for clients wanting to store
+objects larger than 5GB, initially we also prototyped fully transparent
+support for large object uploads.  A fully transparent implementation would
+support a larger max size by automatically splitting objects into segments
+during upload within the proxy without any changes to the client API.  All
+segments were completely hidden from the client API.</p>
+<p>This solution introduced a number of challenging failure conditions into the
+cluster, wouldn&#8217;t provide the client with any option to do parallel uploads,
+and had no basis for a resume feature.  The transparent implementation was
+deemed just too complex for the benefit.</p>
+<p>The current &#8220;user manifest&#8221; design was chosen in order to provide a
+transparent download of large objects to the client and still provide the
+uploading client a clean API to support segmented uploads.</p>
+<p>Alternative &#8220;explicit&#8221; user manifest options were discussed which would have
+required a pre-defined format for listing the segments to &#8220;finalize&#8221; the
+segmented upload.  While this may offer some potential advantages, it was
+decided that pushing an added burden onto the client which could potentially
+limit adoption should be avoided in favor of a simpler &#8220;API&#8221; (essentially just
+the format of the &#8216;X-Object-Manifest&#8217; header).</p>
+<p>During development it was noted that this &#8220;implicit&#8221; user manifest approach
+which is based on the path prefix can be potentially affected by the eventual
+consistency window of the container listings, which could theoretically cause
+a GET on the manifest object to return an invalid whole object for that short
+term.  In reality you&#8217;re unlikely to encounter this scenario unless you&#8217;re
+running very high concurrency uploads against a small testing environment
+which isn&#8217;t running the object-updaters or container-replicators.</p>
+<p>Like all of swift, Large Object Support is living feature which will continue
+to improve and may change over time.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="development_guidelines.html" title="Development Guidelines"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ratelimit.html" title="Rate Limiting"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

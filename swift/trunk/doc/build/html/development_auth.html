@@ -1,0 +1,597 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Auth Server and Middleware &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Instructions for a Multiple Server Swift Installation (Ubuntu)" href="howto_installmultinode.html" />
+    <link rel="prev" title="SAIO - Swift All In One" href="development_saio.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="howto_installmultinode.html" title="Instructions for a Multiple Server Swift Installation (Ubuntu)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="development_saio.html" title="SAIO - Swift All In One"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Auth Server and Middleware</a><ul>
+<li><a class="reference internal" href="#creating-your-own-auth-server-and-middleware">Creating Your Own Auth Server and Middleware</a></li>
+<li><a class="reference internal" href="#integrating-with-repoze-what">Integrating With repoze.what</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="development_saio.html"
+                        title="previous chapter">SAIO - Swift All In One</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="howto_installmultinode.html"
+                        title="next chapter">Instructions for a Multiple Server Swift Installation (Ubuntu)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/development_auth.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="auth-server-and-middleware">
+<h1>Auth Server and Middleware<a class="headerlink" href="#auth-server-and-middleware" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creating-your-own-auth-server-and-middleware">
+<h2>Creating Your Own Auth Server and Middleware<a class="headerlink" href="#creating-your-own-auth-server-and-middleware" title="Permalink to this headline">¶</a></h2>
+<p>The included swift/auth/server.py and swift/common/middleware/auth.py are good
+minimal examples of how to create an external auth server and proxy server auth
+middleware. Also, see swift/common/middleware/swauth.py for
+a more complete implementation. The main points are that the auth middleware
+can reject requests up front, before they ever get to the Swift Proxy
+application, and afterwards when the proxy issues callbacks to verify
+authorization.</p>
+<p>It&#8217;s generally good to separate the authentication and authorization
+procedures. Authentication verifies that a request actually comes from who it
+says it does. Authorization verifies the &#8216;who&#8217; has access to the resource(s)
+the request wants.</p>
+<p>Authentication is performed on the request before it ever gets to the Swift
+Proxy application. The identity information is gleaned from the request,
+validated in some way, and the validation information is added to the WSGI
+environment as needed by the future authorization procedure. What exactly is
+added to the WSGI environment is solely dependent on what the installed
+authorization procedures need; the Swift Proxy application itself needs no
+specific information, it just passes it along. Convention has
+environ[&#8216;REMOTE_USER&#8217;] set to the authenticated user string but often more
+information is needed than just that.</p>
+<p>The included DevAuth will set the REMOTE_USER to a comma separated list of
+groups the user belongs to. The first group will be the &#8220;user&#8217;s group&#8221;, a group
+that only the user belongs to. The second group will be the &#8220;account&#8217;s group&#8221;,
+a group that includes all users for that auth account (different than the
+storage account). The third group is optional and is the storage account
+string. If the user does not have admin access to the account, the third group
+will be omitted.</p>
+<p>It is highly recommended that authentication server implementers prefix their
+tokens and Swift storage accounts they create with a configurable reseller
+prefix (<cite>AUTH_</cite> by default with the included DevAuth). This prefix will avoid
+conflicts with other authentication servers that might be using the same
+Swift cluster. Otherwise, the Swift cluster will have to try all the resellers
+until one validates a token or all fail.</p>
+<p>A restriction with group names is that no group name should begin with a period
+&#8216;.&#8217; as that is reserved for internal Swift use (such as the .r for referrer
+designations as you&#8217;ll see later).</p>
+<p>Example Authentication with DevAuth:</p>
+<blockquote>
+<ul class="simple">
+<li>Token AUTH_tkabcd is given to the DevAuth middleware in a request&#8217;s
+X-Auth-Token header.</li>
+<li>The DevAuth middleware makes a validate token AUTH_tkabcd call to the
+external DevAuth server.</li>
+<li>The external DevAuth server validates the token AUTH_tkabcd and discovers
+it matches the &#8220;tester&#8221; user within the &#8220;test&#8221; account for the storage
+account &#8220;AUTH_storage_xyz&#8221;.</li>
+<li>The external DevAuth server responds with &#8220;X-Auth-Groups:
+test:tester,test,AUTH_storage_xyz&#8221;</li>
+<li>Now this user will have full access (via authorization procedures later)
+to the AUTH_storage_xyz Swift storage account and access to containers in
+other storage accounts, provided the storage account begins with the same
+<cite>AUTH_</cite> reseller prefix and the container has an ACL specifying at least
+one of those three groups returned.</li>
+</ul>
+</blockquote>
+<p>Authorization is performed through callbacks by the Swift Proxy server to the
+WSGI environment&#8217;s swift.authorize value, if one is set. The swift.authorize
+value should simply be a function that takes a webob.Request as an argument and
+returns None if access is granted or returns a callable(environ,
+start_response) if access is denied. This callable is a standard WSGI callable.
+Generally, you should return 403 Forbidden for requests by an authenticated
+user and 401 Unauthorized for an unauthenticated request. For example, here&#8217;s
+an authorize function that only allows GETs (in this case you&#8217;d probably return
+405 Method Not Allowed, but ignore that for the moment).:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">webob</span> <span class="kn">import</span> <span class="n">HTTPForbidden</span><span class="p">,</span> <span class="n">HTTPUnauthorized</span>
+
+
+<span class="k">def</span> <span class="nf">authorize</span><span class="p">(</span><span class="n">req</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;GET&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HTTPForbidden</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Adding the swift.authorize callback is often done by the authentication
+middleware as authentication and authorization are often paired together. But,
+you could create separate authorization middleware that simply sets the
+callback before passing on the request. To continue our example above:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">webob</span> <span class="kn">import</span> <span class="n">HTTPForbidden</span><span class="p">,</span> <span class="n">HTTPUnauthorized</span>
+
+
+<span class="k">class</span> <span class="nc">Authorization</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s">&#39;swift.authorize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">authorize</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;GET&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPForbidden</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">filter_factory</span><span class="p">(</span><span class="n">global_conf</span><span class="p">,</span> <span class="o">**</span><span class="n">local_conf</span><span class="p">):</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">global_conf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_conf</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">auth_filter</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Authorization</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">auth_filter</span>
+</pre></div>
+</div>
+<p>The Swift Proxy server will call swift.authorize after some initial work, but
+before truly trying to process the request. Positive authorization at this
+point will cause the request to be fully processed immediately. A denial at
+this point will immediately send the denial response for most operations.</p>
+<p>But for some operations that might be approved with more information, the
+additional information will be gathered and added to the WSGI environment and
+then swift.authorize will be called once more. These are called delay_denial
+requests and currently include container read requests and object read and
+write requests. For these requests, the read or write access control string
+(X-Container-Read and X-Container-Write) will be fetched and set as the &#8216;acl&#8217;
+attribute in the webob.Request passed to swift.authorize.</p>
+<p>The delay_denial procedures allow skipping possibly expensive access control
+string retrievals for requests that can be approved without that information,
+such as administrator or account owner requests.</p>
+<p>To further our example, we now will approve all requests that have the access
+control string set to same value as the authenticated user string. Note that
+you probably wouldn&#8217;t do this exactly as the access control string represents a
+list rather than a single user, but it&#8217;ll suffice for this example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">webob</span> <span class="kn">import</span> <span class="n">HTTPForbidden</span><span class="p">,</span> <span class="n">HTTPUnauthorized</span>
+
+
+<span class="k">class</span> <span class="nc">Authorization</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s">&#39;swift.authorize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">authorize</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+        <span class="c"># Allow anyone to perform GET requests</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;GET&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="c"># Allow any request where the acl equals the authenticated user</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span> <span class="o">==</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPForbidden</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">filter_factory</span><span class="p">(</span><span class="n">global_conf</span><span class="p">,</span> <span class="o">**</span><span class="n">local_conf</span><span class="p">):</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">global_conf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_conf</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">auth_filter</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Authorization</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">auth_filter</span>
+</pre></div>
+</div>
+<p>The access control string has a standard format included with Swift, though
+this can be overridden if desired. The standard format can be parsed with
+swift.common.middleware.acl.parse_acl which converts the string into two arrays
+of strings: (referrers, groups). The referrers allow comparing the request&#8217;s
+Referer header to control access. The groups allow comparing the
+request.remote_user (or other sources of group information) to control access.
+Checking referrer access can be accomplished by using the
+swift.common.middleware.acl.referrer_allowed function. Checking group access is
+usually a simple string comparison.</p>
+<p>Let&#8217;s continue our example to use parse_acl and referrer_allowed. Now we&#8217;ll
+only allow GETs after a referrer check and any requests after a group check:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">swift.common.middleware.acl</span> <span class="kn">import</span> <span class="n">parse_acl</span><span class="p">,</span> <span class="n">referrer_allowed</span>
+<span class="kn">from</span> <span class="nn">webob</span> <span class="kn">import</span> <span class="n">HTTPForbidden</span><span class="p">,</span> <span class="n">HTTPUnauthorized</span>
+
+
+<span class="k">class</span> <span class="nc">Authorization</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s">&#39;swift.authorize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">authorize</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s">&#39;acl&#39;</span><span class="p">):</span>
+            <span class="n">referrers</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">parse_acl</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">acl</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;GET&#39;</span> <span class="ow">and</span> <span class="n">referrer_allowed</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">referrers</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span> <span class="ow">and</span> <span class="n">groups</span> <span class="ow">and</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPForbidden</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">filter_factory</span><span class="p">(</span><span class="n">global_conf</span><span class="p">,</span> <span class="o">**</span><span class="n">local_conf</span><span class="p">):</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">global_conf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_conf</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">auth_filter</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Authorization</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">auth_filter</span>
+</pre></div>
+</div>
+<p>The access control strings are set with PUTs and POSTs to containers with the
+X-Container-Read and X-Container-Write headers. Swift allows these strings to
+be set to any value, though it&#8217;s very useful to validate the strings meet the
+desired format and return a useful error to the user if they don&#8217;t.</p>
+<p>To support this validation, the Swift Proxy application will call the WSGI
+environment&#8217;s swift.clean_acl callback whenever one of these headers is to be
+written. The callback should take a header name and value as its arguments. It
+should return the cleaned value to save if valid or raise a ValueError with a
+reasonable error message if not.</p>
+<p>There is an included swift.common.middleware.acl.clean_acl that validates the
+standard Swift format. Let&#8217;s improve our example by making use of that:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">swift.common.middleware.acl</span> <span class="kn">import</span> \
+    <span class="n">clean_acl</span><span class="p">,</span> <span class="n">parse_acl</span><span class="p">,</span> <span class="n">referrer_allowed</span>
+<span class="kn">from</span> <span class="nn">webob</span> <span class="kn">import</span> <span class="n">HTTPForbidden</span><span class="p">,</span> <span class="n">HTTPUnauthorized</span>
+
+
+<span class="k">class</span> <span class="nc">Authorization</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s">&#39;swift.authorize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">authorize</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s">&#39;swift.clean_acl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean_acl</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s">&#39;acl&#39;</span><span class="p">):</span>
+            <span class="n">referrers</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">parse_acl</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">acl</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;GET&#39;</span> <span class="ow">and</span> <span class="n">referrer_allowed</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">referrers</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span> <span class="ow">and</span> <span class="n">groups</span> <span class="ow">and</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPForbidden</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">filter_factory</span><span class="p">(</span><span class="n">global_conf</span><span class="p">,</span> <span class="o">**</span><span class="n">local_conf</span><span class="p">):</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">global_conf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_conf</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">auth_filter</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Authorization</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">auth_filter</span>
+</pre></div>
+</div>
+<p>Now, if you want to override the format for access control strings you&#8217;ll have
+to provide your own clean_acl function and you&#8217;ll have to do your own parsing
+and authorization checking for that format. It&#8217;s highly recommended you use the
+standard format simply to support the widest range of external tools, but
+sometimes that&#8217;s less important than meeting certain ACL requirements.</p>
+</div>
+<div class="section" id="integrating-with-repoze-what">
+<h2>Integrating With repoze.what<a class="headerlink" href="#integrating-with-repoze-what" title="Permalink to this headline">¶</a></h2>
+<p>Here&#8217;s an example of integration with repoze.what, though honestly it just does
+what the default swift/common/middleware/auth.py does in a slightly different
+way. I&#8217;m no repoze.what expert by any stretch; this is just included here to
+hopefully give folks a start on their own code if they want to use
+repoze.what:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">time</span>
+
+<span class="kn">from</span> <span class="nn">eventlet.timeout</span> <span class="kn">import</span> <span class="n">Timeout</span>
+<span class="kn">from</span> <span class="nn">repoze.what.adapters</span> <span class="kn">import</span> <span class="n">BaseSourceAdapter</span>
+<span class="kn">from</span> <span class="nn">repoze.what.middleware</span> <span class="kn">import</span> <span class="n">setup_auth</span>
+<span class="kn">from</span> <span class="nn">repoze.what.predicates</span> <span class="kn">import</span> <span class="n">in_any_group</span><span class="p">,</span> <span class="n">NotAuthorizedError</span>
+<span class="kn">from</span> <span class="nn">swift.common.bufferedhttp</span> <span class="kn">import</span> <span class="n">http_connect_raw</span> <span class="k">as</span> <span class="n">http_connect</span>
+<span class="kn">from</span> <span class="nn">swift.common.middleware.acl</span> <span class="kn">import</span> <span class="n">clean_acl</span><span class="p">,</span> <span class="n">parse_acl</span><span class="p">,</span> <span class="n">referrer_allowed</span>
+<span class="kn">from</span> <span class="nn">swift.common.utils</span> <span class="kn">import</span> <span class="n">cache_from_env</span><span class="p">,</span> <span class="n">split_path</span>
+<span class="kn">from</span> <span class="nn">webob.exc</span> <span class="kn">import</span> <span class="n">HTTPForbidden</span><span class="p">,</span> <span class="n">HTTPUnauthorized</span>
+
+
+<span class="k">class</span> <span class="nc">DevAuthorization</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s">&#39;swift.authorize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">authorize</span>
+        <span class="n">environ</span><span class="p">[</span><span class="s">&#39;swift.clean_acl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean_acl</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">(</span><span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">authorize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+        <span class="n">version</span><span class="p">,</span> <span class="n">account</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="n">obj</span> <span class="o">=</span> <span class="n">split_path</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">account</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">denied_response</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">referrers</span><span class="p">,</span> <span class="n">groups</span> <span class="o">=</span> <span class="n">parse_acl</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s">&#39;acl&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">referrer_allowed</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">referrers</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">in_any_group</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="o">*</span><span class="n">groups</span><span class="p">)</span><span class="o">.</span><span class="n">check_authorization</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">NotAuthorizedError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">denied_response</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">denied_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">remote_user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPForbidden</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HTTPUnauthorized</span><span class="p">(</span><span class="n">request</span><span class="o">=</span><span class="n">req</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">DevIdentifier</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+
+    <span class="k">def</span> <span class="nf">identify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;token&#39;</span><span class="p">:</span>
+                <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;HTTP_X_AUTH_TOKEN&#39;</span><span class="p">,</span> <span class="n">env</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;HTTP_X_STORAGE_TOKEN&#39;</span><span class="p">))}</span>
+
+    <span class="k">def</span> <span class="nf">remember</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">identity</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">forget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">identity</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+
+<span class="k">class</span> <span class="nc">DevAuthenticator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_host</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ip&#39;</span><span class="p">,</span> <span class="s">&#39;127.0.0.1&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;port&#39;</span><span class="p">,</span> <span class="mi">11000</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ssl</span> <span class="o">=</span> \
+            <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;ssl&#39;</span><span class="p">,</span> <span class="s">&#39;false&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;true&#39;</span><span class="p">,</span> <span class="s">&#39;on&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;yes&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">auth_prefix</span> <span class="o">=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;prefix&#39;</span><span class="p">,</span> <span class="s">&#39;/&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;node_timeout&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">identity</span><span class="p">):</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">identity</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;token&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">memcache_client</span> <span class="o">=</span> <span class="n">cache_from_env</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="s">&#39;devauth/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">token</span>
+        <span class="n">cached_auth_data</span> <span class="o">=</span> <span class="n">memcache_client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cached_auth_data</span><span class="p">:</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">user</span> <span class="o">=</span> <span class="n">cached_auth_data</span>
+            <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span> <span class="o">&lt;=</span> <span class="n">expiration</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">user</span>
+        <span class="k">with</span> <span class="n">Timeout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">):</span>
+            <span class="n">conn</span> <span class="o">=</span> <span class="n">http_connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auth_host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">auth_port</span><span class="p">,</span> <span class="s">&#39;GET&#39;</span><span class="p">,</span>
+                    <span class="s">&#39;</span><span class="si">%s</span><span class="s">token/</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">auth_prefix</span><span class="p">,</span> <span class="n">token</span><span class="p">),</span> <span class="n">ssl</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ssl</span><span class="p">)</span>
+            <span class="n">resp</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">getresponse</span><span class="p">()</span>
+            <span class="n">resp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">resp</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="mi">204</span><span class="p">:</span>
+            <span class="n">expiration</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">&#39;x-auth-ttl&#39;</span><span class="p">))</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">getheader</span><span class="p">(</span><span class="s">&#39;x-auth-user&#39;</span><span class="p">)</span>
+            <span class="n">memcache_client</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">time</span><span class="p">(),</span> <span class="n">expiration</span><span class="p">,</span> <span class="n">user</span><span class="p">),</span>
+                                <span class="n">timeout</span><span class="o">=</span><span class="n">expiration</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">user</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+
+<span class="k">class</span> <span class="nc">DevChallenger</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conf</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conf</span> <span class="o">=</span> <span class="n">conf</span>
+
+    <span class="k">def</span> <span class="nf">challenge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">app_headers</span><span class="p">,</span> <span class="n">forget_headers</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">no_challenge</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
+            <span class="n">start_response</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">status</span><span class="p">),</span> <span class="p">[])</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">no_challenge</span>
+
+
+<span class="k">class</span> <span class="nc">DevGroupSourceAdapter</span><span class="p">(</span><span class="n">BaseSourceAdapter</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DevGroupSourceAdapter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_get_all_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span>
+
+    <span class="k">def</span> <span class="nf">_get_section_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_find_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">credentials</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">credentials</span><span class="p">[</span><span class="s">&#39;repoze.what.userid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_include_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">|=</span> <span class="n">items</span>
+
+    <span class="k">def</span> <span class="nf">_exclude_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_item_is_included</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_create_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_edit_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">new_section</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">new_section</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_delete_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_section_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">DevPermissionSourceAdapter</span><span class="p">(</span><span class="n">BaseSourceAdapter</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DevPermissionSourceAdapter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">_get_all_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span>
+
+    <span class="k">def</span> <span class="nf">_get_section_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_find_sections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">([</span><span class="n">n</span> <span class="k">for</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="n">p</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_include_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">|=</span> <span class="n">items</span>
+
+    <span class="k">def</span> <span class="nf">_exclude_items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_item_is_included</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_create_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_edit_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="n">new_section</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">new_section</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_delete_section</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="p">[</span><span class="n">section</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_section_exists</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sections</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">section</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">filter_factory</span><span class="p">(</span><span class="n">global_conf</span><span class="p">,</span> <span class="o">**</span><span class="n">local_conf</span><span class="p">):</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="n">global_conf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">local_conf</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">auth_filter</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">setup_auth</span><span class="p">(</span><span class="n">DevAuthorization</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">conf</span><span class="p">),</span>
+            <span class="n">group_adapters</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;all_groups&#39;</span><span class="p">:</span> <span class="n">DevGroupSourceAdapter</span><span class="p">()},</span>
+            <span class="n">permission_adapters</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;all_perms&#39;</span><span class="p">:</span> <span class="n">DevPermissionSourceAdapter</span><span class="p">()},</span>
+            <span class="n">identifiers</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;devauth&#39;</span><span class="p">,</span> <span class="n">DevIdentifier</span><span class="p">(</span><span class="n">conf</span><span class="p">))],</span>
+            <span class="n">authenticators</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;devauth&#39;</span><span class="p">,</span> <span class="n">DevAuthenticator</span><span class="p">(</span><span class="n">conf</span><span class="p">))],</span>
+            <span class="n">challengers</span><span class="o">=</span><span class="p">[(</span><span class="s">&#39;devauth&#39;</span><span class="p">,</span> <span class="n">DevChallenger</span><span class="p">(</span><span class="n">conf</span><span class="p">))])</span>
+    <span class="k">return</span> <span class="n">auth_filter</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="howto_installmultinode.html" title="Instructions for a Multiple Server Swift Installation (Ubuntu)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="development_saio.html" title="SAIO - Swift All In One"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,709 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Proxy &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Account" href="account.html" />
+    <link rel="prev" title="Partitioned Consistent Hash Ring" href="ring.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="account.html" title="Account"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ring.html" title="Partitioned Consistent Hash Ring"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Proxy</a><ul>
+<li><a class="reference internal" href="#module-swift.proxy.server">Proxy Server</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ring.html"
+                        title="previous chapter">Partitioned Consistent Hash Ring</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="account.html"
+                        title="next chapter">Account</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/proxy.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="proxy">
+<span id="id1"></span><h1>Proxy<a class="headerlink" href="#proxy" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-swift.proxy.server">
+<span id="id2"></span><span id="proxy-server"></span><h2>Proxy Server<a class="headerlink" href="#module-swift.proxy.server" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.proxy.server.AccountController">
+<em class="property">class </em><tt class="descclassname">swift.proxy.server.</tt><tt class="descname">AccountController</tt><big>(</big><em>app</em>, <em>account_name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.proxy.server.AccountController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#swift.proxy.server.Controller" title="swift.proxy.server.Controller"><tt class="xref py py-class docutils literal"><span class="pre">swift.proxy.server.Controller</span></tt></a></p>
+<p>WSGI controller for account requests</p>
+<dl class="method">
+<dt id="swift.proxy.server.AccountController.DELETE">
+<tt class="descname">DELETE</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.AccountController.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP DELETE request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.AccountController.GETorHEAD">
+<tt class="descname">GETorHEAD</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.AccountController.GETorHEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for HTTP GET/HEAD requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.AccountController.POST">
+<tt class="descname">POST</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.AccountController.POST" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP POST request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.AccountController.PUT">
+<tt class="descname">PUT</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.AccountController.PUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP PUT request handler.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.proxy.server.Application">
+<em class="property">class </em><tt class="descclassname">swift.proxy.server.</tt><tt class="descname">Application</tt><big>(</big><em>conf</em>, <em>memcache=None</em>, <em>logger=None</em>, <em>account_ring=None</em>, <em>container_ring=None</em>, <em>object_ring=None</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#swift.proxy.server.BaseApplication" title="swift.proxy.server.BaseApplication"><tt class="xref py py-class docutils literal"><span class="pre">swift.proxy.server.BaseApplication</span></tt></a></p>
+<p>WSGI application for the proxy server.</p>
+<dl class="method">
+<dt id="swift.proxy.server.Application.handle_request">
+<tt class="descname">handle_request</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Application.handle_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wraps the BaseApplication.handle_request and logs the request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Application.posthooklogger">
+<tt class="descname">posthooklogger</tt><big>(</big><em>env</em>, <em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Application.posthooklogger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.proxy.server.BaseApplication">
+<em class="property">class </em><tt class="descclassname">swift.proxy.server.</tt><tt class="descname">BaseApplication</tt><big>(</big><em>conf</em>, <em>memcache=None</em>, <em>logger=None</em>, <em>account_ring=None</em>, <em>container_ring=None</em>, <em>object_ring=None</em><big>)</big><a class="headerlink" href="#swift.proxy.server.BaseApplication" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Base WSGI application for the proxy server</p>
+<dl class="method">
+<dt id="swift.proxy.server.BaseApplication.get_controller">
+<tt class="descname">get_controller</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#swift.proxy.server.BaseApplication.get_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the controller to handle a request.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> &#8211; path from request</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple of (controller class, path dictionary)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><p class="first last">ValueError (thrown by split_path) id given invalid path</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.BaseApplication.handle_request">
+<tt class="descname">handle_request</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.BaseApplication.handle_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entry point for proxy server.
+Should return a WSGI-style callable (such as webob.Response).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req</strong> &#8211; webob.Request object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.BaseApplication.posthooklogger">
+<tt class="descname">posthooklogger</tt><big>(</big><em>env</em>, <em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.BaseApplication.posthooklogger" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.BaseApplication.update_request">
+<tt class="descname">update_request</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.BaseApplication.update_request" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.proxy.server.ContainerController">
+<em class="property">class </em><tt class="descclassname">swift.proxy.server.</tt><tt class="descname">ContainerController</tt><big>(</big><em>app</em>, <em>account_name</em>, <em>container_name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ContainerController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#swift.proxy.server.Controller" title="swift.proxy.server.Controller"><tt class="xref py py-class docutils literal"><span class="pre">swift.proxy.server.Controller</span></tt></a></p>
+<p>WSGI controller for container requests</p>
+<dl class="method">
+<dt id="swift.proxy.server.ContainerController.DELETE">
+<tt class="descname">DELETE</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ContainerController.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP DELETE request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ContainerController.GET">
+<tt class="descname">GET</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ContainerController.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for HTTP GET requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ContainerController.GETorHEAD">
+<tt class="descname">GETorHEAD</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ContainerController.GETorHEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for HTTP GET/HEAD requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ContainerController.HEAD">
+<tt class="descname">HEAD</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ContainerController.HEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for HTTP HEAD requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ContainerController.POST">
+<tt class="descname">POST</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ContainerController.POST" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP POST request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ContainerController.PUT">
+<tt class="descname">PUT</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ContainerController.PUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP PUT request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ContainerController.clean_acls">
+<tt class="descname">clean_acls</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ContainerController.clean_acls" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.proxy.server.Controller">
+<em class="property">class </em><tt class="descclassname">swift.proxy.server.</tt><tt class="descname">Controller</tt><big>(</big><em>app</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Base WSGI controller class for the proxy</p>
+<dl class="method">
+<dt id="swift.proxy.server.Controller.GET">
+<tt class="descname">GET</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for HTTP GET requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.GETorHEAD_base">
+<tt class="descname">GETorHEAD_base</tt><big>(</big><em>req</em>, <em>server_type</em>, <em>partition</em>, <em>nodes</em>, <em>path</em>, <em>attempts</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.GETorHEAD_base" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base handler for HTTP GET or HEAD requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; webob.Request object</li>
+<li><strong>server_type</strong> &#8211; server type</li>
+<li><strong>partition</strong> &#8211; partition</li>
+<li><strong>nodes</strong> &#8211; nodes</li>
+<li><strong>path</strong> &#8211; path for the request</li>
+<li><strong>attempts</strong> &#8211; number of attempts to try</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.HEAD">
+<tt class="descname">HEAD</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.HEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for HTTP HEAD requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.account_info">
+<tt class="descname">account_info</tt><big>(</big><em>account</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.account_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get account information, and also verify that the account exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>account</strong> &#8211; name of the account to get the info for</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple of (account partition, account nodes) or (None, None)
+if it does not exist</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.best_response">
+<tt class="descname">best_response</tt><big>(</big><em>req</em>, <em>statuses</em>, <em>reasons</em>, <em>bodies</em>, <em>server_type</em>, <em>etag=None</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.best_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of responses from several servers, choose the best to
+return to the API.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; webob.Request object</li>
+<li><strong>statuses</strong> &#8211; list of statuses returned</li>
+<li><strong>reasons</strong> &#8211; list of reasons for each status</li>
+<li><strong>bodies</strong> &#8211; bodies of each response</li>
+<li><strong>server_type</strong> &#8211; type of server the responses came from</li>
+<li><strong>etag</strong> &#8211; etag</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response object with the correct status, body, etc. set</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.container_info">
+<tt class="descname">container_info</tt><big>(</big><em>account</em>, <em>container</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.container_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get container information and thusly verify container existance.
+This will also make a call to account_info to verify that the
+account exists.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>account</strong> &#8211; account name for the container</li>
+<li><strong>container</strong> &#8211; container name to look up</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple of (container partition, container nodes, container
+read acl, container write acl) or (None, None, None, None) if
+the container does not exist</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.error_increment">
+<tt class="descname">error_increment</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.error_increment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles incrementing error counts when talking to nodes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> &#8211; dictionary of node to increment the error count for</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.error_limit">
+<tt class="descname">error_limit</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.error_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark a node as error limited.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> &#8211; dictionary of node to error limit</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.error_limited">
+<tt class="descname">error_limited</tt><big>(</big><em>node</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.error_limited" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the node is currently error limited.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> &#8211; dictionary of node to check</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if error limited, False otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.error_occurred">
+<tt class="descname">error_occurred</tt><big>(</big><em>node</em>, <em>msg</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.error_occurred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle logging, and handling of errors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> &#8211; dictionary of node to handle errors for</li>
+<li><strong>msg</strong> &#8211; error message</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.exception_occurred">
+<tt class="descname">exception_occurred</tt><big>(</big><em>node</em>, <em>typ</em>, <em>additional_info</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.exception_occurred" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle logging of generic exceptions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> &#8211; dictionary of node to log the error for</li>
+<li><strong>typ</strong> &#8211; server type</li>
+<li><strong>additional_info</strong> &#8211; additional information to log</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.get_update_nodes">
+<tt class="descname">get_update_nodes</tt><big>(</big><em>partition</em>, <em>nodes</em>, <em>ring</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.get_update_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns ring.replica_count nodes; the nodes will not be error
+limited, if possible.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.Controller.iter_nodes">
+<tt class="descname">iter_nodes</tt><big>(</big><em>partition</em>, <em>nodes</em>, <em>ring</em><big>)</big><a class="headerlink" href="#swift.proxy.server.Controller.iter_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Node iterator that will first iterate over the normal nodes for a
+partition and then the handoff partitions for the node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>partition</strong> &#8211; partition to iterate nodes for</li>
+<li><strong>nodes</strong> &#8211; list of node dicts from the ring</li>
+<li><strong>ring</strong> &#8211; ring to get handoff nodes from</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.proxy.server.ObjectController">
+<em class="property">class </em><tt class="descclassname">swift.proxy.server.</tt><tt class="descname">ObjectController</tt><big>(</big><em>app</em>, <em>account_name</em>, <em>container_name</em>, <em>object_name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#swift.proxy.server.Controller" title="swift.proxy.server.Controller"><tt class="xref py py-class docutils literal"><span class="pre">swift.proxy.server.Controller</span></tt></a></p>
+<p>WSGI controller for object requests.</p>
+<dl class="method">
+<dt id="swift.proxy.server.ObjectController.COPY">
+<tt class="descname">COPY</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController.COPY" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP COPY request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ObjectController.DELETE">
+<tt class="descname">DELETE</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP DELETE request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ObjectController.GET">
+<tt class="descname">GET</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for HTTP GET requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ObjectController.GETorHEAD">
+<tt class="descname">GETorHEAD</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController.GETorHEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP GET or HEAD requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ObjectController.HEAD">
+<tt class="descname">HEAD</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController.HEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handler for HTTP HEAD requests.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ObjectController.POST">
+<tt class="descname">POST</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController.POST" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP POST request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ObjectController.PUT">
+<tt class="descname">PUT</tt><big>(</big><em>*a</em>, <em>**kw</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController.PUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>HTTP PUT request handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.ObjectController.node_post_or_delete">
+<tt class="descname">node_post_or_delete</tt><big>(</big><em>req</em>, <em>partition</em>, <em>node</em>, <em>path</em><big>)</big><a class="headerlink" href="#swift.proxy.server.ObjectController.node_post_or_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle common POST/DELETE functionality</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req</strong> &#8211; webob.Request object</li>
+<li><strong>partition</strong> &#8211; partition for the object</li>
+<li><strong>node</strong> &#8211; node dictionary for the object</li>
+<li><strong>path</strong> &#8211; path to send for the request</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.proxy.server.SegmentedIterable">
+<em class="property">class </em><tt class="descclassname">swift.proxy.server.</tt><tt class="descname">SegmentedIterable</tt><big>(</big><em>controller</em>, <em>container</em>, <em>listing</em>, <em>response=None</em><big>)</big><a class="headerlink" href="#swift.proxy.server.SegmentedIterable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Iterable that returns the object contents for a segmented object in Swift.</p>
+<p>If set, the response&#8217;s <cite>bytes_transferred</cite> value will be updated (used to
+log the size of the request). Also, if there&#8217;s a failure that cuts the
+transfer short, the response&#8217;s <cite>status_int</cite> will be updated (again, just
+for logging since the original status would have already been sent to the
+client).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>controller</strong> &#8211; The ObjectController instance to work with.</li>
+<li><strong>container</strong> &#8211; The container the object segments are within.</li>
+<li><strong>listing</strong> &#8211; The listing of object segments to iterate over; this may
+be an iterator or list that returns dicts with &#8216;name&#8217; and
+&#8216;bytes&#8217; keys.</li>
+<li><strong>response</strong> &#8211; The webob.Response this iterable is associated with, if
+any (default: None)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="swift.proxy.server.SegmentedIterable.app_iter_range">
+<tt class="descname">app_iter_range</tt><big>(</big><em>start</em>, <em>stop</em><big>)</big><a class="headerlink" href="#swift.proxy.server.SegmentedIterable.app_iter_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Non-standard iterator function for use with Webob in serving Range
+requests more quickly. This will skip over segments and do a range
+request on the first segment to return data from, if needed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>start</strong> &#8211; The first byte (zero-based) to return. None for 0.</li>
+<li><strong>stop</strong> &#8211; The last byte (zero-based) to return. None for end.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.proxy.server.SegmentedIterable.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.proxy.server.SegmentedIterable.next" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.proxy.server.app_factory">
+<tt class="descclassname">swift.proxy.server.</tt><tt class="descname">app_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.proxy.server.app_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>paste.deploy app factory for creating WSGI proxy apps.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.proxy.server.delay_denial">
+<tt class="descclassname">swift.proxy.server.</tt><tt class="descname">delay_denial</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#swift.proxy.server.delay_denial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to declare which methods should have any swift.authorize call
+delayed. This is so the method can load the Request object up with
+additional information that may be needed by the authorization system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>func</strong> &#8211; function to delay authorization on</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.proxy.server.get_account_memcache_key">
+<tt class="descclassname">swift.proxy.server.</tt><tt class="descname">get_account_memcache_key</tt><big>(</big><em>account</em><big>)</big><a class="headerlink" href="#swift.proxy.server.get_account_memcache_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="swift.proxy.server.get_container_memcache_key">
+<tt class="descclassname">swift.proxy.server.</tt><tt class="descname">get_container_memcache_key</tt><big>(</big><em>account</em>, <em>container</em><big>)</big><a class="headerlink" href="#swift.proxy.server.get_container_memcache_key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="swift.proxy.server.public">
+<tt class="descclassname">swift.proxy.server.</tt><tt class="descname">public</tt><big>(</big><em>func</em><big>)</big><a class="headerlink" href="#swift.proxy.server.public" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator to declare which methods are public accessible as HTTP requests</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>func</strong> &#8211; function to make public</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.proxy.server.update_headers">
+<tt class="descclassname">swift.proxy.server.</tt><tt class="descname">update_headers</tt><big>(</big><em>response</em>, <em>headers</em><big>)</big><a class="headerlink" href="#swift.proxy.server.update_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to update headers in the response.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>response</strong> &#8211; webob.Response object</li>
+<li><strong>headers</strong> &#8211; dictionary headers</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="account.html" title="Account"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ring.html" title="Partitioned Consistent Hash Ring"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

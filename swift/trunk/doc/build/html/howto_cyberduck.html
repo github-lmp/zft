@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Talking to Swift with Cyberduck &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Partitioned Consistent Hash Ring" href="ring.html" />
+    <link rel="prev" title="Building and Deploying Custom Debian packages for Swift" href="debian_package_guide.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ring.html" title="Partitioned Consistent Hash Ring"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="debian_package_guide.html" title="Building and Deploying Custom Debian packages for Swift"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Talking to Swift with Cyberduck</a><ul>
+<li><a class="reference internal" href="#installing-swift-for-use-with-cyberduck">Installing Swift For Use With Cyberduck</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="debian_package_guide.html"
+                        title="previous chapter">Building and Deploying Custom Debian packages for Swift</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ring.html"
+                        title="next chapter">Partitioned Consistent Hash Ring</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/howto_cyberduck.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="talking-to-swift-with-cyberduck">
+<h1>Talking to Swift with Cyberduck<a class="headerlink" href="#talking-to-swift-with-cyberduck" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Put together by Caleb Tennis, thanks Caleb!</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Install Swift, or have credentials for an existing Swift installation. If
+you plan to install Swift on your own server, follow the general guidelines
+in the section following this one. (This documentation assumes the use of
+the DevAuth auth server; if you&#8217;re using Swauth, you should change all auth
+URLs /v1.0 to /auth/v1.0)</p>
+</li>
+<li><p class="first">Verify you can connect using the standard Swift Tool <cite>st</cite> from your
+&#8220;public&#8221; URL (yes I know this resolves privately inside EC2):</p>
+<div class="highlight-python"><pre>ubuntu@domU-12-31-39-03-CD-06:/home/swift/swift/bin$ st -A https://ec2-184-72-156-130.compute-1.amazonaws.com:11000/v1.0 -U a3:b3 -K c3 stat
+   Account: 06228ccf-6d0a-4395-889e-e971e8de8781
+Containers: 0
+   Objects: 0
+     Bytes: 0</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Swift Tool <cite>st</cite> can be copied from Swift sources to most any
+machine with Python installed. You can grab it from
+<a class="reference external" href="http://bazaar.launchpad.net/%7Ehudson-openstack/swift/trunk/annotate/head%3A/bin/st">http://bazaar.launchpad.net/%7Ehudson-openstack/swift/trunk/annotate/head%3A/bin/st</a>
+if you don&#8217;t have the Swift code handy.</p>
+</div>
+</li>
+<li><p class="first">Download and extract the Cyberduck sources (3.5.1 as of this writing). They
+should be available at <a class="reference external" href="http://trac.cyberduck.ch/">http://trac.cyberduck.ch/</a></p>
+</li>
+<li><p class="first">Edit the Cyberduck source. Look for lib/cloudfiles.properties, and edit
+this file. Change auth_url to your public auth URL (note the https):</p>
+<div class="highlight-python"><pre>auth_url=https://ec2-184-72-156-130.compute-1.amazonaws.com:11000/v1.0</pre>
+</div>
+</li>
+<li><p class="first">Edit source/ch/cyberduck/core/Protocol.java. Look for the line saying
+&#8220;storage.clouddrive.com&#8221;. Just above that, change:</p>
+<div class="highlight-python"><pre>public boolean isHostnameConfigurable() {
+    return true;
+}</pre>
+</div>
+</li>
+<li><p class="first">In the root directory, run &#8220;make&#8221; to rebuild Cyberduck. When done, type:
+<cite>open build/Release/Cyberduck.app/</cite> to start the program.</p>
+</li>
+<li><p class="first">Go to &#8220;Open Connection&#8221;, select Rackspace Cloud Files, and connect.</p>
+<img alt="_images/howto_cyberduck_config.png" src="_images/howto_cyberduck_config.png" />
+</li>
+<li><p class="first">If you get SSL errors, make sure your auth and proxy server are both setup
+for SSL. If you get certificate errors (specifically, &#8216;unable to find valid
+certification path to requested target&#8217;), you are using a self signed
+certificate, you need to perform a few more steps:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For some folks, just telling the OS to trust the cert works fine, for
+others use the following steps.</p>
+</div>
+</li>
+<li><p class="first">As outlined here: <a class="reference external" href="http://blogs.sun.com/andreas/entry/no_more_unable_to_find">http://blogs.sun.com/andreas/entry/no_more_unable_to_find</a>,
+download <a class="reference external" href="http://blogs.sun.com/andreas/resource/InstallCert.java">http://blogs.sun.com/andreas/resource/InstallCert.java</a>, run &#8220;javac
+InstallCert.java&#8221; to compile it, then run &#8220;java InstallCert
+<a class="reference external" href="https://your-auth-server-url:8080">https://your-auth-server-url:8080</a>&#8220;. This script will pull down that
+certificate and put it into a Java cert store, in your local directory. The
+file is jssecacerts.</p>
+</li>
+<li><p class="first">You need to move that file to $JAVA_HOME/jre/lib/security, so your java run
+time picks it up.</p>
+</li>
+<li><p class="first">Restart Cyberduck, and it should now allow you to use that certificate
+without an error.</p>
+</li>
+</ol>
+<div class="section" id="installing-swift-for-use-with-cyberduck">
+<h2>Installing Swift For Use With Cyberduck<a class="headerlink" href="#installing-swift-for-use-with-cyberduck" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Both the proxy and auth servers will ultimately need to be running with
+SSL. You will need a key and certificate to do this, self signed is ok (but
+a little more work getting Cyberduck to accept it). Put these in
+/etc/swift/cert.crt and /etc/swift/cert.key.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Creating a self-signed cert can usually be done with:</p>
+<div class="last highlight-python"><pre>cd /etc/swift
+openssl req -new -x509 -nodes -out cert.crt -keyout cert.key</pre>
+</div>
+</div>
+</li>
+<li><p class="first">Example proxy-server config:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+cert_file = /etc/swift/cert.crt
+key_file = /etc/swift/cert.key
+
+[pipeline:main]
+pipeline = healthcheck cache auth proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+
+[filter:auth]
+use = egg:swift#auth
+ssl = true
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:cache]
+use = egg:swift#memcache</pre>
+</div>
+</li>
+<li><p class="first">Example auth-server config:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+cert_file = /etc/swift/cert.crt
+key_file = /etc/swift/cert.key
+
+[pipeline:main]
+pipeline = auth-server
+
+[app:auth-server]
+use = egg:swift#auth
+super_admin_key = devauth
+default_cluster_url = https://ec2-184-72-156-130.compute-1.amazonaws.com:8080/v1</pre>
+</div>
+</li>
+<li><p class="first">Use swift-auth-add-user to create a new account and admin user:</p>
+<div class="highlight-python"><pre>ubuntu@domU-12-31-39-03-CD-06:/home/swift/swift/bin$ swift-auth-add-user -K devauth -a a3 b3 c3
+https://ec2-184-72-156-130.compute-1.amazonaws.com:8080/v1/06228ccf-6d0a-4395-889e-e971e8de8781</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It&#8217;s important that the URL that is given back to you be accessible
+publicly. This URL is tied to this account, and will be served
+back to Cyberduck after authorization. If this URL gives back
+something like: <a class="reference external" href="http://127.0.0.1/v1/">http://127.0.0.1/v1/</a>... this won&#8217;t work, because
+Cyberduck will attempt to connect to 127.0.0.1.</p>
+<p class="last">This URL is specified in the auth-server config&#8217;s
+default_cluster_url. However, once you have created an
+account/user, this URL is fixed and won&#8217;t change even if you change
+that configuration item. You will have to use sqlite to manually
+edit the auth.db in order to change it (limitation of using the
+development auth server, but perhaps someone will patch in this
+ability someday).</p>
+</div>
+</li>
+<li><p class="first">Verify you can connect using the standard Swift Tool <cite>st</cite>:</p>
+<div class="highlight-python"><pre>ubuntu@domU-12-31-39-03-CD-06:/home/swift/swift/bin$ st -A https://127.0.0.1:11000/v1.0 -U a3:b3 -K c3 stat
+   Account: 06228ccf-6d0a-4395-889e-e971e8de8781
+Containers: 0
+   Objects: 0
+     Bytes: 0</pre>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please let me know if you find any changes that need to be made: ctennis on
+IRC</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ring.html" title="Partitioned Consistent Hash Ring"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="debian_package_guide.html" title="Building and Deploying Custom Debian packages for Swift"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

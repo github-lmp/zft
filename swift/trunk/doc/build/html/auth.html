@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Developer’s Authorization &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Misc" href="misc.html" />
+    <link rel="prev" title="Object" href="object.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="misc.html" title="Misc"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="object.html" title="Object"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Developer&#8217;s Authorization</a><ul>
+<li><a class="reference internal" href="#module-swift.auth.server">Auth Server</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="object.html"
+                        title="previous chapter">Object</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="misc.html"
+                        title="next chapter">Misc</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/auth.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="developer-s-authorization">
+<span id="auth"></span><h1>Developer&#8217;s Authorization<a class="headerlink" href="#developer-s-authorization" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-swift.auth.server">
+<span id="id1"></span><span id="auth-server"></span><h2>Auth Server<a class="headerlink" href="#module-swift.auth.server" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.auth.server.AuthController">
+<em class="property">class </em><tt class="descclassname">swift.auth.server.</tt><tt class="descname">AuthController</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Sample implementation of an authorization server for development work. This
+server only implements the basic functionality and isn&#8217;t written for high
+availability or to scale to thousands (or even hundreds) of requests per
+second. It is mainly for use by developers working on the rest of the
+system.</p>
+<p>The design of the auth system was restricted by a couple of existing
+systems.</p>
+<p>This implementation stores an account name, user name, and password (in
+plain text!) as well as a corresponding Swift cluster url and account hash.
+One existing auth system used account, user, and password whereas another
+used just account and an &#8220;API key&#8221;. Here, we support both systems with
+their various, sometimes colliding headers.</p>
+<p>The most common use case is by the end user:</p>
+<ul class="simple">
+<li>The user makes a ReST call to the auth server requesting a token and url
+to use to access the Swift cluster.</li>
+<li>The auth system validates the user info and returns a token and url for
+the user to use with the Swift cluster.</li>
+<li>The user makes a ReST call to the Swift cluster using the url given with
+the token as the X-Auth-Token header.</li>
+<li>The Swift cluster makes an ReST call to the auth server to validate the
+token, caching the result for future requests up to the expiration the
+auth server returns.</li>
+<li>The auth server validates the token given and returns the expiration for
+the token.</li>
+<li>The Swift cluster completes the user&#8217;s request.</li>
+</ul>
+<p>Another use case is creating a new user:</p>
+<ul class="simple">
+<li>The developer makes a ReST call to create a new user.</li>
+<li>If the account for the user does not yet exist, the auth server makes
+a ReST call to the Swift cluster to create a new account on its end.</li>
+<li>The auth server records the information in its database.</li>
+</ul>
+<p>A last use case is recreating existing accounts; this is really only useful
+on a development system when the drives are reformatted quite often but
+the auth server&#8217;s database is retained:</p>
+<ul class="simple">
+<li>A developer makes an ReST call to have the existing accounts recreated.</li>
+<li>For each account in its database, the auth server makes a ReST call to
+the Swift cluster to create the specific account on its end.</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conf</strong> &#8211; The [auth-server] dictionary of the auth server configuration
+file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See the etc/auth-server.conf-sample for information on the possible
+configuration parameters.</p>
+<dl class="method">
+<dt id="swift.auth.server.AuthController.add_storage_account">
+<tt class="descname">add_storage_account</tt><big>(</big><em>account_name=''</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.add_storage_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an account within the Swift cluster by making a ReST call.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>account_name</strong> &#8211; The desired name for the account; if omitted a
+UUID4 will be used.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">False upon failure, otherwise the name of the account
+within the Swift cluster.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.create_user">
+<tt class="descname">create_user</tt><big>(</big><em>account</em>, <em>user</em>, <em>password</em>, <em>admin=False</em>, <em>reseller_admin=False</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.create_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the create_user call for developers, used to request a user be
+added in the auth server database. If the account does not yet exist,
+it will be created on the Swift cluster and the details recorded in the
+auth server database.</p>
+<p>The url for the storage account is constructed now and stored
+separately to support changing the configuration file&#8217;s
+default_cluster_url for directing new accounts to a different Swift
+cluster while still supporting old accounts going to the Swift clusters
+they were created on.</p>
+<p>Currently, updating a user&#8217;s information (password, admin access) must
+be done by directly updating the sqlite database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>account</strong> &#8211; The name for the new account</li>
+<li><strong>user</strong> &#8211; The name for the new user</li>
+<li><strong>password</strong> &#8211; The password for the new account</li>
+<li><strong>admin</strong> &#8211; If true, the user will be granted full access to the
+account; otherwise, another user will have to add the
+user to the ACLs for containers to grant access.</li>
+<li><strong>reseller_admin</strong> &#8211; If true, the user will be granted full access to
+all accounts within this reseller, including the
+ability to create additional accounts.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">False if the create fails, &#8216;already exists&#8217; if the user
+already exists, or storage url if successful</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.get_conn">
+<tt class="descname">get_conn</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.get_conn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a DB API connection instance to the auth server&#8217;s SQLite
+database. This is a contextmanager call to be use with the &#8216;with&#8217;
+statement. It takes no parameters.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.handleREST">
+<tt class="descname">handleREST</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.handleREST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles routing of ReST requests. This handler also logs all requests.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>env</strong> &#8211; WSGI environment</li>
+<li><strong>start_response</strong> &#8211; WSGI start_response function</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.handle_account_recreate">
+<tt class="descname">handle_account_recreate</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.handle_account_recreate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles ReST requests from developers to have accounts in the Auth
+system recreated in Swift. I know this is bad ReST style, but this
+isn&#8217;t production right? :)</p>
+<dl class="docutils">
+<dt>Valid URL paths:</dt>
+<dd><ul class="first last simple">
+<li>POST /recreate_accounts</li>
+</ul>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; webob.Request object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.handle_add_user">
+<tt class="descname">handle_add_user</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.handle_add_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles Rest requests from developers to have a user added. If the
+account specified doesn&#8217;t exist, it will also be added. Currently,
+updating a user&#8217;s information (password, admin access) must be done by
+directly updating the sqlite database.</p>
+<dl class="docutils">
+<dt>Valid URL paths:</dt>
+<dd><ul class="first last simple">
+<li>PUT /account/&lt;account-name&gt;/&lt;user-name&gt; - create the account</li>
+</ul>
+</dd>
+<dt>Valid headers:</dt>
+<dd><ul class="first last simple">
+<li>X-Auth-User-Key: &lt;password&gt;</li>
+<li>X-Auth-User-Admin: &lt;true|false&gt;</li>
+<li>X-Auth-User-Reseller-Admin: &lt;true|false&gt;</li>
+</ul>
+</dd>
+</dl>
+<p>If the HTTP request returns with a 204, then the user was added,
+and the storage url will be available in the X-Storage-Url header.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; webob.Request object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.handle_auth">
+<tt class="descname">handle_auth</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.handle_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles ReST requests from end users for a Swift cluster url and auth
+token. This can handle all the various headers and formats that
+existing auth systems used, so it&#8217;s a bit of a chameleon.</p>
+<dl class="docutils">
+<dt>Valid URL paths:</dt>
+<dd><ul class="first last simple">
+<li>GET /v1/&lt;account-name&gt;/auth</li>
+<li>GET /auth</li>
+<li>GET /v1.0</li>
+</ul>
+</dd>
+<dt>Valid headers:</dt>
+<dd><ul class="first last">
+<li><p class="first">X-Auth-User: &lt;account-name&gt;:&lt;user-name&gt;</p>
+</li>
+<li><p class="first">X-Auth-Key: &lt;password&gt;</p>
+</li>
+<li><dl class="first docutils">
+<dt>X-Storage-User: [&lt;account-name&gt;:]&lt;user-name&gt;</dt>
+<dd><p class="first last">The [&lt;account-name&gt;:] is only optional here if the
+/v1/&lt;account-name&gt;/auth path is used.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">X-Storage-Pass: &lt;password&gt;</p>
+</li>
+</ul>
+</dd>
+</dl>
+<p>The (currently) preferred method is to use /v1.0 path and the
+X-Auth-User and X-Auth-Key headers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; A webob.Request instance.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.handle_token">
+<tt class="descname">handle_token</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.handle_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles ReST requests from Swift to validate tokens</p>
+<dl class="docutils">
+<dt>Valid URL paths:</dt>
+<dd><ul class="first last simple">
+<li>GET /token/&lt;token&gt;</li>
+</ul>
+</dd>
+</dl>
+<p>If the HTTP request returns with a 204, then the token is valid, the
+TTL of the token will be available in the X-Auth-Ttl header, and a
+comma separated list of the &#8220;groups&#8221; the user belongs to will be in the
+X-Auth-Groups header.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>request</strong> &#8211; webob.Request object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.is_account_admin">
+<tt class="descname">is_account_admin</tt><big>(</big><em>request</em>, <em>for_account</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.is_account_admin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the request represents coming from .super_admin, a
+.reseller_admin, or an admin for the account specified.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.purge_old_tokens">
+<tt class="descname">purge_old_tokens</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.purge_old_tokens" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes tokens that have expired from the auth server&#8217;s database. This
+is called by <a class="reference internal" href="#swift.auth.server.AuthController.validate_token" title="swift.auth.server.AuthController.validate_token"><tt class="xref py py-func docutils literal"><span class="pre">validate_token()</span></tt></a> and <tt class="xref py py-func docutils literal"><span class="pre">GET()</span></tt> to help keep the
+database clean.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.recreate_accounts">
+<tt class="descname">recreate_accounts</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.recreate_accounts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recreates the accounts from the existing auth database in the Swift
+cluster. This is useful on a development system when the drives are
+reformatted quite often but the auth server&#8217;s database is retained.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">A string indicating accounts and failures</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.validate_s3_sign">
+<tt class="descname">validate_s3_sign</tt><big>(</big><em>request</em>, <em>token</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.validate_s3_sign" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.auth.server.AuthController.validate_token">
+<tt class="descname">validate_token</tt><big>(</big><em>token</em><big>)</big><a class="headerlink" href="#swift.auth.server.AuthController.validate_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests if the given token is a valid token</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>token</strong> &#8211; The token to validate</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">(TTL, account, user, cfaccount) if valid, False otherwise.
+cfaccount will be None for users without admin access for the
+account. cfaccount will be .reseller_admin for users with
+full reseller admin rights.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.auth.server.app_factory">
+<tt class="descclassname">swift.auth.server.</tt><tt class="descname">app_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.auth.server.app_factory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="misc.html" title="Misc"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="object.html" title="Object"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

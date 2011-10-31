@@ -1,0 +1,242 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Swift Architectural Overview &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="The Rings" href="overview_ring.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview_ring.html" title="The Rings"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting Started"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Swift Architectural Overview</a><ul>
+<li><a class="reference internal" href="#proxy-server">Proxy Server</a></li>
+<li><a class="reference internal" href="#the-ring">The Ring</a></li>
+<li><a class="reference internal" href="#object-server">Object Server</a></li>
+<li><a class="reference internal" href="#container-server">Container Server</a></li>
+<li><a class="reference internal" href="#account-server">Account Server</a></li>
+<li><a class="reference internal" href="#replication">Replication</a></li>
+<li><a class="reference internal" href="#updaters">Updaters</a></li>
+<li><a class="reference internal" href="#auditors">Auditors</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="getting_started.html"
+                        title="previous chapter">Getting Started</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview_ring.html"
+                        title="next chapter">The Rings</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/overview_architecture.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="swift-architectural-overview">
+<h1>Swift Architectural Overview<a class="headerlink" href="#swift-architectural-overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="proxy-server">
+<h2>Proxy Server<a class="headerlink" href="#proxy-server" title="Permalink to this headline">¶</a></h2>
+<p>The Proxy Server is responsible for tying together the rest of the Swift
+architecture. For each request, it will look up the location of the account,
+container, or object in the ring (see below) and route the request accordingly.
+The public API is also exposed through the Proxy Server.</p>
+<p>A large number of failures are also handled in the Proxy Server. For
+example, if a server is unavailable for an object PUT, it will ask the
+ring for a handoff server and route there instead.</p>
+<p>When objects are streamed to or from an object server, they are streamed
+directly through the proxy server to or from the user &#8211; the proxy server
+does not spool them.</p>
+</div>
+<div class="section" id="the-ring">
+<h2>The Ring<a class="headerlink" href="#the-ring" title="Permalink to this headline">¶</a></h2>
+<p>A ring represents a mapping between the names of entities stored on disk and
+their physical location. There are separate rings for accounts, containers, and
+objects. When other components need to perform any operation on an object,
+container, or account, they need to interact with the appropriate ring to
+determine its location in the cluster.</p>
+<p>The Ring maintains this mapping using zones, devices, partitions, and replicas.
+Each partition in the ring is replicated, by default, 3 times across the
+cluster, and the locations for a partition are stored in the mapping maintained
+by the ring. The ring is also responsible for determining which devices are
+used for handoff in failure scenarios.</p>
+<p>Data can be isolated with the concept of zones in the ring. Each replica
+of a partition is guaranteed to reside in a different zone. A zone could
+represent a drive, a server, a cabinet, a switch, or even a datacenter.</p>
+<p>The partitions of the ring are equally divided among all the devices in the
+Swift installation. When partitions need to be moved around (for example if a
+device is added to the cluster), the ring ensures that a minimum number of
+partitions are moved at a time, and only one replica of a partition is moved at
+a time.</p>
+<p>Weights can be used to balance the distribution of partitions on drives
+across the cluster. This can be useful, for example, when different sized
+drives are used in a cluster.</p>
+<p>The ring is used by the Proxy server and several background processes
+(like replication).</p>
+</div>
+<div class="section" id="object-server">
+<h2>Object Server<a class="headerlink" href="#object-server" title="Permalink to this headline">¶</a></h2>
+<p>The Object Server is a very simple blob storage server that can store,
+retrieve and delete objects stored on local devices. Objects are stored
+as binary files on the filesystem with metadata stored in the file&#8217;s
+extended attributes (xattrs). This requires that the underlying filesystem
+choice for object servers support xattrs on files. Some filesystems,
+like ext3, have xattrs turned off by default.</p>
+<p>Each object is stored using a path derived from the object name&#8217;s hash and
+the operation&#8217;s timestamp. Last write always wins, and ensures that the
+latest object version will be served. A deletion is also treated as a
+version of the file (a 0 byte file ending with &#8220;.ts&#8221;, which stands for
+tombstone). This ensures that deleted files are replicated correctly and
+older versions don&#8217;t magically reappear due to failure scenarios.</p>
+</div>
+<div class="section" id="container-server">
+<h2>Container Server<a class="headerlink" href="#container-server" title="Permalink to this headline">¶</a></h2>
+<p>The Container Server&#8217;s primary job is to handle listings of objects. It
+doesn&#8217;t know where those object&#8217;s are, just what objects are in a specific
+container. The listings are stored as sqlite database files, and replicated
+across the cluster similar to how objects are. Statistics are also tracked
+that include the total number of objects, and total storage usage for that
+container.</p>
+</div>
+<div class="section" id="account-server">
+<h2>Account Server<a class="headerlink" href="#account-server" title="Permalink to this headline">¶</a></h2>
+<p>The Account Server is very similar to the Container Server, excepting that
+it is responsible for listings of containers rather than objects.</p>
+</div>
+<div class="section" id="replication">
+<h2>Replication<a class="headerlink" href="#replication" title="Permalink to this headline">¶</a></h2>
+<p>Replication is designed to keep the system in a consistent state in the face
+of temporary error conditions like network outages or drive failures.</p>
+<p>The replication processes compare local data with each remote copy to ensure
+they all contain the latest version. Object replication uses a hash list to
+quickly compare subsections of each partition, and container and account
+replication use a combination of hashes and shared high water marks.</p>
+<p>Replication updates are push based. For object replication, updating is
+just a matter of rsyncing files to the peer. Account and container
+replication push missing records over HTTP or rsync whole database files.</p>
+<p>The replicator also ensures that data is removed from the system. When an
+item (object, container, or account) is deleted, a tombstone is set as the
+latest version of the item. The replicator will see the tombstone and ensure
+that the item is removed from the entire system.</p>
+</div>
+<div class="section" id="updaters">
+<h2>Updaters<a class="headerlink" href="#updaters" title="Permalink to this headline">¶</a></h2>
+<p>There are times when container or account data can not be immediately
+updated. This usually occurs during failure scenarios or periods of high
+load. If an update fails, the update is queued locally on the filesystem,
+and the updater will process the failed updates. This is where an eventual
+consistency window will most likely come in to play. For example, suppose a
+container server is under load and a new object is put in to the system. The
+object will be immediately available for reads as soon as the proxy server
+responds to the client with success. However, the container server did not
+update the object listing, and so the update would be queued for a later
+update. Container listings, therefore, may not immediately contain the object.</p>
+<p>In practice, the consistency window is only as large as the frequency at
+which the updater runs and may not even be noticed as the proxy server will
+route listing requests to the first container server which responds. The
+server under load may not be the one that serves subsequent listing
+requests &#8211; one of the other two replicas may handle the listing.</p>
+</div>
+<div class="section" id="auditors">
+<h2>Auditors<a class="headerlink" href="#auditors" title="Permalink to this headline">¶</a></h2>
+<p>Auditors crawl the local server checking the integrity of the objects,
+containers, and accounts. If corruption is found (in the case of bit rot,
+for example), the file is quarantined, and replication will replace the bad
+file from another replica. If other errors are found they are logged (for
+example, an object&#8217;s listing can&#8217;t be found on any container server it
+should be).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview_ring.html" title="The Rings"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="getting_started.html" title="Getting Started"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

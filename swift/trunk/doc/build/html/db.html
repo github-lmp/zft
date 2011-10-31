@@ -1,0 +1,1076 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account DB and Container DB &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Object" href="object.html" />
+    <link rel="prev" title="Container" href="container.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="object.html" title="Object"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="container.html" title="Container"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Account DB and Container DB</a><ul>
+<li><a class="reference internal" href="#db">DB</a></li>
+<li><a class="reference internal" href="#module-swift.common.db_replicator">DB replicator</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="container.html"
+                        title="previous chapter">Container</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="object.html"
+                        title="next chapter">Object</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/db.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account-db-and-container-db">
+<span id="account-and-container-db"></span><h1>Account DB and Container DB<a class="headerlink" href="#account-db-and-container-db" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="db">
+<span id="id1"></span><h2>DB<a class="headerlink" href="#db" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.db"></span><p>Database code for Swift</p>
+<dl class="class">
+<dt id="swift.common.db.AccountBroker">
+<em class="property">class </em><tt class="descclassname">swift.common.db.</tt><tt class="descname">AccountBroker</tt><big>(</big><em>db_file</em>, <em>timeout=25</em>, <em>logger=None</em>, <em>account=None</em>, <em>container=None</em>, <em>pending_timeout=10</em>, <em>stale_reads_ok=False</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#swift.common.db.DatabaseBroker" title="swift.common.db.DatabaseBroker"><tt class="xref py py-class docutils literal"><span class="pre">swift.common.db.DatabaseBroker</span></tt></a></p>
+<p>Encapsulates working with a account database.</p>
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.can_delete_db">
+<tt class="descname">can_delete_db</tt><big>(</big><em>cutoff</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.can_delete_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the accont DB can be deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the account can be deleted, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.create_account_stat_table">
+<tt class="descname">create_account_stat_table</tt><big>(</big><em>conn</em>, <em>put_timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.create_account_stat_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create account_stat table which is specific to the account DB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conn</strong> &#8211; DB connection object</li>
+<li><strong>put_timestamp</strong> &#8211; put timestamp</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.create_container_table">
+<tt class="descname">create_container_table</tt><big>(</big><em>conn</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.create_container_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create container table which is specific to the account DB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conn</strong> &#8211; DB connection object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.empty">
+<tt class="descname">empty</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the account DB is empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the database has no active containers.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.get_container_timestamp">
+<tt class="descname">get_container_timestamp</tt><big>(</big><em>container_name</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.get_container_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the put_timestamp of a container.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>container_name</strong> &#8211; container name</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">put_timestamp of the container</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.get_info">
+<tt class="descname">get_info</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.get_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get global data for the account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a tuple of (account, created_at, put_timestamp,
+delete_timestamp, container_count, object_count,
+bytes_used, hash, id)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.get_random_containers">
+<tt class="descname">get_random_containers</tt><big>(</big><em>max_count=100</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.get_random_containers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get random containers from the DB.  This is used by the
+account_auditor when testing random containerss for existence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_count</strong> &#8211; maximum number of containers to get</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of container names</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.is_deleted">
+<tt class="descname">is_deleted</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.is_deleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the account DB is considered to be deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the account DB is considered to be deleted, False
+otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.is_status_deleted">
+<tt class="descname">is_status_deleted</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.is_status_deleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Only returns true if the status field is set to DELETED.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.list_containers_iter">
+<tt class="descname">list_containers_iter</tt><big>(</big><em>limit</em>, <em>marker</em>, <em>end_marker</em>, <em>prefix</em>, <em>delimiter</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.list_containers_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of containerss sorted by name starting at marker onward, up
+to limit entries.  Entries will begin with the prefix and will not
+have the delimiter after the prefix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>limit</strong> &#8211; maximum number of entries to get</li>
+<li><strong>marker</strong> &#8211; marker query</li>
+<li><strong>end_marker</strong> &#8211; end marker query</li>
+<li><strong>prefix</strong> &#8211; prefix query</li>
+<li><strong>delimeter</strong> &#8211; delimeter for query</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of tuples of (name, object_count, bytes_used, 0)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.merge_items">
+<tt class="descname">merge_items</tt><big>(</big><em>item_list</em>, <em>source=None</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.merge_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge items into the container table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>item_list</strong> &#8211; list of dictionaries of {&#8216;name&#8217;, &#8216;put_timestamp&#8217;,
+&#8216;delete_timestamp&#8217;, &#8216;object_count&#8217;, &#8216;bytes_used&#8217;,
+&#8216;deleted&#8217;}</li>
+<li><strong>source</strong> &#8211; if defined, update incoming_sync with the source</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.put_container">
+<tt class="descname">put_container</tt><big>(</big><em>name</em>, <em>put_timestamp</em>, <em>delete_timestamp</em>, <em>object_count</em>, <em>bytes_used</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.put_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a container with the given attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; name of the container to create</li>
+<li><strong>put_timestamp</strong> &#8211; put_timestamp of the container to create</li>
+<li><strong>delete_timestamp</strong> &#8211; delete_timestamp of the container to create</li>
+<li><strong>object_count</strong> &#8211; number of objects in the container</li>
+<li><strong>bytes_used</strong> &#8211; number of bytes used by the container</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.reclaim">
+<tt class="descname">reclaim</tt><big>(</big><em>container_timestamp</em>, <em>sync_timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.reclaim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete rows from the container table that are marked deleted and
+whose created_at timestamp is &lt; object_timestamp.  Also deletes rows
+from incoming_sync and outgoing_sync where the updated_at timestamp is
+&lt; sync_timestamp.</p>
+<p>In addition, this calls the DatabaseBroker&#8217;s :func:_reclaim method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>object_timestamp</strong> &#8211; max created_at timestamp of container rows to
+delete</li>
+<li><strong>sync_timestamp</strong> &#8211; max update_at timestamp of sync rows to delete</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.AccountBroker.update_put_timestamp">
+<tt class="descname">update_put_timestamp</tt><big>(</big><em>timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.AccountBroker.update_put_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the put_timestamp.  Only modifies it if it is greater than
+the current timestamp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> &#8211; put timestamp</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.db.BROKER_TIMEOUT">
+<tt class="descclassname">swift.common.db.</tt><tt class="descname">BROKER_TIMEOUT</tt><a class="headerlink" href="#swift.common.db.BROKER_TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Timeout for trying to connect to a DB</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.db.ContainerBroker">
+<em class="property">class </em><tt class="descclassname">swift.common.db.</tt><tt class="descname">ContainerBroker</tt><big>(</big><em>db_file</em>, <em>timeout=25</em>, <em>logger=None</em>, <em>account=None</em>, <em>container=None</em>, <em>pending_timeout=10</em>, <em>stale_reads_ok=False</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#swift.common.db.DatabaseBroker" title="swift.common.db.DatabaseBroker"><tt class="xref py py-class docutils literal"><span class="pre">swift.common.db.DatabaseBroker</span></tt></a></p>
+<p>Encapsulates working with a container database.</p>
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.create_container_stat_table">
+<tt class="descname">create_container_stat_table</tt><big>(</big><em>conn</em>, <em>put_timestamp=None</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.create_container_stat_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the container_stat table which is specific to the container DB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conn</strong> &#8211; DB connection object</li>
+<li><strong>put_timestamp</strong> &#8211; put timestamp</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.create_object_table">
+<tt class="descname">create_object_table</tt><big>(</big><em>conn</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.create_object_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the object table which is specifc to the container DB.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conn</strong> &#8211; DB connection object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.delete_object">
+<tt class="descname">delete_object</tt><big>(</big><em>name</em>, <em>timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.delete_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark an object deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; object name to be deleted</li>
+<li><strong>timestamp</strong> &#8211; timestamp when the object was marked as deleted</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.empty">
+<tt class="descname">empty</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.empty" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the DB is empty.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the database has no active objects, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.get_info">
+<tt class="descname">get_info</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.get_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get global data for the container.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a tuple of (account, container, created_at, put_timestamp,
+delete_timestamp, object_count, bytes_used,
+reported_put_timestamp, reported_delete_timestamp,
+reported_object_count, reported_bytes_used, hash, id)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.get_random_objects">
+<tt class="descname">get_random_objects</tt><big>(</big><em>max_count=100</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.get_random_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get random objects from the DB.  This is used by the container_auditor
+when testing random objects for existence.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_count</strong> &#8211; maximum number of objects to get</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of object names</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.is_deleted">
+<tt class="descname">is_deleted</tt><big>(</big><em>timestamp=None</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.is_deleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the DB is considered to be deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the DB is considered to be deleted, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.list_objects_iter">
+<tt class="descname">list_objects_iter</tt><big>(</big><em>limit</em>, <em>marker</em>, <em>end_marker</em>, <em>prefix</em>, <em>delimiter</em>, <em>path=None</em>, <em>format=None</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.list_objects_iter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of objects sorted by name starting at marker onward, up
+to limit entries.  Entries will begin with the prefix and will not
+have the delimiter after the prefix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>limit</strong> &#8211; maximum number of entries to get</li>
+<li><strong>marker</strong> &#8211; marker query</li>
+<li><strong>end_marker</strong> &#8211; end marker query</li>
+<li><strong>prefix</strong> &#8211; prefix query</li>
+<li><strong>delimeter</strong> &#8211; delimeter for query</li>
+<li><strong>path</strong> &#8211; if defined, will set the prefix and delimter based on
+the path</li>
+<li><strong>format</strong> &#8211; TOOD: remove as it is no longer used</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of tuples of (name, created_at, size, content_type,
+etag)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.merge_items">
+<tt class="descname">merge_items</tt><big>(</big><em>item_list</em>, <em>source=None</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.merge_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge items into the object table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>item_list</strong> &#8211; list of dictionaries of {&#8216;name&#8217;, &#8216;created_at&#8217;,
+&#8216;size&#8217;, &#8216;content_type&#8217;, &#8216;etag&#8217;, &#8216;deleted&#8217;}</li>
+<li><strong>source</strong> &#8211; if defined, update incoming_sync with the source</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.put_object">
+<tt class="descname">put_object</tt><big>(</big><em>name</em>, <em>timestamp</em>, <em>size</em>, <em>content_type</em>, <em>etag</em>, <em>deleted=0</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.put_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates an object in the DB with its metadata.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> &#8211; object name to be created</li>
+<li><strong>timestamp</strong> &#8211; timestamp of when the object was created</li>
+<li><strong>size</strong> &#8211; object size</li>
+<li><strong>content_type</strong> &#8211; object content-type</li>
+<li><strong>etag</strong> &#8211; object etag</li>
+<li><strong>deleted</strong> &#8211; if True, marks the object as deleted and sets the
+deteleted_at timestamp to timestamp</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.reclaim">
+<tt class="descname">reclaim</tt><big>(</big><em>object_timestamp</em>, <em>sync_timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.reclaim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete rows from the object table that are marked deleted and
+whose created_at timestamp is &lt; object_timestamp.  Also deletes rows
+from incoming_sync and outgoing_sync where the updated_at timestamp is
+&lt; sync_timestamp.</p>
+<p>In addition, this calls the DatabaseBroker&#8217;s :func:_reclaim method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>object_timestamp</strong> &#8211; max created_at timestamp of object rows to
+delete</li>
+<li><strong>sync_timestamp</strong> &#8211; max update_at timestamp of sync rows to delete</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.reported">
+<tt class="descname">reported</tt><big>(</big><em>put_timestamp</em>, <em>delete_timestamp</em>, <em>object_count</em>, <em>bytes_used</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.reported" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update reported stats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>put_timestamp</strong> &#8211; put_timestamp to update</li>
+<li><strong>delete_timestamp</strong> &#8211; delete_timestamp to update</li>
+<li><strong>object_count</strong> &#8211; object_count to update</li>
+<li><strong>bytes_used</strong> &#8211; bytes_used to update</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.ContainerBroker.update_put_timestamp">
+<tt class="descname">update_put_timestamp</tt><big>(</big><em>timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.ContainerBroker.update_put_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the put_timestamp.  Only modifies it if it is greater than
+the current timestamp.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> &#8211; put timestamp</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.db.DatabaseBroker">
+<em class="property">class </em><tt class="descclassname">swift.common.db.</tt><tt class="descname">DatabaseBroker</tt><big>(</big><em>db_file</em>, <em>timeout=25</em>, <em>logger=None</em>, <em>account=None</em>, <em>container=None</em>, <em>pending_timeout=10</em>, <em>stale_reads_ok=False</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Encapsulates working with a database.</p>
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.delete_db">
+<tt class="descname">delete_db</tt><big>(</big><em>timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.delete_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark the DB as deleted</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> &#8211; delete timestamp</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.get">
+<tt class="descname">get</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with the &#8220;with&#8221; statement; returns a database connection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.get_items_since">
+<tt class="descname">get_items_since</tt><big>(</big><em>start</em>, <em>count</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.get_items_since" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of objects in the database between start and end.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>start</strong> &#8211; start ROWID</li>
+<li><strong>count</strong> &#8211; number to get</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of objects between start and end</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.get_replication_info">
+<tt class="descname">get_replication_info</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.get_replication_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get information about the DB required for replication.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">dict containing keys: hash, id, created_at, put_timestamp,
+delete_timestamp, count, max_row, and metadata</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.get_sync">
+<tt class="descname">get_sync</tt><big>(</big><em>id</em>, <em>incoming=True</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.get_sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the most recent sync point for a server from the sync table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>id</strong> &#8211; remote ID to get the sync_point for</li>
+<li><strong>incoming</strong> &#8211; if True, get the last incoming sync, otherwise get
+the last outgoing sync</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the sync point, or -1 if the id doesn&#8217;t exist.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.get_syncs">
+<tt class="descname">get_syncs</tt><big>(</big><em>incoming=True</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.get_syncs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a serialized copy of the sync table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>incoming</strong> &#8211; if True, get the last incoming sync, otherwise get
+the last outgoing sync</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of {&#8216;remote_id&#8217;, &#8216;sync_point&#8217;}</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.initialize">
+<tt class="descname">initialize</tt><big>(</big><em>put_timestamp=None</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the DB</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>put_timestamp</strong> &#8211; timestamp of initial PUT request</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.lock">
+<tt class="descname">lock</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use with the &#8220;with&#8221; statement; locks a database.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.merge_syncs">
+<tt class="descname">merge_syncs</tt><big>(</big><em>sync_points</em>, <em>incoming=True</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.merge_syncs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge a list of sync points with the incoming sync table.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sync_points</strong> &#8211; list of sync points where a sync point is a dict of
+{&#8216;sync_point&#8217;, &#8216;remote_id&#8217;}</li>
+<li><strong>incoming</strong> &#8211; if True, get the last incoming sync, otherwise get
+the last outgoing sync</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.merge_timestamps">
+<tt class="descname">merge_timestamps</tt><big>(</big><em>created_at</em>, <em>put_timestamp</em>, <em>delete_timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.merge_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used in replication to handle updating timestamps.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>created_at</strong> &#8211; create timestamp</li>
+<li><strong>put_timestamp</strong> &#8211; put timestamp</li>
+<li><strong>delete_timestamp</strong> &#8211; delete timestamp</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="swift.common.db.DatabaseBroker.metadata">
+<tt class="descname">metadata</tt><a class="headerlink" href="#swift.common.db.DatabaseBroker.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the metadata dict for the database. The metadata dict values
+are tuples of (value, timestamp) where the timestamp indicates when
+that key was set to that value.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.newid">
+<tt class="descname">newid</tt><big>(</big><em>remote_id</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.newid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-id the database.  This should be called after an rsync.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>remote_id</strong> &#8211; the ID of the remote database being rsynced in</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.reclaim">
+<tt class="descname">reclaim</tt><big>(</big><em>timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.reclaim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes any empty metadata values older than the timestamp</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.DatabaseBroker.update_metadata">
+<tt class="descname">update_metadata</tt><big>(</big><em>metadata_updates</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseBroker.update_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the metadata dict for the database. The metadata dict values
+are tuples of (value, timestamp) where the timestamp indicates when
+that key was set to that value. Key/values will only be overwritten if
+the timestamp is newer. To delete a key, set its value to (&#8216;&#8217;,
+timestamp). These empty keys will eventually be removed by
+:func:reclaim</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="swift.common.db.DatabaseConnectionError">
+<em class="property">exception </em><tt class="descclassname">swift.common.db.</tt><tt class="descname">DatabaseConnectionError</tt><big>(</big><em>path</em>, <em>msg</em>, <em>timeout=0</em><big>)</big><a class="headerlink" href="#swift.common.db.DatabaseConnectionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">sqlite3.DatabaseError</span></tt></p>
+<p>More friendly error messages for DB Errors.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.db.GreenDBConnection">
+<em class="property">class </em><tt class="descclassname">swift.common.db.</tt><tt class="descname">GreenDBConnection</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.db.GreenDBConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/sqlite3.html#sqlite3.Connection" title="(in Python v2.7)"><tt class="docutils literal"><span class="pre">sqlite3.Connection</span></tt></a></p>
+<p>SQLite DB Connection handler that plays well with eventlet.</p>
+<dl class="method">
+<dt id="swift.common.db.GreenDBConnection.commit">
+<tt class="descname">commit</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db.GreenDBConnection.commit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db.GreenDBConnection.execute">
+<tt class="descname">execute</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.db.GreenDBConnection.execute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.db.PENDING_CAP">
+<tt class="descclassname">swift.common.db.</tt><tt class="descname">PENDING_CAP</tt><a class="headerlink" href="#swift.common.db.PENDING_CAP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max number of pending entries</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.db.PICKLE_PROTOCOL">
+<tt class="descclassname">swift.common.db.</tt><tt class="descname">PICKLE_PROTOCOL</tt><a class="headerlink" href="#swift.common.db.PICKLE_PROTOCOL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pickle protocol to use</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.db.chexor">
+<tt class="descclassname">swift.common.db.</tt><tt class="descname">chexor</tt><big>(</big><em>old</em>, <em>name</em>, <em>timestamp</em><big>)</big><a class="headerlink" href="#swift.common.db.chexor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Each entry in the account and container databases is XORed by the 128-bit
+hash on insert or delete.  This serves as a rolling, order-independent hash
+of the contents. (check + XOR)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>old</strong> &#8211; hex representation of the current DB hash</li>
+<li><strong>name</strong> &#8211; name of the object or container being inserted</li>
+<li><strong>timestamp</strong> &#8211; timestamp of the new record</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a hex representation of the new hash value</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.db.dict_factory">
+<tt class="descclassname">swift.common.db.</tt><tt class="descname">dict_factory</tt><big>(</big><em>crs</em>, <em>row</em><big>)</big><a class="headerlink" href="#swift.common.db.dict_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>This should only be used when you need a real dict,
+i.e. when you&#8217;re going to serialize the results.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.db.get_db_connection">
+<tt class="descclassname">swift.common.db.</tt><tt class="descname">get_db_connection</tt><big>(</big><em>path</em>, <em>timeout=30</em>, <em>okay_to_create=False</em><big>)</big><a class="headerlink" href="#swift.common.db.get_db_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a properly configured SQLite database connection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> &#8211; path to DB</li>
+<li><strong>timeout</strong> &#8211; timeout for connection</li>
+<li><strong>okay_to_create</strong> &#8211; if True, create the DB if it doesn&#8217;t exist</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">DB connection object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.db_replicator">
+<span id="id2"></span><span id="db-replicator"></span><h2>DB replicator<a class="headerlink" href="#module-swift.common.db_replicator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.common.db_replicator.ReplConnection">
+<em class="property">class </em><tt class="descclassname">swift.common.db_replicator.</tt><tt class="descname">ReplConnection</tt><big>(</big><em>node</em>, <em>partition</em>, <em>hash_</em>, <em>logger</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="misc.html#swift.common.bufferedhttp.BufferedHTTPConnection" title="swift.common.bufferedhttp.BufferedHTTPConnection"><tt class="xref py py-class docutils literal"><span class="pre">swift.common.bufferedhttp.BufferedHTTPConnection</span></tt></a></p>
+<p>Helper to simplify REPLICATEing to a remote server.</p>
+<dl class="method">
+<dt id="swift.common.db_replicator.ReplConnection.replicate">
+<tt class="descname">replicate</tt><big>(</big><em>*args</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplConnection.replicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an HTTP REPLICATE request</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>args</strong> &#8211; list of json-encodable objects</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">httplib response object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.db_replicator.Replicator">
+<em class="property">class </em><tt class="descclassname">swift.common.db_replicator.</tt><tt class="descname">Replicator</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.Replicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.daemon.Daemon</span></tt></p>
+<p>Implements the logic for directing db replication.</p>
+<dl class="method">
+<dt id="swift.common.db_replicator.Replicator.roundrobin_datadirs">
+<tt class="descname">roundrobin_datadirs</tt><big>(</big><em>datadirs</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.Replicator.roundrobin_datadirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator to walk the data dirs in a round robin manner, evenly
+hitting each device on the system.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>datadirs</strong> &#8211; a list of paths to walk</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db_replicator.Replicator.run_forever">
+<tt class="descname">run_forever</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db_replicator.Replicator.run_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replicate dbs under the given root in an infinite loop.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db_replicator.Replicator.run_once">
+<tt class="descname">run_once</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.db_replicator.Replicator.run_once" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a replication pass once.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.db_replicator.ReplicatorRpc">
+<em class="property">class </em><tt class="descclassname">swift.common.db_replicator.</tt><tt class="descname">ReplicatorRpc</tt><big>(</big><em>root</em>, <em>datadir</em>, <em>broker_class</em>, <em>mount_check=True</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplicatorRpc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Handle Replication RPC calls.  TODO(redbo): document please :)</p>
+<dl class="method">
+<dt id="swift.common.db_replicator.ReplicatorRpc.complete_rsync">
+<tt class="descname">complete_rsync</tt><big>(</big><em>drive</em>, <em>db_file</em>, <em>args</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplicatorRpc.complete_rsync" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db_replicator.ReplicatorRpc.dispatch">
+<tt class="descname">dispatch</tt><big>(</big><em>replicate_args</em>, <em>args</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplicatorRpc.dispatch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db_replicator.ReplicatorRpc.merge_items">
+<tt class="descname">merge_items</tt><big>(</big><em>broker</em>, <em>args</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplicatorRpc.merge_items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db_replicator.ReplicatorRpc.merge_syncs">
+<tt class="descname">merge_syncs</tt><big>(</big><em>broker</em>, <em>args</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplicatorRpc.merge_syncs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db_replicator.ReplicatorRpc.rsync_then_merge">
+<tt class="descname">rsync_then_merge</tt><big>(</big><em>drive</em>, <em>db_file</em>, <em>args</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplicatorRpc.rsync_then_merge" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.common.db_replicator.ReplicatorRpc.sync">
+<tt class="descname">sync</tt><big>(</big><em>broker</em>, <em>args</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.ReplicatorRpc.sync" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.db_replicator.quarantine_db">
+<tt class="descclassname">swift.common.db_replicator.</tt><tt class="descname">quarantine_db</tt><big>(</big><em>object_file</em>, <em>server_type</em><big>)</big><a class="headerlink" href="#swift.common.db_replicator.quarantine_db" title="Permalink to this definition">¶</a></dt>
+<dd><p>In the case that a corrupt file is found, move it to a quarantined area to
+allow replication to fix it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>object_file</strong> &#8211; path to corrupt file</li>
+<li><strong>server_type</strong> &#8211; type of file that is corrupt
+(&#8216;container&#8217; or &#8216;account&#8217;)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="object.html" title="Object"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="container.html" title="Container"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

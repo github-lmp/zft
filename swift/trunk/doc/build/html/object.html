@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Object &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Developer’s Authorization" href="auth.html" />
+    <link rel="prev" title="Account DB and Container DB" href="db.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="auth.html" title="Developer’s Authorization"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="db.html" title="Account DB and Container DB"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Object</a><ul>
+<li><a class="reference internal" href="#module-swift.obj.server">Object Server</a></li>
+<li><a class="reference internal" href="#module-swift.obj.replicator">Object Replicator</a></li>
+<li><a class="reference internal" href="#module-swift.obj.updater">Object Updater</a></li>
+<li><a class="reference internal" href="#module-swift.obj.auditor">Object Auditor</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="db.html"
+                        title="previous chapter">Account DB and Container DB</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="auth.html"
+                        title="next chapter">Developer&#8217;s Authorization</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/object.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="object">
+<span id="id1"></span><h1>Object<a class="headerlink" href="#object" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-swift.obj.server">
+<span id="id2"></span><span id="object-server"></span><h2>Object Server<a class="headerlink" href="#module-swift.obj.server" title="Permalink to this headline">¶</a></h2>
+<p>Object Server for Swift</p>
+<dl class="class">
+<dt id="swift.obj.server.DiskFile">
+<em class="property">class </em><tt class="descclassname">swift.obj.server.</tt><tt class="descname">DiskFile</tt><big>(</big><em>path</em>, <em>device</em>, <em>partition</em>, <em>account</em>, <em>container</em>, <em>obj</em>, <em>keep_data_fp=False</em>, <em>disk_chunk_size=65536</em><big>)</big><a class="headerlink" href="#swift.obj.server.DiskFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Manage object files on disk.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; path to devices on the node</li>
+<li><strong>device</strong> &#8211; device name</li>
+<li><strong>partition</strong> &#8211; partition on the device the object lives in</li>
+<li><strong>account</strong> &#8211; account name for the object</li>
+<li><strong>container</strong> &#8211; container name for the object</li>
+<li><strong>obj</strong> &#8211; object name for the object</li>
+<li><strong>keep_data_fp</strong> &#8211; if True, don&#8217;t close the fp, otherwise close it</li>
+<li><strong>disk_chunk_Size</strong> &#8211; size of chunks on file reads</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="swift.obj.server.DiskFile.app_iter_range">
+<tt class="descname">app_iter_range</tt><big>(</big><em>start</em>, <em>stop</em><big>)</big><a class="headerlink" href="#swift.obj.server.DiskFile.app_iter_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator over the data file for range (start, stop)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.DiskFile.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.server.DiskFile.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.DiskFile.drop_cache">
+<tt class="descname">drop_cache</tt><big>(</big><em>fd</em>, <em>offset</em>, <em>length</em><big>)</big><a class="headerlink" href="#swift.obj.server.DiskFile.drop_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method for no-oping buffer cache drop method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.DiskFile.is_deleted">
+<tt class="descname">is_deleted</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.server.DiskFile.is_deleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the file is deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the file doesn&#8217;t exist or has been flagged as
+deleted.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.DiskFile.mkstemp">
+<tt class="descname">mkstemp</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#swift.obj.server.DiskFile.mkstemp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contextmanager to make a temporary file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.DiskFile.put">
+<tt class="descname">put</tt><big>(</big><em>fd</em>, <em>tmppath</em>, <em>metadata</em>, <em>extension='.data'</em><big>)</big><a class="headerlink" href="#swift.obj.server.DiskFile.put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finalize writing the file on disk, and renames it from the temp file to
+the real location.  This should be called after the data has been
+written to the temp file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Params fd:</th><td class="field-body"><p class="first">file descriptor of the temp file</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>tmppath</strong> &#8211; path to the temporary file being used</li>
+<li><strong>metadata</strong> &#8211; dictionary of metadata to be written</li>
+<li><strong>extention</strong> &#8211; extension to be used when making the file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.DiskFile.unlinkold">
+<tt class="descname">unlinkold</tt><big>(</big><em>timestamp</em><big>)</big><a class="headerlink" href="#swift.obj.server.DiskFile.unlinkold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove any older versions of the object file.  Any file that has an
+older timestamp than timestamp will be deleted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>timestamp</strong> &#8211; timestamp to compare with each file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.obj.server.ObjectController">
+<em class="property">class </em><tt class="descclassname">swift.obj.server.</tt><tt class="descname">ObjectController</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.obj.server.ObjectController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Implements the WSGI application for the Swift Object Server.</p>
+<dl class="method">
+<dt id="swift.obj.server.ObjectController.DELETE">
+<tt class="descname">DELETE</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.obj.server.ObjectController.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP DELETE requests for the Swift Object Server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.ObjectController.GET">
+<tt class="descname">GET</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.obj.server.ObjectController.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP GET requests for the Swift Object Server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.ObjectController.HEAD">
+<tt class="descname">HEAD</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.obj.server.ObjectController.HEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP HEAD requests for the Swift Object Server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.ObjectController.POST">
+<tt class="descname">POST</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.obj.server.ObjectController.POST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP POST requests for the Swift Object Server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.ObjectController.PUT">
+<tt class="descname">PUT</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.obj.server.ObjectController.PUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP PUT requests for the Swift Object Server.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.ObjectController.REPLICATE">
+<tt class="descname">REPLICATE</tt><big>(</big><em>request</em><big>)</big><a class="headerlink" href="#swift.obj.server.ObjectController.REPLICATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle REPLICATE requests for the Swift Object Server.  This is used
+by the object replicator to get hashes for directories.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.server.ObjectController.container_update">
+<tt class="descname">container_update</tt><big>(</big><em>op</em>, <em>account</em>, <em>container</em>, <em>obj</em>, <em>headers_in</em>, <em>headers_out</em>, <em>objdevice</em><big>)</big><a class="headerlink" href="#swift.obj.server.ObjectController.container_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the container when objects are updated.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>op</strong> &#8211; operation performed (ex: &#8216;PUT&#8217;, or &#8216;DELETE&#8217;)</li>
+<li><strong>account</strong> &#8211; account name for the object</li>
+<li><strong>container</strong> &#8211; container name for the object</li>
+<li><strong>obj</strong> &#8211; object name</li>
+<li><strong>headers_in</strong> &#8211; dictionary of headers from the original request</li>
+<li><strong>headers_out</strong> &#8211; dictionary of headers to send in the container
+request</li>
+<li><strong>objdevice</strong> &#8211; device name that the object is in</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.server.app_factory">
+<tt class="descclassname">swift.obj.server.</tt><tt class="descname">app_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.obj.server.app_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>paste.deploy app factory for creating WSGI object server apps</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.server.read_metadata">
+<tt class="descclassname">swift.obj.server.</tt><tt class="descname">read_metadata</tt><big>(</big><em>fd</em><big>)</big><a class="headerlink" href="#swift.obj.server.read_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to read the pickled metadata from an object file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fd</strong> &#8211; file descriptor to load the metadata from</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dictionary of metadata</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.server.write_metadata">
+<tt class="descclassname">swift.obj.server.</tt><tt class="descname">write_metadata</tt><big>(</big><em>fd</em>, <em>metadata</em><big>)</big><a class="headerlink" href="#swift.obj.server.write_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to write pickled metadata for an object file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fd</strong> &#8211; file descriptor to write the metadata</li>
+<li><strong>metadata</strong> &#8211; metadata to write</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.obj.replicator">
+<span id="id3"></span><span id="object-replicator"></span><h2>Object Replicator<a class="headerlink" href="#module-swift.obj.replicator" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.obj.replicator.ObjectReplicator">
+<em class="property">class </em><tt class="descclassname">swift.obj.replicator.</tt><tt class="descname">ObjectReplicator</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.daemon.Daemon</span></tt></p>
+<p>Replicate objects.</p>
+<p>Encapsulates most logic and data needed by the object replication process.
+Each call to .replicate() performs one replication pass.  It&#8217;s up to the
+caller to do this in a loop.</p>
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.check_ring">
+<tt class="descname">check_ring</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.check_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check to see if the ring has been updated</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">boolean indicating whether or not the ring has changed</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.collect_jobs">
+<tt class="descname">collect_jobs</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.collect_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sorted list of jobs (dictionaries) that specify the
+partitions, nodes, etc to be rsynced.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.detect_lockups">
+<tt class="descname">detect_lockups</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.detect_lockups" title="Permalink to this definition">¶</a></dt>
+<dd><p>In testing, the pool.waitall() call very occasionally failed to return.
+This is an attempt to make sure the replicator finishes its replication
+pass in some eventuality.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.heartbeat">
+<tt class="descname">heartbeat</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.heartbeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loop that runs in the background during replication.  It periodically
+logs progress.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.kill_coros">
+<tt class="descname">kill_coros</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.kill_coros" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function that kills all coroutines currently running.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.replicate">
+<tt class="descname">replicate</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.replicate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a replication pass</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.rsync">
+<tt class="descname">rsync</tt><big>(</big><em>node</em>, <em>job</em>, <em>suffixes</em><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.rsync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synchronize local suffix directories from a partition with a remote
+node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> &#8211; the &#8220;dev&#8221; entry for the remote node to sync with</li>
+<li><strong>job</strong> &#8211; information about the partition being synced</li>
+<li><strong>suffixes</strong> &#8211; a list of suffixes which need to be pushed</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">boolean indicating success or failure</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.run_forever">
+<tt class="descname">run_forever</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.run_forever" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.run_once">
+<tt class="descname">run_once</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.run_once" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.stats_line">
+<tt class="descname">stats_line</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.stats_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs various stats for the currently running replication pass.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.update">
+<tt class="descname">update</tt><big>(</big><em>job</em><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>High-level method that replicates a single partition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>job</strong> &#8211; a dict containing info about the partition to be replicated</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.replicator.ObjectReplicator.update_deleted">
+<tt class="descname">update_deleted</tt><big>(</big><em>job</em><big>)</big><a class="headerlink" href="#swift.obj.replicator.ObjectReplicator.update_deleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>High-level method that replicates a single partition that doesn&#8217;t
+belong on this node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>job</strong> &#8211; a dict containing info about the partition to be replicated</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.replicator.get_hashes">
+<tt class="descclassname">swift.obj.replicator.</tt><tt class="descname">get_hashes</tt><big>(</big><em>partition_dir</em>, <em>do_listdir=True</em>, <em>reclaim_age=604800</em><big>)</big><a class="headerlink" href="#swift.obj.replicator.get_hashes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of hashes for the suffix dir.  do_listdir causes it to mistrust
+the hash cache for suffix existence at the (unexpectedly high) cost of a
+listdir.  reclaim_age is just passed on to hash_suffix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>partition_dir</strong> &#8211; absolute path of partition to get hashes for</li>
+<li><strong>do_listdir</strong> &#8211; force existence check for all hashes in the partition</li>
+<li><strong>reclaim_age</strong> &#8211; age at which to remove tombstones</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">tuple of (number of suffix dirs hashed, dictionary of hashes)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.replicator.hash_suffix">
+<tt class="descclassname">swift.obj.replicator.</tt><tt class="descname">hash_suffix</tt><big>(</big><em>path</em>, <em>reclaim_age</em><big>)</big><a class="headerlink" href="#swift.obj.replicator.hash_suffix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs reclamation and returns an md5 of all (remaining) files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>reclaim_age</strong> &#8211; age in seconds at which to remove tombstones</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.replicator.invalidate_hash">
+<tt class="descclassname">swift.obj.replicator.</tt><tt class="descname">invalidate_hash</tt><big>(</big><em>suffix_dir</em><big>)</big><a class="headerlink" href="#swift.obj.replicator.invalidate_hash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invalidates the hash for a suffix_dir in the partition&#8217;s hashes file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>suffix_dir</strong> &#8211; absolute path to suffix dir whose hash needs
+invalidating</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.replicator.recalculate_hashes">
+<tt class="descclassname">swift.obj.replicator.</tt><tt class="descname">recalculate_hashes</tt><big>(</big><em>partition_dir</em>, <em>suffixes</em>, <em>reclaim_age=604800</em><big>)</big><a class="headerlink" href="#swift.obj.replicator.recalculate_hashes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recalculates hashes for the given suffixes in the partition and updates
+them in the partition&#8217;s hashes file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>partition_dir</strong> &#8211; directory of the partition in which to recalculate</li>
+<li><strong>suffixes</strong> &#8211; list of suffixes to recalculate</li>
+<li><strong>reclaim_age</strong> &#8211; age in seconds at which tombstones should be removed</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.obj.updater">
+<span id="id4"></span><span id="object-updater"></span><h2>Object Updater<a class="headerlink" href="#module-swift.obj.updater" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.obj.updater.ObjectUpdater">
+<em class="property">class </em><tt class="descclassname">swift.obj.updater.</tt><tt class="descname">ObjectUpdater</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.obj.updater.ObjectUpdater" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.daemon.Daemon</span></tt></p>
+<p>Update object information in container listings.</p>
+<dl class="method">
+<dt id="swift.obj.updater.ObjectUpdater.get_container_ring">
+<tt class="descname">get_container_ring</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.updater.ObjectUpdater.get_container_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the container ring.  Load it, if it hasn&#8217;t been yet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.updater.ObjectUpdater.object_sweep">
+<tt class="descname">object_sweep</tt><big>(</big><em>device</em><big>)</big><a class="headerlink" href="#swift.obj.updater.ObjectUpdater.object_sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>If there are async pendings on the device, walk each one and update.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>device</strong> &#8211; path to device</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.updater.ObjectUpdater.object_update">
+<tt class="descname">object_update</tt><big>(</big><em>node</em>, <em>part</em>, <em>op</em>, <em>obj</em>, <em>headers</em><big>)</big><a class="headerlink" href="#swift.obj.updater.ObjectUpdater.object_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform the object update to the container</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> &#8211; node dictionary from the container ring</li>
+<li><strong>part</strong> &#8211; partition that holds the container</li>
+<li><strong>op</strong> &#8211; operation performed (ex: &#8216;POST&#8217; or &#8216;DELETE&#8217;)</li>
+<li><strong>obj</strong> &#8211; object name being updated</li>
+<li><strong>headers</strong> &#8211; headers to send with the update</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.updater.ObjectUpdater.process_object_update">
+<tt class="descname">process_object_update</tt><big>(</big><em>update_path</em>, <em>device</em><big>)</big><a class="headerlink" href="#swift.obj.updater.ObjectUpdater.process_object_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process the object information to be updated and update.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>update_path</strong> &#8211; path to pickled object update file</li>
+<li><strong>device</strong> &#8211; path to device</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.updater.ObjectUpdater.run_forever">
+<tt class="descname">run_forever</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.updater.ObjectUpdater.run_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the updater continuously.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.updater.ObjectUpdater.run_once">
+<tt class="descname">run_once</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.updater.ObjectUpdater.run_once" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the updater once</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.updater.random">
+<tt class="descclassname">swift.obj.updater.</tt><tt class="descname">random</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.updater.random" title="Permalink to this definition">¶</a></dt>
+<dd><p>random() -&gt; x in the interval [0, 1).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.obj.auditor">
+<span id="id5"></span><span id="object-auditor"></span><h2>Object Auditor<a class="headerlink" href="#module-swift.obj.auditor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.obj.auditor.ObjectAuditor">
+<em class="property">class </em><tt class="descclassname">swift.obj.auditor.</tt><tt class="descname">ObjectAuditor</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.obj.auditor.ObjectAuditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.daemon.Daemon</span></tt></p>
+<p>Audit objects.</p>
+<dl class="method">
+<dt id="swift.obj.auditor.ObjectAuditor.object_audit">
+<tt class="descname">object_audit</tt><big>(</big><em>path</em>, <em>device</em>, <em>partition</em><big>)</big><a class="headerlink" href="#swift.obj.auditor.ObjectAuditor.object_audit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Audits the given object path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; a path to an object</li>
+<li><strong>device</strong> &#8211; the device the path is on</li>
+<li><strong>partition</strong> &#8211; the partition the path is on</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.auditor.ObjectAuditor.run_forever">
+<tt class="descname">run_forever</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.auditor.ObjectAuditor.run_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the object audit until stopped.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.obj.auditor.ObjectAuditor.run_once">
+<tt class="descname">run_once</tt><big>(</big><em>mode='once'</em><big>)</big><a class="headerlink" href="#swift.obj.auditor.ObjectAuditor.run_once" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the object audit once.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.obj.auditor.random">
+<tt class="descclassname">swift.obj.auditor.</tt><tt class="descname">random</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.obj.auditor.random" title="Permalink to this definition">¶</a></dt>
+<dd><p>random() -&gt; x in the interval [0, 1).</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="auth.html" title="Developer’s Authorization"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="db.html" title="Account DB and Container DB"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

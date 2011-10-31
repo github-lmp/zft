@@ -1,0 +1,849 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SAIO - Swift All In One &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Auth Server and Middleware" href="development_auth.html" />
+    <link rel="prev" title="Development Guidelines" href="development_guidelines.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="development_auth.html" title="Auth Server and Middleware"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="development_guidelines.html" title="Development Guidelines"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SAIO - Swift All In One</a><ul>
+<li><a class="reference internal" href="#instructions-for-setting-up-a-development-vm">Instructions for setting up a development VM</a></li>
+<li><a class="reference internal" href="#installing-dependencies-and-the-core-code">Installing dependencies and the core code</a><ul>
+<li><a class="reference internal" href="#using-a-partition-for-storage">Using a partition for storage</a></li>
+<li><a class="reference internal" href="#using-a-loopback-device-for-storage">Using a loopback device for storage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#setting-up-rsync">Setting up rsync</a></li>
+<li><a class="reference internal" href="#getting-the-code-and-setting-up-test-environment">Getting the code and setting up test environment</a></li>
+<li><a class="reference internal" href="#configuring-each-node">Configuring each node</a></li>
+<li><a class="reference internal" href="#setting-up-scripts-for-running-swift">Setting up scripts for running Swift</a></li>
+<li><a class="reference internal" href="#debugging-issues">Debugging Issues</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="development_guidelines.html"
+                        title="previous chapter">Development Guidelines</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="development_auth.html"
+                        title="next chapter">Auth Server and Middleware</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/development_saio.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="saio-swift-all-in-one">
+<h1>SAIO - Swift All In One<a class="headerlink" href="#saio-swift-all-in-one" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="instructions-for-setting-up-a-development-vm">
+<h2>Instructions for setting up a development VM<a class="headerlink" href="#instructions-for-setting-up-a-development-vm" title="Permalink to this headline">¶</a></h2>
+<p>This documents setting up a virtual machine for doing Swift development. The
+virtual machine will emulate running a four node Swift cluster.</p>
+<ul class="simple">
+<li>Get the <em>Ubuntu 10.04 LTS (Lucid Lynx)</em> server image:<ul>
+<li>Ubuntu Server ISO: <a class="reference external" href="http://releases.ubuntu.com/10.04/ubuntu-10.04.1-server-amd64.iso">http://releases.ubuntu.com/10.04/ubuntu-10.04.1-server-amd64.iso</a> (682 MB)</li>
+<li>Ubuntu Live/Install: <a class="reference external" href="http://cdimage.ubuntu.com/releases/10.04/release/ubuntu-10.04-dvd-amd64.iso">http://cdimage.ubuntu.com/releases/10.04/release/ubuntu-10.04-dvd-amd64.iso</a> (4.1 GB)</li>
+<li>Ubuntu Mirrors: <a class="reference external" href="https://launchpad.net/ubuntu/+cdmirrors">https://launchpad.net/ubuntu/+cdmirrors</a></li>
+</ul>
+</li>
+<li>Create guest virtual machine from the Ubuntu image.</li>
+</ul>
+<p>Additional information about setting up a Swift development snapshot on other distributions is
+available on the wiki at <a class="reference external" href="http://wiki.openstack.org/SAIOInstructions">http://wiki.openstack.org/SAIOInstructions</a>.</p>
+</div>
+<div class="section" id="installing-dependencies-and-the-core-code">
+<h2>Installing dependencies and the core code<a class="headerlink" href="#installing-dependencies-and-the-core-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>As root on guest (you&#8217;ll have to log in as you, then <cite>sudo su -</cite>):<ol class="arabic">
+<li><cite>apt-get install python-software-properties</cite></li>
+<li><cite>add-apt-repository ppa:swift-core/ppa</cite></li>
+<li><cite>apt-get update</cite></li>
+<li><cite>apt-get install curl gcc bzr memcached python-configobj
+python-coverage python-dev python-nose python-setuptools python-simplejson
+python-xattr sqlite3 xfsprogs python-webob python-eventlet
+python-greenlet python-pastedeploy python-netifaces</cite></li>
+<li>Install anything else you want, like screen, ssh, vim, etc.</li>
+<li>Next, choose either <a class="reference internal" href="#partition-section"><em>Using a partition for storage</em></a> or <a class="reference internal" href="#loopback-section"><em>Using a loopback device for storage</em></a>.</li>
+</ol>
+</li>
+</ul>
+<div class="section" id="using-a-partition-for-storage">
+<span id="partition-section"></span><h3>Using a partition for storage<a class="headerlink" href="#using-a-partition-for-storage" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>If you are going to use a separate partition for Swift data, be sure to add another device when</dt>
+<dd><p class="first">creating the VM, and follow these instructions.</p>
+<ol class="last arabic">
+<li><p class="first"><cite>fdisk /dev/sdb</cite> (set up a single partition)</p>
+</li>
+<li><p class="first"><cite>mkfs.xfs -i size=1024 /dev/sdb1</cite></p>
+</li>
+<li><dl class="first docutils">
+<dt>Edit <cite>/etc/fstab</cite> and add</dt>
+<dd><p class="first last"><cite>/dev/sdb1 /mnt/sdb1 xfs noatime,nodiratime,nobarrier,logbufs=8 0 0</cite></p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><cite>mkdir /mnt/sdb1</cite></p>
+</li>
+<li><p class="first"><cite>mount /mnt/sdb1</cite></p>
+</li>
+<li><p class="first"><cite>mkdir /mnt/sdb1/1 /mnt/sdb1/2 /mnt/sdb1/3 /mnt/sdb1/4</cite></p>
+</li>
+<li><p class="first"><cite>chown &lt;your-user-name&gt;:&lt;your-group-name&gt; /mnt/sdb1/*</cite></p>
+</li>
+<li><p class="first"><cite>mkdir /srv</cite></p>
+</li>
+<li><p class="first"><cite>for x in {1..4}; do ln -s /mnt/sdb1/$x /srv/$x; done</cite></p>
+</li>
+<li><p class="first"><cite>mkdir -p /etc/swift/object-server /etc/swift/container-server /etc/swift/account-server /srv/1/node/sdb1 /srv/2/node/sdb2 /srv/3/node/sdb3 /srv/4/node/sdb4 /var/run/swift</cite></p>
+</li>
+<li><p class="first"><cite>chown -R &lt;your-user-name&gt;:&lt;your-group-name&gt; /etc/swift /srv/[1-4]/ /var/run/swift</cite> &#8211; <strong>Make sure to include the trailing slash after /srv/[1-4]/</strong></p>
+</li>
+<li><p class="first">Add to <cite>/etc/rc.local</cite> (before the <cite>exit 0</cite>):</p>
+<div class="highlight-python"><pre>mkdir /var/run/swift
+chown &lt;your-user-name&gt;:&lt;your-group-name&gt; /var/run/swift</pre>
+</div>
+</li>
+<li><p class="first">Next, skip to <a class="reference internal" href="#rsync-section"><em>Setting up rsync</em></a>.</p>
+</li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="using-a-loopback-device-for-storage">
+<span id="loopback-section"></span><h3>Using a loopback device for storage<a class="headerlink" href="#using-a-loopback-device-for-storage" title="Permalink to this headline">¶</a></h3>
+<p>If you want to use a loopback device instead of another partition, follow these instructions.</p>
+<blockquote>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt><cite>dd if=/dev/zero of=/srv/swift-disk bs=1024 count=0 seek=1000000</cite></dt>
+<dd><p class="first last">(modify seek to make a larger or smaller partition)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><cite>mkfs.xfs -i size=1024 /srv/swift-disk</cite></p>
+</li>
+<li><dl class="first docutils">
+<dt>Edit <cite>/etc/fstab</cite> and add</dt>
+<dd><p class="first last"><cite>/srv/swift-disk /mnt/sdb1 xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0</cite></p>
+</dd>
+</dl>
+</li>
+<li><p class="first"><cite>mkdir /mnt/sdb1</cite></p>
+</li>
+<li><p class="first"><cite>mount /mnt/sdb1</cite></p>
+</li>
+<li><p class="first"><cite>mkdir /mnt/sdb1/1 /mnt/sdb1/2 /mnt/sdb1/3 /mnt/sdb1/4</cite></p>
+</li>
+<li><p class="first"><cite>chown &lt;your-user-name&gt;:&lt;your-group-name&gt; /mnt/sdb1/*</cite></p>
+</li>
+<li><p class="first"><cite>mkdir /srv</cite></p>
+</li>
+<li><p class="first"><cite>for x in {1..4}; do ln -s /mnt/sdb1/$x /srv/$x; done</cite></p>
+</li>
+<li><p class="first"><cite>mkdir -p /etc/swift/object-server /etc/swift/container-server /etc/swift/account-server /srv/1/node/sdb1 /srv/2/node/sdb2 /srv/3/node/sdb3 /srv/4/node/sdb4 /var/run/swift</cite></p>
+</li>
+<li><p class="first"><cite>chown -R &lt;your-user-name&gt;:&lt;your-group-name&gt; /etc/swift /srv/[1-4]/ /var/run/swift</cite> &#8211; <strong>Make sure to include the trailing slash after /srv/[1-4]/</strong></p>
+</li>
+<li><p class="first">Add to <cite>/etc/rc.local</cite> (before the <cite>exit 0</cite>):</p>
+<div class="highlight-python"><pre>mkdir /var/run/swift
+chown &lt;your-user-name&gt;:&lt;your-group-name&gt; /var/run/swift</pre>
+</div>
+</li>
+</ol>
+</blockquote>
+</div>
+</div>
+<div class="section" id="setting-up-rsync">
+<span id="rsync-section"></span><h2>Setting up rsync<a class="headerlink" href="#setting-up-rsync" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<ol class="arabic">
+<li><p class="first">Create /etc/rsyncd.conf:</p>
+<div class="highlight-python"><pre>uid = &lt;Your user name&gt;
+gid = &lt;Your group name&gt;
+log file = /var/log/rsyncd.log
+pid file = /var/run/rsyncd.pid
+address = 127.0.0.1
+
+[account6012]
+max connections = 25
+path = /srv/1/node/
+read only = false
+lock file = /var/lock/account6012.lock
+
+[account6022]
+max connections = 25
+path = /srv/2/node/
+read only = false
+lock file = /var/lock/account6022.lock
+
+[account6032]
+max connections = 25
+path = /srv/3/node/
+read only = false
+lock file = /var/lock/account6032.lock
+
+[account6042]
+max connections = 25
+path = /srv/4/node/
+read only = false
+lock file = /var/lock/account6042.lock
+
+
+[container6011]
+max connections = 25
+path = /srv/1/node/
+read only = false
+lock file = /var/lock/container6011.lock
+
+[container6021]
+max connections = 25
+path = /srv/2/node/
+read only = false
+lock file = /var/lock/container6021.lock
+
+[container6031]
+max connections = 25
+path = /srv/3/node/
+read only = false
+lock file = /var/lock/container6031.lock
+
+[container6041]
+max connections = 25
+path = /srv/4/node/
+read only = false
+lock file = /var/lock/container6041.lock
+
+
+[object6010]
+max connections = 25
+path = /srv/1/node/
+read only = false
+lock file = /var/lock/object6010.lock
+
+[object6020]
+max connections = 25
+path = /srv/2/node/
+read only = false
+lock file = /var/lock/object6020.lock
+
+[object6030]
+max connections = 25
+path = /srv/3/node/
+read only = false
+lock file = /var/lock/object6030.lock
+
+[object6040]
+max connections = 25
+path = /srv/4/node/
+read only = false
+lock file = /var/lock/object6040.lock</pre>
+</div>
+</li>
+<li><p class="first">Edit the following line in /etc/default/rsync:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RSYNC_ENABLE</span><span class="o">=</span><span class="n">true</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><cite>service rsync restart</cite></p>
+</li>
+</ol>
+</blockquote>
+</div>
+<div class="section" id="getting-the-code-and-setting-up-test-environment">
+<h2>Getting the code and setting up test environment<a class="headerlink" href="#getting-the-code-and-setting-up-test-environment" title="Permalink to this headline">¶</a></h2>
+<p>Sample configuration files are provided with all defaults in line-by-line comments.</p>
+<p>Do these commands as you on guest:</p>
+<blockquote>
+<ol class="arabic">
+<li><p class="first"><cite>mkdir ~/bin</cite></p>
+</li>
+<li><p class="first">Create <cite>~/.bazaar/bazaar.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+        email = Your Name &lt;your-email-address&gt;</pre>
+</div>
+</li>
+<li><p class="first">If you are using launchpad to get the code or make changes, run
+<cite>bzr launchpad-login &lt;launchpad_id&gt;</cite></p>
+</li>
+<li><p class="first">Create the swift repo with <cite>bzr init-repo swift</cite></p>
+</li>
+<li><p class="first">Check out your bzr branch of swift, for example:
+<cite>cd ~/swift; bzr branch lp:swift trunk</cite></p>
+</li>
+<li><p class="first"><cite>cd ~/swift/trunk; sudo python setup.py develop</cite></p>
+</li>
+<li><p class="first">Edit <cite>~/.bashrc</cite> and add to the end:</p>
+<div class="highlight-python"><pre>export SWIFT_TEST_CONFIG_FILE=/etc/swift/func_test.conf
+export PATH=${PATH}:~/bin</pre>
+</div>
+</li>
+<li><p class="first"><cite>. ~/.bashrc</cite></p>
+</li>
+</ol>
+</blockquote>
+</div>
+<div class="section" id="configuring-each-node">
+<h2>Configuring each node<a class="headerlink" href="#configuring-each-node" title="Permalink to this headline">¶</a></h2>
+<p>Sample configuration files are provided with all defaults in line-by-line comments.</p>
+<blockquote>
+<ol class="arabic">
+<li><p class="first">If your going to use the DevAuth (the default swift-auth-server), create
+<cite>/etc/swift/auth-server.conf</cite> (you can skip this if you&#8217;re going to use
+Swauth):</p>
+<div class="highlight-python"><pre>[DEFAULT]
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = auth-server
+
+[app:auth-server]
+use = egg:swift#auth
+default_cluster_url = http://127.0.0.1:8080/v1
+# Highly recommended to change this.
+super_admin_key = devauth</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/proxy-server.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+bind_port = 8080
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+# For DevAuth:
+pipeline = healthcheck cache auth proxy-server
+# For Swauth:
+# pipeline = healthcheck cache swauth proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+allow_account_management = true
+
+# Only needed for DevAuth
+[filter:auth]
+use = egg:swift#auth
+
+# Only needed for Swauth
+[filter:swauth]
+use = egg:swift#swauth
+# Highly recommended to change this.
+super_admin_key = swauthkey
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:cache]
+use = egg:swift#memcache</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/swift.conf</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">swift</span><span class="o">-</span><span class="nb">hash</span><span class="p">]</span>
+<span class="c"># random unique string that can never change (DO NOT LOSE)</span>
+<span class="n">swift_hash_path_suffix</span> <span class="o">=</span> <span class="n">changeme</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/account-server/1.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/1/node
+mount_check = false
+bind_port = 6012
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = account-server
+
+[app:account-server]
+use = egg:swift#account
+
+[account-replicator]
+vm_test_mode = yes
+
+[account-auditor]
+
+[account-reaper]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/account-server/2.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/2/node
+mount_check = false
+bind_port = 6022
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = account-server
+
+[app:account-server]
+use = egg:swift#account
+
+[account-replicator]
+vm_test_mode = yes
+
+[account-auditor]
+
+[account-reaper]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/account-server/3.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/3/node
+mount_check = false
+bind_port = 6032
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = account-server
+
+[app:account-server]
+use = egg:swift#account
+
+[account-replicator]
+vm_test_mode = yes
+
+[account-auditor]
+
+[account-reaper]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/account-server/4.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/4/node
+mount_check = false
+bind_port = 6042
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = account-server
+
+[app:account-server]
+use = egg:swift#account
+
+[account-replicator]
+vm_test_mode = yes
+
+[account-auditor]
+
+[account-reaper]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/container-server/1.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/1/node
+mount_check = false
+bind_port = 6011
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = container-server
+
+[app:container-server]
+use = egg:swift#container
+
+[container-replicator]
+vm_test_mode = yes
+
+[container-updater]
+
+[container-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/container-server/2.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/2/node
+mount_check = false
+bind_port = 6021
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = container-server
+
+[app:container-server]
+use = egg:swift#container
+
+[container-replicator]
+vm_test_mode = yes
+
+[container-updater]
+
+[container-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/container-server/3.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/3/node
+mount_check = false
+bind_port = 6031
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = container-server
+
+[app:container-server]
+use = egg:swift#container
+
+[container-replicator]
+vm_test_mode = yes
+
+[container-updater]
+
+[container-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/container-server/4.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/4/node
+mount_check = false
+bind_port = 6041
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = container-server
+
+[app:container-server]
+use = egg:swift#container
+
+[container-replicator]
+vm_test_mode = yes
+
+[container-updater]
+
+[container-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/object-server/1.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/1/node
+mount_check = false
+bind_port = 6010
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+
+[object-replicator]
+vm_test_mode = yes
+
+[object-updater]
+
+[object-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/object-server/2.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/2/node
+mount_check = false
+bind_port = 6020
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+
+[object-replicator]
+vm_test_mode = yes
+
+[object-updater]
+
+[object-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/object-server/3.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/3/node
+mount_check = false
+bind_port = 6030
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+
+[object-replicator]
+vm_test_mode = yes
+
+[object-updater]
+
+[object-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>/etc/swift/object-server/4.conf</cite>:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+devices = /srv/4/node
+mount_check = false
+bind_port = 6040
+user = &lt;your-user-name&gt;
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+
+[object-replicator]
+vm_test_mode = yes
+
+[object-updater]
+
+[object-auditor]</pre>
+</div>
+</li>
+</ol>
+</blockquote>
+</div>
+<div class="section" id="setting-up-scripts-for-running-swift">
+<h2>Setting up scripts for running Swift<a class="headerlink" href="#setting-up-scripts-for-running-swift" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<ol class="arabic">
+<li><p class="first">Create <cite>~/bin/resetswift.</cite> If you are using a loopback device substitute <cite>/dev/sdb1</cite> with <cite>/srv/swift-disk</cite>:</p>
+<div class="highlight-python"><pre>#!/bin/bash
+
+swift-init all stop
+sleep 5
+sudo umount /mnt/sdb1
+sudo mkfs.xfs -f -i size=1024 /dev/sdb1
+sudo mount /mnt/sdb1
+sudo mkdir /mnt/sdb1/1 /mnt/sdb1/2 /mnt/sdb1/3 /mnt/sdb1/4
+sudo chown &lt;your-user-name&gt;:&lt;your-group-name&gt; /mnt/sdb1/*
+mkdir -p /srv/1/node/sdb1 /srv/2/node/sdb2 /srv/3/node/sdb3 /srv/4/node/sdb4
+sudo rm -f /var/log/debug /var/log/messages /var/log/rsyncd.log /var/log/syslog
+sudo service rsyslog restart
+sudo service memcached restart</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>~/bin/remakerings</cite>:</p>
+<div class="highlight-python"><pre>#!/bin/bash
+
+cd /etc/swift
+
+rm -f *.builder *.ring.gz backups/*.builder backups/*.ring.gz
+
+swift-ring-builder object.builder create 18 3 1
+swift-ring-builder object.builder add z1-127.0.0.1:6010/sdb1 1
+swift-ring-builder object.builder add z2-127.0.0.1:6020/sdb2 1
+swift-ring-builder object.builder add z3-127.0.0.1:6030/sdb3 1
+swift-ring-builder object.builder add z4-127.0.0.1:6040/sdb4 1
+swift-ring-builder object.builder rebalance
+swift-ring-builder container.builder create 18 3 1
+swift-ring-builder container.builder add z1-127.0.0.1:6011/sdb1 1
+swift-ring-builder container.builder add z2-127.0.0.1:6021/sdb2 1
+swift-ring-builder container.builder add z3-127.0.0.1:6031/sdb3 1
+swift-ring-builder container.builder add z4-127.0.0.1:6041/sdb4 1
+swift-ring-builder container.builder rebalance
+swift-ring-builder account.builder create 18 3 1
+swift-ring-builder account.builder add z1-127.0.0.1:6012/sdb1 1
+swift-ring-builder account.builder add z2-127.0.0.1:6022/sdb2 1
+swift-ring-builder account.builder add z3-127.0.0.1:6032/sdb3 1
+swift-ring-builder account.builder add z4-127.0.0.1:6042/sdb4 1
+swift-ring-builder account.builder rebalance</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>~/bin/startmain</cite>:</p>
+<div class="highlight-python"><pre>#!/bin/bash
+
+# The auth-server line is only needed for DevAuth:
+swift-init auth-server start
+swift-init proxy-server start
+swift-init account-server start
+swift-init container-server start
+swift-init object-server start</pre>
+</div>
+</li>
+<li><p class="first">For Swauth (not needed for DevAuth), create <cite>~/bin/recreateaccounts</cite>:</p>
+<div class="highlight-python"><pre>#!/bin/bash
+
+# Replace devauth with whatever your super_admin key is (recorded in
+# /etc/swift/proxy-server.conf).
+swauth-prep -K swauthkey
+swauth-add-user -K swauthkey -a test tester testing
+swauth-add-user -K swauthkey -a test2 tester2 testing2
+swauth-add-user -K swauthkey test tester3 testing3
+swauth-add-user -K swauthkey -a -r reseller reseller reseller</pre>
+</div>
+</li>
+<li><p class="first">Create <cite>~/bin/startrest</cite>:</p>
+<div class="highlight-python"><pre>#!/bin/bash
+
+# Replace devauth with whatever your super_admin key is (recorded in
+# /etc/swift/auth-server.conf). This swift-auth-recreate-accounts line
+# is only needed for DevAuth:
+swift-auth-recreate-accounts -K devauth
+swift-init object-updater start
+swift-init container-updater start
+swift-init object-replicator start
+swift-init container-replicator start
+swift-init account-replicator start
+swift-init object-auditor start
+swift-init container-auditor start
+swift-init account-auditor start
+swift-init account-reaper start</pre>
+</div>
+</li>
+<li><p class="first"><cite>chmod +x ~/bin/*</cite></p>
+</li>
+<li><p class="first"><cite>remakerings</cite></p>
+</li>
+<li><p class="first"><cite>cd ~/swift/trunk; ./.unittests</cite></p>
+</li>
+<li><p class="first"><cite>startmain</cite> (The <tt class="docutils literal"><span class="pre">Unable</span> <span class="pre">to</span> <span class="pre">increase</span> <span class="pre">file</span> <span class="pre">descriptor</span> <span class="pre">limit.</span>&nbsp; <span class="pre">Running</span> <span class="pre">as</span> <span class="pre">non-root?</span></tt> warnings are expected and ok.)</p>
+</li>
+<li><p class="first">For Swauth: <cite>recreateaccounts</cite></p>
+</li>
+<li><p class="first">For DevAuth: <cite>swift-auth-add-user -K devauth -a test tester testing</cite> # Replace <tt class="docutils literal"><span class="pre">devauth</span></tt> with whatever your super_admin key is (recorded in /etc/swift/auth-server.conf).</p>
+</li>
+<li><p class="first">Get an <cite>X-Storage-Url</cite> and <cite>X-Auth-Token</cite>: <tt class="docutils literal"><span class="pre">curl</span> <span class="pre">-v</span> <span class="pre">-H</span> <span class="pre">'X-Storage-User:</span> <span class="pre">test:tester'</span> <span class="pre">-H</span> <span class="pre">'X-Storage-Pass:</span> <span class="pre">testing'</span> <span class="pre">http://127.0.0.1:11000/v1.0</span></tt> # For Swauth, make the last URL <cite>http://127.0.0.1:8080/auth/v1.0</cite></p>
+</li>
+<li><p class="first">Check that you can GET account: <tt class="docutils literal"><span class="pre">curl</span> <span class="pre">-v</span> <span class="pre">-H</span> <span class="pre">'X-Auth-Token:</span> <span class="pre">&lt;token-from-x-auth-token-above&gt;'</span> <span class="pre">&lt;url-from-x-storage-url-above&gt;</span></tt></p>
+</li>
+<li><p class="first">Check that <cite>st</cite> works: <cite>st -A http://127.0.0.1:11000/v1.0 -U test:tester -K testing stat</cite> # For Swauth, make the URL <cite>http://127.0.0.1:8080/auth/v1.0</cite></p>
+</li>
+<li><p class="first">For DevAuth: <cite>swift-auth-add-user -K devauth -a test2 tester2 testing2</cite> # Replace <tt class="docutils literal"><span class="pre">devauth</span></tt> with whatever your super_admin key is (recorded in /etc/swift/auth-server.conf).</p>
+</li>
+<li><p class="first">For DevAuth: <cite>swift-auth-add-user -K devauth test tester3 testing3</cite> # Replace <tt class="docutils literal"><span class="pre">devauth</span></tt> with whatever your super_admin key is (recorded in /etc/swift/auth-server.conf).</p>
+</li>
+<li><p class="first"><cite>cp ~/swift/trunk/test/functional/sample.conf /etc/swift/func_test.conf</cite> # For Swauth, add auth_prefix = /auth/ and change auth_port = 8080.</p>
+</li>
+<li><p class="first"><cite>cd ~/swift/trunk; ./.functests</cite> (Note: functional tests will first delete
+everything in the configured accounts.)</p>
+</li>
+<li><p class="first"><cite>cd ~/swift/trunk; ./.probetests</cite> (Note: probe tests will reset your
+environment as they call <cite>resetswift</cite> for each test.)</p>
+</li>
+</ol>
+</blockquote>
+<p>If you plan to work on documentation (and who doesn&#8217;t?!):</p>
+<dl class="docutils">
+<dt>On Ubuntu:</dt>
+<dd><ol class="first last arabic simple">
+<li><cite>sudo apt-get install python-sphinx</cite> installs Sphinx.</li>
+<li><cite>python setup.py build_sphinx</cite> builds the documentation.</li>
+</ol>
+</dd>
+<dt>On MacOS:</dt>
+<dd><ol class="first last arabic simple">
+<li><cite>sudo easy_install -U sphinx</cite> installs Sphinx.</li>
+<li><cite>python setup.py build_sphinx</cite> builds the documentation.</li>
+</ol>
+</dd>
+</dl>
+</div>
+<div class="section" id="debugging-issues">
+<h2>Debugging Issues<a class="headerlink" href="#debugging-issues" title="Permalink to this headline">¶</a></h2>
+<p>If all doesn&#8217;t go as planned, and tests fail, or you can&#8217;t auth, or something doesn&#8217;t work, here are some good starting places to look for issues:</p>
+<ol class="arabic simple">
+<li>Everything is logged in /var/log/syslog, so that is a good first place to
+look for errors (most likely python tracebacks).</li>
+<li>Make sure all of the server processes are running.  For the base
+functionality, the Proxy, Account, Container, Object and Auth servers
+should be running</li>
+<li>If one of the servers are not running, and no errors are logged to syslog,
+it may be useful to try to start the server manually, for example:
+<cite>swift-object-server /etc/swift/object-server/1.conf</cite> will start the
+object server.  If there are problems not showing up in syslog,
+then you will likely see the traceback on startup.</li>
+</ol>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="development_auth.html" title="Auth Server and Middleware"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="development_guidelines.html" title="Development Guidelines"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

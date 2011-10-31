@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Container &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Account DB and Container DB" href="db.html" />
+    <link rel="prev" title="Account" href="account.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="db.html" title="Account DB and Container DB"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="account.html" title="Account"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Container</a><ul>
+<li><a class="reference internal" href="#module-swift.container.server">Container Server</a></li>
+<li><a class="reference internal" href="#module-swift.container.updater">Container Updater</a></li>
+<li><a class="reference internal" href="#module-swift.container.auditor">Container Auditor</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="account.html"
+                        title="previous chapter">Account</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="db.html"
+                        title="next chapter">Account DB and Container DB</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/container.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="container">
+<span id="id1"></span><h1>Container<a class="headerlink" href="#container" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-swift.container.server">
+<span id="id2"></span><span id="container-server"></span><h2>Container Server<a class="headerlink" href="#module-swift.container.server" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.container.server.ContainerController">
+<em class="property">class </em><tt class="descclassname">swift.container.server.</tt><tt class="descname">ContainerController</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.container.server.ContainerController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>WSGI Controller for the container server.</p>
+<dl class="method">
+<dt id="swift.container.server.ContainerController.DELETE">
+<tt class="descname">DELETE</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.container.server.ContainerController.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP DELETE request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.server.ContainerController.GET">
+<tt class="descname">GET</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.container.server.ContainerController.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP GET request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.server.ContainerController.HEAD">
+<tt class="descname">HEAD</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.container.server.ContainerController.HEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP HEAD request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.server.ContainerController.POST">
+<tt class="descname">POST</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.container.server.ContainerController.POST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP POST request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.server.ContainerController.PUT">
+<tt class="descname">PUT</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.container.server.ContainerController.PUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP PUT request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.server.ContainerController.REPLICATE">
+<tt class="descname">REPLICATE</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.container.server.ContainerController.REPLICATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP REPLICATE request (json-encoded RPC calls for replication.)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.server.ContainerController.account_update">
+<tt class="descname">account_update</tt><big>(</big><em>req</em>, <em>account</em>, <em>container</em>, <em>broker</em><big>)</big><a class="headerlink" href="#swift.container.server.ContainerController.account_update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the account server with latest container info.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; webob.Request object</li>
+<li><strong>account</strong> &#8211; account name</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>borker</strong> &#8211; container DB broker object</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">if the account request returns a 404 error code,
+HTTPNotFound response object, otherwise None.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.container.server.app_factory">
+<tt class="descclassname">swift.container.server.</tt><tt class="descname">app_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.container.server.app_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>paste.deploy app factory for creating WSGI container server apps</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.container.updater">
+<span id="id3"></span><span id="container-updater"></span><h2>Container Updater<a class="headerlink" href="#module-swift.container.updater" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.container.updater.ContainerUpdater">
+<em class="property">class </em><tt class="descclassname">swift.container.updater.</tt><tt class="descname">ContainerUpdater</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.container.updater.ContainerUpdater" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.daemon.Daemon</span></tt></p>
+<p>Update container information in account listings.</p>
+<dl class="method">
+<dt id="swift.container.updater.ContainerUpdater.container_report">
+<tt class="descname">container_report</tt><big>(</big><em>node</em>, <em>part</em>, <em>container</em>, <em>put_timestamp</em>, <em>delete_timestamp</em>, <em>count</em>, <em>bytes</em><big>)</big><a class="headerlink" href="#swift.container.updater.ContainerUpdater.container_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Report container info to an account server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> &#8211; node dictionary from the account ring</li>
+<li><strong>part</strong> &#8211; partition the account is on</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>put_timestamp</strong> &#8211; put timestamp</li>
+<li><strong>delete_timestamp</strong> &#8211; delete timestamp</li>
+<li><strong>count</strong> &#8211; object count in the container</li>
+<li><strong>bytes</strong> &#8211; bytes used in the container</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.updater.ContainerUpdater.container_sweep">
+<tt class="descname">container_sweep</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#swift.container.updater.ContainerUpdater.container_sweep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Walk the path looking for container DBs and process them.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; path to walk</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.updater.ContainerUpdater.get_account_ring">
+<tt class="descname">get_account_ring</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.container.updater.ContainerUpdater.get_account_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the account ring.  Load it if it hasn&#8217;t been yet.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.updater.ContainerUpdater.get_paths">
+<tt class="descname">get_paths</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.container.updater.ContainerUpdater.get_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get paths to all of the partitions on each drive to be processed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">a list of paths</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.updater.ContainerUpdater.process_container">
+<tt class="descname">process_container</tt><big>(</big><em>dbfile</em><big>)</big><a class="headerlink" href="#swift.container.updater.ContainerUpdater.process_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process a container, and update the information in the account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dbfile</strong> &#8211; container DB to process</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.updater.ContainerUpdater.run_forever">
+<tt class="descname">run_forever</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.container.updater.ContainerUpdater.run_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the updator continuously.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.updater.ContainerUpdater.run_once">
+<tt class="descname">run_once</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.container.updater.ContainerUpdater.run_once" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the updater once.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.container.updater.random">
+<tt class="descclassname">swift.container.updater.</tt><tt class="descname">random</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.container.updater.random" title="Permalink to this definition">¶</a></dt>
+<dd><p>random() -&gt; x in the interval [0, 1).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.container.auditor">
+<span id="id4"></span><span id="container-auditor"></span><h2>Container Auditor<a class="headerlink" href="#module-swift.container.auditor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.container.auditor.ContainerAuditor">
+<em class="property">class </em><tt class="descclassname">swift.container.auditor.</tt><tt class="descname">ContainerAuditor</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.container.auditor.ContainerAuditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.daemon.Daemon</span></tt></p>
+<p>Audit containers.</p>
+<dl class="method">
+<dt id="swift.container.auditor.ContainerAuditor.container_audit">
+<tt class="descname">container_audit</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#swift.container.auditor.ContainerAuditor.container_audit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Audits the given container path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; the path to a container db</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.auditor.ContainerAuditor.run_forever">
+<tt class="descname">run_forever</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.container.auditor.ContainerAuditor.run_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the container audit until stopped.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.container.auditor.ContainerAuditor.run_once">
+<tt class="descname">run_once</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.container.auditor.ContainerAuditor.run_once" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the container audit once.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.container.auditor.random">
+<tt class="descclassname">swift.container.auditor.</tt><tt class="descname">random</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.container.auditor.random" title="Permalink to this definition">¶</a></dt>
+<dd><p>random() -&gt; x in the interval [0, 1).</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="db.html" title="Account DB and Container DB"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="account.html" title="Account"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

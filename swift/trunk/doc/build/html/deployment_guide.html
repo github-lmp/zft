@@ -1,0 +1,1360 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Deployment Guide &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Administrator’s Guide" href="admin_guide.html" />
+    <link rel="prev" title="Instructions for a Multiple Server Swift Installation (Ubuntu)" href="howto_installmultinode.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="admin_guide.html" title="Administrator’s Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="howto_installmultinode.html" title="Instructions for a Multiple Server Swift Installation (Ubuntu)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Deployment Guide</a><ul>
+<li><a class="reference internal" href="#hardware-considerations">Hardware Considerations</a></li>
+<li><a class="reference internal" href="#deployment-options">Deployment Options</a></li>
+<li><a class="reference internal" href="#preparing-the-ring">Preparing the Ring</a></li>
+<li><a class="reference internal" href="#general-server-configuration">General Server Configuration</a></li>
+<li><a class="reference internal" href="#object-server-configuration">Object Server Configuration</a></li>
+<li><a class="reference internal" href="#container-server-configuration">Container Server Configuration</a></li>
+<li><a class="reference internal" href="#account-server-configuration">Account Server Configuration</a></li>
+<li><a class="reference internal" href="#proxy-server-configuration">Proxy Server Configuration</a></li>
+<li><a class="reference internal" href="#memcached-considerations">Memcached Considerations</a></li>
+<li><a class="reference internal" href="#system-time">System Time</a></li>
+<li><a class="reference internal" href="#general-service-tuning">General Service Tuning</a></li>
+<li><a class="reference internal" href="#filesystem-considerations">Filesystem Considerations</a></li>
+<li><a class="reference internal" href="#general-system-tuning">General System Tuning</a></li>
+<li><a class="reference internal" href="#logging-considerations">Logging Considerations</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="howto_installmultinode.html"
+                        title="previous chapter">Instructions for a Multiple Server Swift Installation (Ubuntu)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="admin_guide.html"
+                        title="next chapter">Administrator&#8217;s Guide</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/deployment_guide.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="deployment-guide">
+<h1>Deployment Guide<a class="headerlink" href="#deployment-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="hardware-considerations">
+<h2>Hardware Considerations<a class="headerlink" href="#hardware-considerations" title="Permalink to this headline">¶</a></h2>
+<p>Swift is designed to run on commodity hardware. At Rackspace, our storage
+servers are currently running fairly generic 4U servers with 24 2T SATA
+drives and 8 cores of processing power. RAID on the storage drives is not
+required and not recommended. Swift&#8217;s disk usage pattern is the worst
+case possible for RAID, and performance degrades very quickly using RAID 5
+or 6.</p>
+</div>
+<div class="section" id="deployment-options">
+<h2>Deployment Options<a class="headerlink" href="#deployment-options" title="Permalink to this headline">¶</a></h2>
+<p>The swift services run completely autonomously, which provides for a lot of
+flexibility when architecting the hardware deployment for swift. The 4 main
+services are:</p>
+<ol class="arabic simple">
+<li>Proxy Services</li>
+<li>Object Services</li>
+<li>Container Services</li>
+<li>Account Services</li>
+</ol>
+<p>The Proxy Services are more CPU and network I/O intensive. If you are using
+10g networking to the proxy, or are terminating SSL traffic at the proxy,
+greater CPU power will be required.</p>
+<p>The Object, Container, and Account Services (Storage Services) are more disk
+and network I/O intensive.</p>
+<p>The easiest deployment is to install all services on each server. There is
+nothing wrong with doing this, as it scales each service out horizontally.</p>
+<p>At Rackspace, we put the Proxy Services on their own servers and all of the
+Storage Services on the same server. This allows us to send 10g networking to
+the proxy and 1g to the storage servers, and keep load balancing to the
+proxies more manageable.  Storage Services scale out horizontally as storage
+servers are added, and we can scale overall API throughput by adding more
+Proxies.</p>
+<p>If you need more throughput to either Account or Container Services, they may
+each be deployed to their own servers. For example you might use faster (but
+more expensive) SAS or even SSD drives to get faster disk I/O to the databases.</p>
+<p>Load balancing and network design is left as an exercise to the reader,
+but this is a very important part of the cluster, so time should be spent
+designing the network for a Swift cluster.</p>
+</div>
+<div class="section" id="preparing-the-ring">
+<span id="ring-preparing"></span><h2>Preparing the Ring<a class="headerlink" href="#preparing-the-ring" title="Permalink to this headline">¶</a></h2>
+<p>The first step is to determine the number of partitions that will be in the
+ring. We recommend that there be a minimum of 100 partitions per drive to
+insure even distribution across the drives. A good starting point might be
+to figure out the maximum number of drives the cluster will contain, and then
+multiply by 100, and then round up to the nearest power of two.</p>
+<p>For example, imagine we are building a cluster that will have no more than
+5,000 drives. That would mean that we would have a total number of 500,000
+partitions, which is pretty close to 2^19, rounded up.</p>
+<p>It is also a good idea to keep the number of partitions small (relatively).
+The more partitions there are, the more work that has to be done by the
+replicators and other backend jobs and the more memory the rings consume in
+process. The goal is to find a good balance between small rings and maximum
+cluster size.</p>
+<p>The next step is to determine the number of replicas to store of the data.
+Currently it is recommended to use 3 (as this is the only value that has
+been tested). The higher the number, the more storage that is used but the
+less likely you are to lose data.</p>
+<p>It is also important to determine how many zones the cluster should have. It is
+recommended to start with a minimum of 5 zones. You can start with fewer, but
+our testing has shown that having at least five zones is optimal when failures
+occur. We also recommend trying to configure the zones at as high a level as
+possible to create as much isolation as possible. Some example things to take
+into consideration can include physical location, power availability, and
+network connectivity. For example, in a small cluster you might decide to
+split the zones up by cabinet, with each cabinet having its own power and
+network connectivity. The zone concept is very abstract, so feel free to use
+it in whatever way best isolates your data from failure. Zones are referenced
+by number, beginning with 1.</p>
+<p>You can now start building the ring with:</p>
+<div class="highlight-python"><pre>swift-ring-builder &lt;builder_file&gt; create &lt;part_power&gt; &lt;replicas&gt; &lt;min_part_hours&gt;</pre>
+</div>
+<p>This will start the ring build process creating the &lt;builder_file&gt; with
+2^&lt;part_power&gt; partitions. &lt;min_part_hours&gt; is the time in hours before a
+specific partition can be moved in succession (24 is a good value for this).</p>
+<p>Devices can be added to the ring with:</p>
+<div class="highlight-python"><pre>swift-ring-builder &lt;builder_file&gt; add z&lt;zone&gt;-&lt;ip&gt;:&lt;port&gt;/&lt;device_name&gt;_&lt;meta&gt; &lt;weight&gt;</pre>
+</div>
+<p>This will add a device to the ring where &lt;builder_file&gt; is the name of the
+builder file that was created previously, &lt;zone&gt; is the number of the zone
+this device is in, &lt;ip&gt; is the ip address of the server the device is in,
+&lt;port&gt; is the port number that the server is running on, &lt;device_name&gt; is
+the name of the device on the server (for example: sdb1), &lt;meta&gt; is a string
+of metadata for the device (optional), and &lt;weight&gt; is a float weight that
+determines how many partitions are put on the device relative to the rest of
+the devices in the cluster (a good starting point is 100.0 x TB on the drive).
+Add each device that will be initially in the cluster.</p>
+<p>Once all of the devices are added to the ring, run:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">swift</span><span class="o">-</span><span class="n">ring</span><span class="o">-</span><span class="n">builder</span> <span class="o">&lt;</span><span class="n">builder_file</span><span class="o">&gt;</span> <span class="n">rebalance</span>
+</pre></div>
+</div>
+<p>This will distribute the partitions across the drives in the ring. It is
+important whenever making changes to the ring to make all the changes
+required before running rebalance. This will ensure that the ring stays as
+balanced as possible, and as few partitions are moved as possible.</p>
+<p>The above process should be done to make a ring for each storage service
+(Account, Container and Object). The builder files will be needed in future
+changes to the ring, so it is very important that these be kept and backed up.
+The resulting .tar.gz ring file should be pushed to all of the servers in the
+cluster. For more information about building rings, running
+swift-ring-builder with no options will display help text with available
+commands and options. More information on how the ring works internally
+can be found in the <a class="reference internal" href="overview_ring.html"><em>Ring Overview</em></a>.</p>
+</div>
+<div class="section" id="general-server-configuration">
+<h2>General Server Configuration<a class="headerlink" href="#general-server-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Swift uses paste.deploy (<a class="reference external" href="http://pythonpaste.org/deploy/">http://pythonpaste.org/deploy/</a>) to manage server
+configurations. Default configuration options are set in the <cite>[DEFAULT]</cite>
+section, and any options specified there can be overridden in any of the other
+sections BUT ONLY BY USING THE SYNTAX <tt class="docutils literal"><span class="pre">set</span> <span class="pre">option_name</span> <span class="pre">=</span> <span class="pre">value</span></tt>. This is the
+unfortunate way paste.deploy works and I&#8217;ll try to explain it in full.</p>
+<p>First, here&#8217;s an example paste.deploy configuration file:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+name1 = globalvalue
+name2 = globalvalue
+name3 = globalvalue
+set name4 = globalvalue
+
+[pipeline:main]
+pipeline = myapp
+
+[app:myapp]
+use = egg:mypkg#myapp
+name2 = localvalue
+set name3 = localvalue
+set name5 = localvalue
+name6 = localvalue</pre>
+</div>
+<p>The resulting configuration that myapp receives is:</p>
+<div class="highlight-python"><pre>global {'__file__': '/etc/mypkg/wsgi.conf', 'here': '/etc/mypkg',
+        'name1': 'globalvalue',
+        'name2': 'globalvalue',
+        'name3': 'localvalue',
+        'name4': 'globalvalue',
+        'name5': 'localvalue',
+        'set name4': 'globalvalue'}
+local {'name6': 'localvalue'}</pre>
+</div>
+<p>So, <cite>name1</cite> got the global value which is fine since it&#8217;s only in the <cite>DEFAULT</cite>
+section anyway.</p>
+<p><cite>name2</cite> got the global value from <cite>DEFAULT</cite> even though it&#8217;s seemingly
+overridden in the <cite>app:myapp</cite> subsection. This is just the unfortunate way
+paste.deploy works (at least at the time of this writing.)</p>
+<p><cite>name3</cite> got the local value from the <cite>app:myapp</cite> subsection because it using
+the special paste.deploy syntax of <tt class="docutils literal"><span class="pre">set</span> <span class="pre">option_name</span> <span class="pre">=</span> <span class="pre">value</span></tt>. So, if you want
+a default value for most app/filters but want to overridde it in one
+subsection, this is how you do it.</p>
+<p><cite>name4</cite> got the global value from <cite>DEFAULT</cite> since it&#8217;s only in that section
+anyway. But, since we used the <tt class="docutils literal"><span class="pre">set</span></tt> syntax in the <cite>DEFAULT</cite> section even
+though we shouldn&#8217;t, notice we also got a <tt class="docutils literal"><span class="pre">set</span> <span class="pre">name4</span></tt> variable. Weird, but
+probably not harmful.</p>
+<p><cite>name5</cite> got the local value from the <cite>app:myapp</cite> subsection since it&#8217;s only
+there anyway, but notice that it is in the global configuration and not the
+local configuration. This is because we used the <tt class="docutils literal"><span class="pre">set</span></tt> syntax to set the
+value. Again, weird, but not harmful since Swift just treats the two sets of
+configuration values as one set anyway.</p>
+<p><cite>name6</cite> got the local value from <cite>app:myapp</cite> subsection since it&#8217;s only there,
+and since we didn&#8217;t use the <tt class="docutils literal"><span class="pre">set</span></tt> syntax, it&#8217;s only in the local
+configuration and not the global one. Though, as indicated above, there is no
+special distinction with Swift.</p>
+<p>That&#8217;s quite an explanation for something that should be so much simpler, but
+it might be important to know how paste.deploy interprets configuration files.
+The main rule to remember when working with Swift configuration files is:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use the <tt class="docutils literal"><span class="pre">set</span> <span class="pre">option_name</span> <span class="pre">=</span> <span class="pre">value</span></tt> syntax in subsections if the option is
+also set in the <tt class="docutils literal"><span class="pre">[DEFAULT]</span></tt> section. Don&#8217;t get in the habit of always
+using the <tt class="docutils literal"><span class="pre">set</span></tt> syntax or you&#8217;ll probably mess up your non-paste.deploy
+configuration files.</p>
+</div>
+</div>
+<div class="section" id="object-server-configuration">
+<h2>Object Server Configuration<a class="headerlink" href="#object-server-configuration" title="Permalink to this headline">¶</a></h2>
+<p>An Example Object Server configuration can be found at
+etc/object-server.conf-sample in the source code repository.</p>
+<p>The following configuration options are available:</p>
+<p>[DEFAULT]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="14%" />
+<col width="62%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>swift_dir</td>
+<td>/etc/swift</td>
+<td>Swift configuration directory</td>
+</tr>
+<tr><td>devices</td>
+<td>/srv/node</td>
+<td>Parent directory of where devices are mounted</td>
+</tr>
+<tr><td>mount_check</td>
+<td>true</td>
+<td>Whether or not check if the devices are
+mounted to prevent accidentally writing
+to the root device</td>
+</tr>
+<tr><td>bind_ip</td>
+<td>0.0.0.0</td>
+<td>IP Address for server to bind to</td>
+</tr>
+<tr><td>bind_port</td>
+<td>6000</td>
+<td>Port for server to bind to</td>
+</tr>
+<tr><td>workers</td>
+<td>1</td>
+<td>Number of workers to fork</td>
+</tr>
+</tbody>
+</table>
+<p>[object-server]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="18%" />
+<col width="58%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>use</td>
+<td>&nbsp;</td>
+<td>paste.deploy entry point for the object
+server.  For most cases, this should be
+<cite>egg:swift#object</cite>.</td>
+</tr>
+<tr><td>set log_name</td>
+<td>object-server</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>set log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>set log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>set log_requests</td>
+<td>True</td>
+<td>Whether or not to log each request</td>
+</tr>
+<tr><td>user</td>
+<td>swift</td>
+<td>User to run as</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>3</td>
+<td>Request timeout to external services</td>
+</tr>
+<tr><td>conn_timeout</td>
+<td>0.5</td>
+<td>Connection timeout to external services</td>
+</tr>
+<tr><td>network_chunk_size</td>
+<td>65536</td>
+<td>Size of chunks to read/write over the
+network</td>
+</tr>
+<tr><td>disk_chunk_size</td>
+<td>65536</td>
+<td>Size of chunks to read/write to disk</td>
+</tr>
+<tr><td>max_upload_time</td>
+<td>86400</td>
+<td>Maximum time allowed to upload an object</td>
+</tr>
+<tr><td>slow</td>
+<td>0</td>
+<td>If &gt; 0, Minimum time in seconds for a PUT
+or DELETE request to complete</td>
+</tr>
+</tbody>
+</table>
+<p>[object-replicator]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="23%" />
+<col width="53%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>object-replicator</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>daemonize</td>
+<td>yes</td>
+<td>Whether or not to run replication as a
+daemon</td>
+</tr>
+<tr><td>run_pause</td>
+<td>30</td>
+<td>Time in seconds to wait between
+replication passes</td>
+</tr>
+<tr><td>concurrency</td>
+<td>1</td>
+<td>Number of replication workers to spawn</td>
+</tr>
+<tr><td>timeout</td>
+<td>5</td>
+<td>Timeout value sent to rsync &#8211;timeout
+and &#8211;contimeout options</td>
+</tr>
+<tr><td>stats_interval</td>
+<td>3600</td>
+<td>Interval in seconds between logging
+replication statistics</td>
+</tr>
+<tr><td>reclaim_age</td>
+<td>604800</td>
+<td>Time elapsed in seconds before an
+object can be reclaimed</td>
+</tr>
+</tbody>
+</table>
+<p>[object-updater]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="19%" />
+<col width="57%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>object-updater</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>interval</td>
+<td>300</td>
+<td>Minimum time for a pass to take</td>
+</tr>
+<tr><td>concurrency</td>
+<td>1</td>
+<td>Number of updater workers to spawn</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>10</td>
+<td>Request timeout to external services</td>
+</tr>
+<tr><td>conn_timeout</td>
+<td>0.5</td>
+<td>Connection timeout to external services</td>
+</tr>
+<tr><td>slowdown</td>
+<td>0.01</td>
+<td>Time in seconds to wait between objects</td>
+</tr>
+</tbody>
+</table>
+<p>[object-auditor]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="19%" />
+<col width="57%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>object-auditor</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>log_time</td>
+<td>3600</td>
+<td>Frequency of status logs in seconds.</td>
+</tr>
+<tr><td>files_per_second</td>
+<td>20</td>
+<td>Maximum files audited per second. Should
+be tuned according to individual system
+specs. 0 is unlimited.</td>
+</tr>
+<tr><td>bytes_per_second</td>
+<td>10000000</td>
+<td>Maximum bytes audited per second. Should
+be tuned according to individual system
+specs. 0 is unlimited.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="container-server-configuration">
+<h2>Container Server Configuration<a class="headerlink" href="#container-server-configuration" title="Permalink to this headline">¶</a></h2>
+<p>An example Container Server configuration can be found at
+etc/container-server.conf-sample in the source code repository.</p>
+<p>The following configuration options are available:</p>
+<p>[DEFAULT]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="14%" />
+<col width="62%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>swift_dir</td>
+<td>/etc/swift</td>
+<td>Swift configuration directory</td>
+</tr>
+<tr><td>devices</td>
+<td>/srv/node</td>
+<td>Parent directory of where devices are mounted</td>
+</tr>
+<tr><td>mount_check</td>
+<td>true</td>
+<td>Whether or not check if the devices are
+mounted to prevent accidentally writing
+to the root device</td>
+</tr>
+<tr><td>bind_ip</td>
+<td>0.0.0.0</td>
+<td>IP Address for server to bind to</td>
+</tr>
+<tr><td>bind_port</td>
+<td>6001</td>
+<td>Port for server to bind to</td>
+</tr>
+<tr><td>workers</td>
+<td>1</td>
+<td>Number of workers to fork</td>
+</tr>
+<tr><td>user</td>
+<td>swift</td>
+<td>User to run as</td>
+</tr>
+</tbody>
+</table>
+<p>[container-server]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="22%" />
+<col width="54%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>use</td>
+<td>&nbsp;</td>
+<td>paste.deploy entry point for the
+container server.  For most cases, this
+should be <cite>egg:swift#container</cite>.</td>
+</tr>
+<tr><td>set log_name</td>
+<td>container-server</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>set log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>set log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>3</td>
+<td>Request timeout to external services</td>
+</tr>
+<tr><td>conn_timeout</td>
+<td>0.5</td>
+<td>Connection timeout to external services</td>
+</tr>
+</tbody>
+</table>
+<p>[container-replicator]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="27%" />
+<col width="49%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>container-replicator</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>per_diff</td>
+<td>1000</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>concurrency</td>
+<td>8</td>
+<td>Number of replication workers to
+spawn</td>
+</tr>
+<tr><td>run_pause</td>
+<td>30</td>
+<td>Time in seconds to wait between
+replication passes</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>10</td>
+<td>Request timeout to external services</td>
+</tr>
+<tr><td>conn_timeout</td>
+<td>0.5</td>
+<td>Connection timeout to external
+services</td>
+</tr>
+<tr><td>reclaim_age</td>
+<td>604800</td>
+<td>Time elapsed in seconds before a
+container can be reclaimed</td>
+</tr>
+</tbody>
+</table>
+<p>[container-updater]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="23%" />
+<col width="45%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>container-updater</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>interval</td>
+<td>300</td>
+<td>Minimum time for a pass to take</td>
+</tr>
+<tr><td>concurrency</td>
+<td>4</td>
+<td>Number of updater workers to spawn</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>3</td>
+<td>Request timeout to external
+services</td>
+</tr>
+<tr><td>conn_timeout</td>
+<td>0.5</td>
+<td>Connection timeout to external
+services</td>
+</tr>
+<tr><td>slowdown</td>
+<td>0.01</td>
+<td>Time in seconds to wait between
+containers</td>
+</tr>
+<tr><td>account_suppression_time</td>
+<td>60</td>
+<td>Seconds to suppress updating an
+account that has generated an
+error (timeout, not yet found,
+etc.)</td>
+</tr>
+</tbody>
+</table>
+<p>[container-auditor]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="23%" />
+<col width="53%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>container-auditor</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>interval</td>
+<td>1800</td>
+<td>Minimum time for a pass to take</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="account-server-configuration">
+<h2>Account Server Configuration<a class="headerlink" href="#account-server-configuration" title="Permalink to this headline">¶</a></h2>
+<p>An example Account Server configuration can be found at
+etc/account-server.conf-sample in the source code repository.</p>
+<p>The following configuration options are available:</p>
+<p>[DEFAULT]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="14%" />
+<col width="62%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>swift_dir</td>
+<td>/etc/swift</td>
+<td>Swift configuration directory</td>
+</tr>
+<tr><td>devices</td>
+<td>/srv/node</td>
+<td>Parent directory or where devices are mounted</td>
+</tr>
+<tr><td>mount_check</td>
+<td>true</td>
+<td>Whether or not check if the devices are
+mounted to prevent accidentally writing
+to the root device</td>
+</tr>
+<tr><td>bind_ip</td>
+<td>0.0.0.0</td>
+<td>IP Address for server to bind to</td>
+</tr>
+<tr><td>bind_port</td>
+<td>6002</td>
+<td>Port for server to bind to</td>
+</tr>
+<tr><td>workers</td>
+<td>1</td>
+<td>Number of workers to fork</td>
+</tr>
+<tr><td>user</td>
+<td>swift</td>
+<td>User to run as</td>
+</tr>
+</tbody>
+</table>
+<p>[account-server]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="18%" />
+<col width="58%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>use</td>
+<td>&nbsp;</td>
+<td>Entry point for paste.deploy for the account
+server.  For most cases, this should be
+<cite>egg:swift#account</cite>.</td>
+</tr>
+<tr><td>set log_name</td>
+<td>account-server</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>set log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>set log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+</tbody>
+</table>
+<p>[account-replicator]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="24%" />
+<col width="52%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>account-replicator</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>per_diff</td>
+<td>1000</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>concurrency</td>
+<td>8</td>
+<td>Number of replication workers to spawn</td>
+</tr>
+<tr><td>run_pause</td>
+<td>30</td>
+<td>Time in seconds to wait between
+replication passes</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>10</td>
+<td>Request timeout to external services</td>
+</tr>
+<tr><td>conn_timeout</td>
+<td>0.5</td>
+<td>Connection timeout to external services</td>
+</tr>
+<tr><td>reclaim_age</td>
+<td>604800</td>
+<td>Time elapsed in seconds before an
+account can be reclaimed</td>
+</tr>
+</tbody>
+</table>
+<p>[account-auditor]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="20%" />
+<col width="53%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>account-auditor</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>interval</td>
+<td>1800</td>
+<td>Minimum time for a pass to take</td>
+</tr>
+</tbody>
+</table>
+<p>[account-reaper]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="20%" />
+<col width="55%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_name</td>
+<td>account-auditor</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Logging level</td>
+</tr>
+<tr><td>concurrency</td>
+<td>25</td>
+<td>Number of replication workers to spawn</td>
+</tr>
+<tr><td>interval</td>
+<td>3600</td>
+<td>Minimum time for a pass to take</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>10</td>
+<td>Request timeout to external services</td>
+</tr>
+<tr><td>conn_timeout</td>
+<td>0.5</td>
+<td>Connection timeout to external services</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="proxy-server-configuration">
+<h2>Proxy Server Configuration<a class="headerlink" href="#proxy-server-configuration" title="Permalink to this headline">¶</a></h2>
+<p>An example Proxy Server configuration can be found at
+etc/proxy-server.conf-sample in the source code repository.</p>
+<p>The following configuration options are available:</p>
+<p>[DEFAULT]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%" />
+<col width="21%" />
+<col width="40%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>bind_ip</td>
+<td>0.0.0.0</td>
+<td>IP Address for server to
+bind to</td>
+</tr>
+<tr><td>bind_port</td>
+<td>80</td>
+<td>Port for server to bind to</td>
+</tr>
+<tr><td>swift_dir</td>
+<td>/etc/swift</td>
+<td>Swift configuration directory</td>
+</tr>
+<tr><td>workers</td>
+<td>1</td>
+<td>Number of workers to fork</td>
+</tr>
+<tr><td>user</td>
+<td>swift</td>
+<td>User to run as</td>
+</tr>
+<tr><td>cert_file</td>
+<td>&nbsp;</td>
+<td>Path to the ssl .crt</td>
+</tr>
+<tr><td>key_file</td>
+<td>&nbsp;</td>
+<td>Path to the ssl .key</td>
+</tr>
+</tbody>
+</table>
+<p>[proxy-server]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="20%" />
+<col width="43%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>use</td>
+<td>&nbsp;</td>
+<td>Entry point for paste.deploy for
+the proxy server.  For most
+cases, this should be
+<cite>egg:swift#proxy</cite>.</td>
+</tr>
+<tr><td>set log_name</td>
+<td>proxy-server</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>set log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>set log_level</td>
+<td>INFO</td>
+<td>Log level</td>
+</tr>
+<tr><td>set log_headers</td>
+<td>True</td>
+<td>If True, log headers in each
+request</td>
+</tr>
+<tr><td>recheck_account_existence</td>
+<td>60</td>
+<td>Cache timeout in seconds to
+send memcached for account
+existence</td>
+</tr>
+<tr><td>recheck_container_existence</td>
+<td>60</td>
+<td>Cache timeout in seconds to
+send memcached for container
+existence</td>
+</tr>
+<tr><td>object_chunk_size</td>
+<td>65536</td>
+<td>Chunk size to read from
+object servers</td>
+</tr>
+<tr><td>client_chunk_size</td>
+<td>65536</td>
+<td>Chunk size to read from
+clients</td>
+</tr>
+<tr><td>memcache_servers</td>
+<td>127.0.0.1:11211</td>
+<td>Comma separated list of
+memcached servers ip:port</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>10</td>
+<td>Request timeout to external
+services</td>
+</tr>
+<tr><td>client_timeout</td>
+<td>60</td>
+<td>Timeout to read one chunk
+from a client</td>
+</tr>
+<tr><td>conn_timeout</td>
+<td>0.5</td>
+<td>Connection timeout to
+external services</td>
+</tr>
+<tr><td>error_suppression_interval</td>
+<td>60</td>
+<td>Time in seconds that must
+elapse since the last error
+for a node to be considered
+no longer error limited</td>
+</tr>
+<tr><td>error_suppression_limit</td>
+<td>10</td>
+<td>Error count to consider a
+node error limited</td>
+</tr>
+<tr><td>allow_account_management</td>
+<td>false</td>
+<td>Whether account PUTs and DELETEs
+are even callable</td>
+</tr>
+</tbody>
+</table>
+<p>[auth]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="47%" />
+<col width="37%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>use</td>
+<td>&nbsp;</td>
+<td>Entry point for paste.deploy
+to use for auth.  To
+use the swift dev auth,
+set to:
+<cite>egg:swift#auth</cite></td>
+</tr>
+<tr><td>ip</td>
+<td>127.0.0.1</td>
+<td>IP address of auth
+server</td>
+</tr>
+<tr><td>port</td>
+<td>11000</td>
+<td>Port of auth server</td>
+</tr>
+<tr><td>ssl</td>
+<td>False</td>
+<td>If True, use SSL to
+connect to auth</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>10</td>
+<td>Request timeout</td>
+</tr>
+</tbody>
+</table>
+<p>[swauth]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="41%" />
+<col width="32%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>use</td>
+<td>&nbsp;</td>
+<td>Entry point for
+paste.deploy to use for
+auth. To use the swauth
+set to:
+<cite>egg:swift#swauth</cite></td>
+</tr>
+<tr><td>set log_name</td>
+<td>auth-server</td>
+<td>Label used when logging</td>
+</tr>
+<tr><td>set log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>set log_level</td>
+<td>INFO</td>
+<td>Log level</td>
+</tr>
+<tr><td>set log_headers</td>
+<td>True</td>
+<td>If True, log headers in
+each request</td>
+</tr>
+<tr><td>reseller_prefix</td>
+<td>AUTH</td>
+<td>The naming scope for the
+auth service. Swift
+storage accounts and
+auth tokens will begin
+with this prefix.</td>
+</tr>
+<tr><td>auth_prefix</td>
+<td>/auth/</td>
+<td>The HTTP request path
+prefix for the auth
+service. Swift itself
+reserves anything
+beginning with the
+letter <cite>v</cite>.</td>
+</tr>
+<tr><td>default_swift_cluster</td>
+<td>local#http://127.0.0.1:8080/v1</td>
+<td>The default Swift
+cluster to place newly
+created accounts on.</td>
+</tr>
+<tr><td>token_life</td>
+<td>86400</td>
+<td>The number of seconds a
+token is valid.</td>
+</tr>
+<tr><td>node_timeout</td>
+<td>10</td>
+<td>Request timeout</td>
+</tr>
+<tr><td>super_admin_key</td>
+<td>None</td>
+<td>The key for the
+.super_admin account.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="memcached-considerations">
+<h2>Memcached Considerations<a class="headerlink" href="#memcached-considerations" title="Permalink to this headline">¶</a></h2>
+<p>Several of the Services rely on Memcached for caching certain types of
+lookups, such as auth tokens, and container/account existence.  Swift does
+not do any caching of actual object data.  Memcached should be able to run
+on any servers that have available RAM and CPU.  At Rackspace, we run
+Memcached on the proxy servers.  The <cite>memcache_servers</cite> config option
+in the <cite>proxy-server.conf</cite> should contain all memcached servers.</p>
+</div>
+<div class="section" id="system-time">
+<h2>System Time<a class="headerlink" href="#system-time" title="Permalink to this headline">¶</a></h2>
+<p>Time may be relative but it is relatively important for Swift!  Swift uses
+timestamps to determine which is the most recent version of an object.
+It is very important for the system time on each server in the cluster to
+by synced as closely as possible (more so for the proxy server, but in general
+it is a good idea for all the servers).  At Rackspace, we use NTP with a local
+NTP server to ensure that the system times are as close as possible.  This
+should also be monitored to ensure that the times do not vary too much.</p>
+</div>
+<div class="section" id="general-service-tuning">
+<h2>General Service Tuning<a class="headerlink" href="#general-service-tuning" title="Permalink to this headline">¶</a></h2>
+<p>Most services support either a worker or concurrency value in the settings.
+This allows the services to make effective use of the cores available. A good
+starting point to set the concurrency level for the proxy and storage services
+to 2 times the number of cores available. If more than one service is
+sharing a server, then some experimentation may be needed to find the best
+balance.</p>
+<p>At Rackspace, our Proxy servers have dual quad core processors, giving us 8
+cores. Our testing has shown 16 workers to be a pretty good balance when
+saturating a 10g network and gives good CPU utilization.</p>
+<p>Our Storage servers all run together on the same servers. These servers have
+dual quad core processors, for 8 cores total. We run the Account, Container,
+and Object servers with 8 workers each. Most of the background jobs are run
+at a concurrency of 1, with the exception of the replicators which are run at
+a concurrency of 2.</p>
+<p>The above configuration setting should be taken as suggestions and testing
+of configuration settings should be done to ensure best utilization of CPU,
+network connectivity, and disk I/O.</p>
+</div>
+<div class="section" id="filesystem-considerations">
+<h2>Filesystem Considerations<a class="headerlink" href="#filesystem-considerations" title="Permalink to this headline">¶</a></h2>
+<p>Swift is designed to be mostly filesystem agnostic&#8211;the only requirement
+being that the filesystem supports extended attributes (xattrs). After
+thorough testing with our use cases and hardware configurations, XFS was
+the best all-around choice. If you decide to use a filesystem other than
+XFS, we highly recommend thorough testing.</p>
+<p>If you are using XFS, some settings that can dramatically impact
+performance. We recommend the following when creating the XFS
+partition:</p>
+<div class="highlight-python"><pre>mkfs.xfs -i size=1024 -f /dev/sda1</pre>
+</div>
+<p>Setting the inode size is important, as XFS stores xattr data in the inode.
+If the metadata is too large to fit in the inode, a new extent is created,
+which can cause quite a performance problem. Upping the inode size to 1024
+bytes provides enough room to write the default metadata, plus a little
+headroom. We do not recommend running Swift on RAID, but if you are using
+RAID it is also important to make sure that the proper sunit and swidth
+settings get set so that XFS can make most efficient use of the RAID array.</p>
+<p>We also recommend the following example mount options when using XFS:</p>
+<div class="highlight-python"><pre>mount -t xfs -o noatime,nodiratime,nobarrier,logbufs=8 /dev/sda1 /srv/node/sda</pre>
+</div>
+<p>For a standard swift install, all data drives are mounted directly under
+/srv/node (as can be seen in the above example of mounting /def/sda1 as
+/srv/node/sda). If you choose to mount the drives in another directory,
+be sure to set the <cite>devices</cite> config option in all of the server configs to
+point to the correct directory.</p>
+</div>
+<div class="section" id="general-system-tuning">
+<h2>General System Tuning<a class="headerlink" href="#general-system-tuning" title="Permalink to this headline">¶</a></h2>
+<p>Rackspace currently runs Swift on Ubuntu Server 10.04, and the following
+changes have been found to be useful for our use cases.</p>
+<p>The following settings should be in <cite>/etc/sysctl.conf</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># disable TIME_WAIT.. wait..</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">tcp_tw_recycle</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">tcp_tw_reuse</span><span class="o">=</span><span class="mi">1</span>
+
+<span class="c"># disable syn cookies</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">tcp_syncookies</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c"># double amount of allowed conntrack</span>
+<span class="n">net</span><span class="o">.</span><span class="n">ipv4</span><span class="o">.</span><span class="n">netfilter</span><span class="o">.</span><span class="n">ip_conntrack_max</span> <span class="o">=</span> <span class="mi">262144</span>
+</pre></div>
+</div>
+<p>To load the updated sysctl settings, run <tt class="docutils literal"><span class="pre">sudo</span> <span class="pre">sysctl</span> <span class="pre">-p</span></tt></p>
+<p>A note about changing the TIME_WAIT values.  By default the OS will hold
+a port open for 60 seconds to ensure that any remaining packets can be
+received.  During high usage, and with the number of connections that are
+created, it is easy to run out of ports.  We can change this since we are
+in control of the network.  If you are not in control of the network, or
+do not expect high loads, then you may not want to adjust those values.</p>
+</div>
+<div class="section" id="logging-considerations">
+<h2>Logging Considerations<a class="headerlink" href="#logging-considerations" title="Permalink to this headline">¶</a></h2>
+<p>Swift is set up to log directly to syslog. Every service can be configured
+with the <cite>log_facility</cite> option to set the syslog log facility destination.
+We recommended using syslog-ng to route the logs to specific log
+files locally on the server and also to remote log collecting servers.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="admin_guide.html" title="Administrator’s Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="howto_installmultinode.html" title="Instructions for a Multiple Server Swift Installation (Ubuntu)"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

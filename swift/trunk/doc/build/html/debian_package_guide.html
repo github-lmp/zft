@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Building and Deploying Custom Debian packages for Swift &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Talking to Swift with Cyberduck" href="howto_cyberduck.html" />
+    <link rel="prev" title="Administrator’s Guide" href="admin_guide.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="howto_cyberduck.html" title="Talking to Swift with Cyberduck"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="admin_guide.html" title="Administrator’s Guide"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Building and Deploying Custom Debian packages for Swift</a><ul>
+<li><a class="reference internal" href="#instructions-for-deploying-swift-core-ppas">Instructions for Deploying Swift-Core PPAs</a></li>
+<li><a class="reference internal" href="#instructions-for-building-debian-packages-for-swift">Instructions for Building Debian Packages for Swift</a></li>
+<li><a class="reference internal" href="#instructions-for-deploying-debian-packages-for-swift">Instructions for Deploying Debian Packages for Swift</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="admin_guide.html"
+                        title="previous chapter">Administrator&#8217;s Guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="howto_cyberduck.html"
+                        title="next chapter">Talking to Swift with Cyberduck</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/debian_package_guide.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="building-and-deploying-custom-debian-packages-for-swift">
+<h1>Building and Deploying Custom Debian packages for Swift<a class="headerlink" href="#building-and-deploying-custom-debian-packages-for-swift" title="Permalink to this headline">¶</a></h1>
+<p>This documents setting up the prerequisites, downloading the code and building
+Debian packages necessary to deploy the various components of the swift
+project code.  These steps were done on a server running
+<em>Ubuntu 10.04 LTS (Lucid Lynx)</em>, but should give a good idea what to do on
+other distros.</p>
+<div class="section" id="instructions-for-deploying-swift-core-ppas">
+<h2>Instructions for Deploying Swift-Core PPAs<a class="headerlink" href="#instructions-for-deploying-swift-core-ppas" title="Permalink to this headline">¶</a></h2>
+<p>These packages are built from the current development branch &#8220;trunk&#8221;</p>
+<ul>
+<li><p class="first">Add swift-core/ppa repository. As root::</p>
+<div class="highlight-python"><pre>apt-get install python-software-properties
+add-apt-repository ppa:swift-core/trunk
+apt-get update</pre>
+</div>
+</li>
+<li><p class="first">Install the swift base packages:</p>
+<div class="highlight-python"><pre>apt-get install python-swift
+apt-get install swift</pre>
+</div>
+</li>
+<li><p class="first">Install the swift packages depending on your implementations:</p>
+<div class="highlight-python"><pre>apt-get install swift-auth
+apt-get install swift-proxy
+apt-get install swift-account
+apt-get install swift-container
+apt-get install swift-object</pre>
+</div>
+</li>
+<li><p class="first">Copy sample configuration files to <cite>/etc/swift</cite> directory
+and rename them to <cite>*.conf files</cite>:</p>
+<div class="highlight-python"><pre>cp -a /usr/share/doc/swift/*.conf-sample /etc/swift/
+cd /etc/swift ; rename 's/\-sample$//' *.conf-sample</pre>
+</div>
+</li>
+<li><p class="first">For servers running the swift-account, swift-container or
+swift-object the rsync.conf file should be moved to
+the <cite>/etc</cite> directory:</p>
+<div class="highlight-python"><pre>cd /etc/swift
+mv rsyncd.conf /etc</pre>
+</div>
+</li>
+<li><p class="first">Modify configuration files to meet your implementation requirements
+the defaults have been not been geared to a multi-server implementation.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="instructions-for-building-debian-packages-for-swift">
+<h2>Instructions for Building Debian Packages for Swift<a class="headerlink" href="#instructions-for-building-debian-packages-for-swift" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Add swift-core/ppa repository and install prerequisites. As root:</p>
+<div class="highlight-python"><pre>apt-get install python-software-properties
+add-apt-repository ppa:swift-core/ppa
+apt-get update
+apt-get install curl gcc bzr python-configobj python-coverage python-dev python-nose python-setuptools python-simplejson python-xattr python-webob python-eventlet python-greenlet debhelper python-sphinx python-all python-openssl python-pastedeploy bzr-builddeb</pre>
+</div>
+</li>
+<li><p class="first">As you</p>
+<ol class="arabic">
+<li><p class="first">Tell bzr who you are:</p>
+<div class="highlight-python"><pre>bzr whoami '&lt;Your Name&gt; &lt;youremail@.example.com&gt;'
+bzr lp-login &lt;your launchpad id&gt;</pre>
+</div>
+</li>
+<li><p class="first">Create a local bazaar repository for dev/testing:</p>
+<div class="highlight-python"><pre>bzr init-repo swift</pre>
+</div>
+</li>
+<li><p class="first">Pull down the swift/debian files:</p>
+<div class="highlight-python"><pre>cd swift
+bzr branch lp:~swift-core/swift/debian</pre>
+</div>
+</li>
+<li><p class="first">If you want to merge in a branch:</p>
+<div class="highlight-python"><pre>cd debian
+bzr merge lp:&lt;path-to-branch&gt;</pre>
+</div>
+</li>
+<li><p class="first">Create the debian packages:</p>
+<div class="highlight-python"><pre>cd debian
+bzr bd --builder='debuild -uc -us'</pre>
+</div>
+</li>
+<li><p class="first">Upload packages to your target servers:</p>
+<div class="highlight-python"><pre>cd ..
+scp *.deb root@&lt;swift-target-server&gt;:~/.</pre>
+</div>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+<div class="section" id="instructions-for-deploying-debian-packages-for-swift">
+<h2>Instructions for Deploying Debian Packages for Swift<a class="headerlink" href="#instructions-for-deploying-debian-packages-for-swift" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">On a Target Server, As root:</p>
+<ol class="arabic">
+<li><p class="first">Setup the swift ppa:</p>
+<div class="highlight-python"><pre>add-apt-repository ppa:swift-core/ppa
+apt-get update</pre>
+</div>
+</li>
+<li><p class="first">Install dependencies:</p>
+<div class="highlight-python"><pre>apt-get install rsync python-openssl python-setuptools python-webob
+python-simplejson python-xattr python-greenlet python-eventlet</pre>
+</div>
+</li>
+<li><p class="first">Install base packages:</p>
+<div class="highlight-python"><pre>dpkg -i python-swift_&lt;version&gt;_all.deb
+dpkg -i swift_&lt;version&gt;_all.deb</pre>
+</div>
+</li>
+<li><p class="first">Install packages depending on your implementation:</p>
+<div class="highlight-python"><pre>dpkg -i swift-auth_&lt;version&gt;_all.deb
+dpkg -i swift-proxy_&lt;version&gt;_all.deb
+dpkg -i swift-account_&lt;version&gt;_all.deb
+dpkg -i swift-container_&lt;version&gt;_all.deb
+dpkg -i swift-object_&lt;version&gt;_all.deb
+dpkg -i swift-doc_&lt;version&gt;_all.deb</pre>
+</div>
+</li>
+<li><p class="first">Copy sample configuration files to <cite>/etc/swift</cite> directory
+and rename them to <cite>*.conf files</cite>:</p>
+<div class="highlight-python"><pre>cp -a /usr/share/doc/swift/*.conf-sample /etc/swift/
+cd /etc/swift
+rename 's/\-sample$//' *.conf-sample</pre>
+</div>
+</li>
+<li><p class="first">For servers running the swift-account, swift-container or
+swift-object the rsync.conf file should be moved to
+the <cite>/etc</cite> directory:</p>
+<div class="highlight-python"><pre>cd /etc/swift/
+mv rsyncd.conf /etc</pre>
+</div>
+</li>
+<li><p class="first">Modify configuration files to meet your implementation requirements
+the defaults have been not been geared to a multi-server implementation.</p>
+</li>
+</ol>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="howto_cyberduck.html" title="Talking to Swift with Cyberduck"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="admin_guide.html" title="Administrator’s Guide"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

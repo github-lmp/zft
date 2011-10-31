@@ -1,0 +1,176 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Account Reaper &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="The Auth System" href="overview_auth.html" />
+    <link rel="prev" title="The Rings" href="overview_ring.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview_auth.html" title="The Auth System"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview_ring.html" title="The Rings"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">The Account Reaper</a><ul>
+<li><a class="reference internal" href="#history">History</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview_ring.html"
+                        title="previous chapter">The Rings</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview_auth.html"
+                        title="next chapter">The Auth System</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/overview_reaper.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="the-account-reaper">
+<h1>The Account Reaper<a class="headerlink" href="#the-account-reaper" title="Permalink to this headline">¶</a></h1>
+<p>The Account Reaper removes data from deleted accounts in the background.</p>
+<p>An account is marked for deletion by a reseller through the services server&#8217;s
+remove_storage_account XMLRPC call. This simply puts the value DELETED into the
+status column of the account_stat table in the account database (and replicas),
+indicating the data for the account should be deleted later. There is no set
+retention time and no undelete; it is assumed the reseller will implement such
+features and only call remove_storage_account once it is truly desired the
+account&#8217;s data be removed.</p>
+<p>The account reaper runs on each account server and scans the server
+occasionally for account databases marked for deletion. It will only trigger on
+accounts that server is the primary node for, so that multiple account servers
+aren&#8217;t all trying to do the same work at the same time. Using multiple servers
+to delete one account might improve deletion speed, but requires coordination
+so they aren&#8217;t duplicating effort. Speed really isn&#8217;t as much of a concern with
+data deletion and large accounts aren&#8217;t deleted that often.</p>
+<p>The deletion process for an account itself is pretty straightforward. For each
+container in the account, each object is deleted and then the container is
+deleted. Any deletion requests that fail won&#8217;t stop the overall process, but
+will cause the overall process to fail eventually (for example, if an object
+delete times out, the container won&#8217;t be able to be deleted later and therefore
+the account won&#8217;t be deleted either). The overall process continues even on a
+failure so that it doesn&#8217;t get hung up reclaiming cluster space because of one
+troublesome spot. The account reaper will keep trying to delete an account
+until it eventually becomes empty, at which point the database reclaim process
+within the db_replicator will eventually remove the database files.</p>
+<div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>At first, a simple approach of deleting an account through completely external
+calls was considered as it required no changes to the system. All data would
+simply be deleted in the same way the actual user would, through the public
+ReST API. However, the downside was that it would use proxy resources and log
+everything when it didn&#8217;t really need to. Also, it would likely need a
+dedicated server or two, just for issuing the delete requests.</p>
+<p>A completely bottom-up approach was also considered, where the object and
+container servers would occasionally scan the data they held and check if the
+account was deleted, removing the data if so. The upside was the speed of
+reclamation with no impact on the proxies or logging, but the downside was that
+nearly 100% of the scanning would result in no action creating a lot of I/O
+load for no reason.</p>
+<p>A more container server centric approach was also considered, where the account
+server would mark all the containers for deletion and the container servers
+would delete the objects in each container and then themselves. This has the
+benefit of still speedy reclamation for accounts with a lot of containers, but
+has the downside of a pretty big load spike. The process could be slowed down
+to alleviate the load spike possibility, but then the benefit of speedy
+reclamation is lost and what&#8217;s left is just a more complex process. Also,
+scanning all the containers for those marked for deletion when the majority
+wouldn&#8217;t be seemed wasteful. The db_replicator could do this work while
+performing its replication scan, but it would have to spawn and track deletion
+processes which seemed needlessly complex.</p>
+<p>In the end, an account server centric approach seemed best, as described above.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview_auth.html" title="The Auth System"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview_ring.html" title="The Rings"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

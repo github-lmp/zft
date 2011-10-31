@@ -1,0 +1,3094 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Misc &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="prev" title="Developer’s Authorization" href="auth.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="auth.html" title="Developer’s Authorization"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Misc</a><ul>
+<li><a class="reference internal" href="#exceptions">Exceptions</a></li>
+<li><a class="reference internal" href="#constraints">Constraints</a></li>
+<li><a class="reference internal" href="#utils">Utils</a></li>
+<li><a class="reference internal" href="#module-swift.common.middleware.auth">Auth</a></li>
+<li><a class="reference internal" href="#module-swift.common.middleware.swauth">Swauth</a></li>
+<li><a class="reference internal" href="#acls">ACLs</a></li>
+<li><a class="reference internal" href="#wsgi">WSGI</a></li>
+<li><a class="reference internal" href="#client">Client</a></li>
+<li><a class="reference internal" href="#module-swift.common.direct_client">Direct Client</a></li>
+<li><a class="reference internal" href="#module-swift.common.bufferedhttp">Buffered HTTP</a></li>
+<li><a class="reference internal" href="#healthcheck">Healthcheck</a></li>
+<li><a class="reference internal" href="#module-swift.common.memcached">MemCacheD</a></li>
+<li><a class="reference internal" href="#module-swift.common.middleware.ratelimit">Ratelimit</a></li>
+<li><a class="reference internal" href="#module-swift.common.middleware.swift3">Swift3</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="auth.html"
+                        title="previous chapter">Developer&#8217;s Authorization</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/misc.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="misc">
+<span id="id1"></span><h1>Misc<a class="headerlink" href="#misc" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="exceptions">
+<span id="id2"></span><h2>Exceptions<a class="headerlink" href="#exceptions" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.exceptions"></span><dl class="exception">
+<dt id="swift.common.exceptions.AuditException">
+<em class="property">exception </em><tt class="descclassname">swift.common.exceptions.</tt><tt class="descname">AuditException</tt><a class="headerlink" href="#swift.common.exceptions.AuditException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="swift.common.exceptions.AuthException">
+<em class="property">exception </em><tt class="descclassname">swift.common.exceptions.</tt><tt class="descname">AuthException</tt><a class="headerlink" href="#swift.common.exceptions.AuthException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="swift.common.exceptions.ChunkReadTimeout">
+<em class="property">exception </em><tt class="descclassname">swift.common.exceptions.</tt><tt class="descname">ChunkReadTimeout</tt><big>(</big><em>seconds=None</em>, <em>exception=None</em><big>)</big><a class="headerlink" href="#swift.common.exceptions.ChunkReadTimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">eventlet.timeout.Timeout</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="swift.common.exceptions.ChunkWriteTimeout">
+<em class="property">exception </em><tt class="descclassname">swift.common.exceptions.</tt><tt class="descname">ChunkWriteTimeout</tt><big>(</big><em>seconds=None</em>, <em>exception=None</em><big>)</big><a class="headerlink" href="#swift.common.exceptions.ChunkWriteTimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">eventlet.timeout.Timeout</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="swift.common.exceptions.ConnectionTimeout">
+<em class="property">exception </em><tt class="descclassname">swift.common.exceptions.</tt><tt class="descname">ConnectionTimeout</tt><big>(</big><em>seconds=None</em>, <em>exception=None</em><big>)</big><a class="headerlink" href="#swift.common.exceptions.ConnectionTimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">eventlet.timeout.Timeout</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="swift.common.exceptions.DriveNotMounted">
+<em class="property">exception </em><tt class="descclassname">swift.common.exceptions.</tt><tt class="descname">DriveNotMounted</tt><a class="headerlink" href="#swift.common.exceptions.DriveNotMounted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="swift.common.exceptions.LockTimeout">
+<em class="property">exception </em><tt class="descclassname">swift.common.exceptions.</tt><tt class="descname">LockTimeout</tt><big>(</big><em>seconds=None</em>, <em>msg=None</em><big>)</big><a class="headerlink" href="#swift.common.exceptions.LockTimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#swift.common.exceptions.MessageTimeout" title="swift.common.exceptions.MessageTimeout"><tt class="xref py py-class docutils literal"><span class="pre">swift.common.exceptions.MessageTimeout</span></tt></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="swift.common.exceptions.MessageTimeout">
+<em class="property">exception </em><tt class="descclassname">swift.common.exceptions.</tt><tt class="descname">MessageTimeout</tt><big>(</big><em>seconds=None</em>, <em>msg=None</em><big>)</big><a class="headerlink" href="#swift.common.exceptions.MessageTimeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">eventlet.timeout.Timeout</span></tt></p>
+</dd></dl>
+
+</div>
+<div class="section" id="constraints">
+<span id="id3"></span><h2>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.constraints"></span><dl class="data">
+<dt id="swift.common.constraints.ACCOUNT_LISTING_LIMIT">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">ACCOUNT_LISTING_LIMIT</tt><a class="headerlink" href="#swift.common.constraints.ACCOUNT_LISTING_LIMIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max container list length of a get request for an account</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.constraints.CONTAINER_LISTING_LIMIT">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">CONTAINER_LISTING_LIMIT</tt><a class="headerlink" href="#swift.common.constraints.CONTAINER_LISTING_LIMIT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max object list length of a get request for a container</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.constraints.MAX_FILE_SIZE">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">MAX_FILE_SIZE</tt><a class="headerlink" href="#swift.common.constraints.MAX_FILE_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max file size allowed for objects</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.constraints.MAX_META_COUNT">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">MAX_META_COUNT</tt><a class="headerlink" href="#swift.common.constraints.MAX_META_COUNT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max number of metadata items</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.constraints.MAX_META_NAME_LENGTH">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">MAX_META_NAME_LENGTH</tt><a class="headerlink" href="#swift.common.constraints.MAX_META_NAME_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max length of the name of a key for metadata</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.constraints.MAX_META_OVERALL_SIZE">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">MAX_META_OVERALL_SIZE</tt><a class="headerlink" href="#swift.common.constraints.MAX_META_OVERALL_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max overall size of metadata</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.constraints.MAX_META_VALUE_LENGTH">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">MAX_META_VALUE_LENGTH</tt><a class="headerlink" href="#swift.common.constraints.MAX_META_VALUE_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max length of the value of a key for metadata</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="swift.common.constraints.MAX_OBJECT_NAME_LENGTH">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">MAX_OBJECT_NAME_LENGTH</tt><a class="headerlink" href="#swift.common.constraints.MAX_OBJECT_NAME_LENGTH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max object name length</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.constraints.check_float">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">check_float</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#swift.common.constraints.check_float" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function for checking if a string can be converted to a float.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> &#8211; string to be verified as a float</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if the string can be converted to a float, False otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.constraints.check_metadata">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">check_metadata</tt><big>(</big><em>req</em>, <em>target_type</em><big>)</big><a class="headerlink" href="#swift.common.constraints.check_metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check metadata sent in the request headers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; request object</li>
+<li><strong>target_type</strong> &#8211; str: one of: object, container, or account: indicates
+which type the target storage for the metadata is</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises HTTPBadRequest:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">bad metadata</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.constraints.check_mount">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">check_mount</tt><big>(</big><em>root</em>, <em>drive</em><big>)</big><a class="headerlink" href="#swift.common.constraints.check_mount" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verify that the path to the device is a mount point and mounted.  This
+allows us to fast fail on drives that have been unmounted because of
+issues, and also prevents us for accidently filling up the root partition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>root</strong> &#8211; base path where the devices are mounted</li>
+<li><strong>drive</strong> &#8211; drive name to be checked</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if it is a valid mounted device, False otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.constraints.check_object_creation">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">check_object_creation</tt><big>(</big><em>req</em>, <em>object_name</em><big>)</big><a class="headerlink" href="#swift.common.constraints.check_object_creation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check to ensure that everything is alright about an object to be created.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; HTTP request object</li>
+<li><strong>object_name</strong> &#8211; name of object to be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>HTTPRequestEntityTooLarge</strong> &#8211; the object is too large</li>
+<li><strong>HTTPLengthRequered</strong> &#8211; missing content-length header and not
+a chunked request</li>
+<li><strong>HTTPBadRequest</strong> &#8211; missing or bad content-type header, or
+bad metadata</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.constraints.check_utf8">
+<tt class="descclassname">swift.common.constraints.</tt><tt class="descname">check_utf8</tt><big>(</big><em>string</em><big>)</big><a class="headerlink" href="#swift.common.constraints.check_utf8" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate if a string is valid UTF-8.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>string</strong> &#8211; string to be validated</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if the string is valid utf-8, False otherwise</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="utils">
+<span id="id4"></span><h2>Utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.utils"></span><p>Miscellaneous utility functions for use with Swift.</p>
+<dl class="class">
+<dt id="swift.common.utils.LogAdapter">
+<em class="property">class </em><tt class="descclassname">swift.common.utils.</tt><tt class="descname">LogAdapter</tt><big>(</big><em>logger</em><big>)</big><a class="headerlink" href="#swift.common.utils.LogAdapter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A Logger like object which performs some reformatting on calls to
+<tt class="xref py py-meth docutils literal"><span class="pre">exception()</span></tt>.  Can be used to store a threadlocal transaction id.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.utils.NamedFormatter">
+<em class="property">class </em><tt class="descclassname">swift.common.utils.</tt><tt class="descname">NamedFormatter</tt><big>(</big><em>server</em>, <em>logger</em>, <em>fmt='%(server)s %(message)s'</em><big>)</big><a class="headerlink" href="#swift.common.utils.NamedFormatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/logging.html#logging.Formatter" title="(in Python v2.7)"><tt class="docutils literal"><span class="pre">logging.Formatter</span></tt></a></p>
+<p>NamedFormatter is used to add additional information to log messages.
+Normally it will simply add the server name as an attribute on the
+LogRecord and the default format string will include it at the
+begining of the log message.  Additionally, if the transaction id is
+available and not already included in the message, NamedFormatter will
+add it.</p>
+<p>NamedFormatter may be initialized with a format string which makes use
+of the standard LogRecord attributes.  In addition the format string
+may include the following mapping key:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Format</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>%(server)s</td>
+<td>Name of the swift server doing logging</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>server</strong> &#8211; the swift server name, a string.</li>
+<li><strong>logger</strong> &#8211; a Logger or <a class="reference internal" href="#swift.common.utils.LogAdapter" title="swift.common.utils.LogAdapter"><tt class="xref py py-class docutils literal"><span class="pre">LogAdapter</span></tt></a> instance, additional
+context may be pulled from attributes on this logger if
+available.</li>
+<li><strong>fmt</strong> &#8211; the format string used to construct the message, if none is
+supplied it defaults to <tt class="docutils literal"><span class="pre">&quot;%(server)s</span> <span class="pre">%(message)s&quot;</span></tt></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.utils.NullLogger">
+<em class="property">class </em><tt class="descclassname">swift.common.utils.</tt><tt class="descname">NullLogger</tt><a class="headerlink" href="#swift.common.utils.NullLogger" title="Permalink to this definition">¶</a></dt>
+<dd><p>A no-op logger for eventlet wsgi.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.audit_location_generator">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">audit_location_generator</tt><big>(</big><em>devices</em>, <em>datadir</em>, <em>mount_check=True</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#swift.common.utils.audit_location_generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a devices path and a data directory, yield (path, device,
+partition) for all files in that directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>devices</strong> &#8211; parent directory of the devices to be audited</li>
+<li><strong>datadir</strong> &#8211; a directory located under self.devices. This should be
+one of the DATADIR constants defined in the account,
+container, and object servers.</li>
+<li><strong>mount_check</strong> &#8211; Flag to check if a mount check should be performed
+on devices</li>
+<li><strong>logger</strong> &#8211; a logger object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.cache_from_env">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">cache_from_env</tt><big>(</big><em>env</em><big>)</big><a class="headerlink" href="#swift.common.utils.cache_from_env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get memcache connection pool from the environment (which had been
+previously set by the memcache middleware</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>env</strong> &#8211; wsgi environment dict</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">swift.common.memcached.MemcacheRing from environment</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.capture_stdio">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">capture_stdio</tt><big>(</big><em>logger</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.utils.capture_stdio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Log unhandled exceptions, close stdio, capture stdout and stderr.</p>
+<p>param logger: Logger object to use</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.compute_eta">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">compute_eta</tt><big>(</big><em>start_time</em>, <em>current_value</em>, <em>final_value</em><big>)</big><a class="headerlink" href="#swift.common.utils.compute_eta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute an ETA.  Now only if we could also have a progress bar...</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>start_time</strong> &#8211; Unix timestamp when the operation began</li>
+<li><strong>current_value</strong> &#8211; Current value</li>
+<li><strong>final_value</strong> &#8211; Final value</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ETA as a tuple of (length of time, unit of time) where unit of
+time is one of (&#8216;h&#8217;, &#8216;m&#8217;, &#8216;s&#8217;)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.drop_buffer_cache">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">drop_buffer_cache</tt><big>(</big><em>fd</em>, <em>offset</em>, <em>length</em><big>)</big><a class="headerlink" href="#swift.common.utils.drop_buffer_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drop &#8216;buffer&#8217; cache for the given range of the given file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fd</strong> &#8211; file descriptor</li>
+<li><strong>offset</strong> &#8211; start offset</li>
+<li><strong>length</strong> &#8211; length</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.drop_privileges">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">drop_privileges</tt><big>(</big><em>user</em><big>)</big><a class="headerlink" href="#swift.common.utils.drop_privileges" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the userid/groupid of the current process, get session leader, etc.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> &#8211; User name to change privileges to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.fallocate">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">fallocate</tt><big>(</big><em>fd</em>, <em>size</em><big>)</big><a class="headerlink" href="#swift.common.utils.fallocate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pre-allocate disk space for a file file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fd</strong> &#8211; file descriptor</li>
+<li><strong>size</strong> &#8211; size to allocate (in bytes)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.get_logger">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">get_logger</tt><big>(</big><em>conf</em>, <em>name=None</em>, <em>log_to_console=False</em>, <em>log_route=None</em><big>)</big><a class="headerlink" href="#swift.common.utils.get_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the current system logger using config settings.</p>
+<p><strong>Log config and defaults</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">log_facility</span> <span class="o">=</span> <span class="n">LOG_LOCAL0</span>
+<span class="n">log_level</span> <span class="o">=</span> <span class="n">INFO</span>
+<span class="n">log_name</span> <span class="o">=</span> <span class="n">swift</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conf</strong> &#8211; Configuration dict to read settings from</li>
+<li><strong>name</strong> &#8211; Name of the logger</li>
+<li><strong>log_to_console</strong> &#8211; Add handler which writes to console on stderr</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.get_param">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">get_param</tt><big>(</big><em>req</em>, <em>name</em>, <em>default=None</em><big>)</big><a class="headerlink" href="#swift.common.utils.get_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters from an HTTP request ensuring proper handling UTF-8
+encoding.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; Webob request object</li>
+<li><strong>name</strong> &#8211; parameter name</li>
+<li><strong>default</strong> &#8211; result to return if the parameter is not found</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">HTTP request parameter value</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.get_time_units">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">get_time_units</tt><big>(</big><em>time_amount</em><big>)</big><a class="headerlink" href="#swift.common.utils.get_time_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a nomralized length of time in the largest unit of time (hours,
+minutes, or seconds.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>time_amount</strong> &#8211; length of time in seconds</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A touple of (length of time, unit of time) where unit of time is
+one of (&#8216;h&#8217;, &#8216;m&#8217;, &#8216;s&#8217;)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.hash_path">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">hash_path</tt><big>(</big><em>account</em>, <em>container=None</em>, <em>object=None</em>, <em>raw_digest=False</em><big>)</big><a class="headerlink" href="#swift.common.utils.hash_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the connonical hash for an account/container/object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>account</strong> &#8211; Account</li>
+<li><strong>container</strong> &#8211; Container</li>
+<li><strong>object</strong> &#8211; Object</li>
+<li><strong>raw_digest</strong> &#8211; If True, return the raw version rather than a hex digest</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">hash string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.item_from_env">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">item_from_env</tt><big>(</big><em>env</em>, <em>item_name</em><big>)</big><a class="headerlink" href="#swift.common.utils.item_from_env" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a value from the wsgi environment</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>env</strong> &#8211; wsgi environment dict</li>
+<li><strong>item_name</strong> &#8211; name of item to get</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the value from the environment</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.iter_devices_partitions">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">iter_devices_partitions</tt><big>(</big><em>devices_dir</em>, <em>item_type</em><big>)</big><a class="headerlink" href="#swift.common.utils.iter_devices_partitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate over partitions accross all devices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>devices_dir</strong> &#8211; Path to devices</li>
+<li><strong>item_type</strong> &#8211; One of &#8216;accounts&#8217;, &#8216;containers&#8217;, or &#8216;objects&#8217;</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Each iteration returns a tuple of (device, partition)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.load_libc_function">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">load_libc_function</tt><big>(</big><em>func_name</em><big>)</big><a class="headerlink" href="#swift.common.utils.load_libc_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to find the function in libc, otherwise return a no-op func.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>func_name</strong> &#8211; name of the function to pull from libc.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.lock_parent_directory">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">lock_parent_directory</tt><big>(</big><em>filename</em>, <em>timeout=10</em><big>)</big><a class="headerlink" href="#swift.common.utils.lock_parent_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context manager that acquires a lock on the parent directory of the given
+file path.  This will block until the lock can be acquired, or the timeout
+time has expired (whichever occurs first).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>filename</strong> &#8211; file path of the parent directory to be locked</li>
+<li><strong>timeout</strong> &#8211; timeout (in seconds)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.lock_path">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">lock_path</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="headerlink" href="#swift.common.utils.lock_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Context manager that acquires a lock on a directory.  This will block until
+the lock can be acquired, or the timeout time has expired (whichever occurs
+first).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>directory</strong> &#8211; directory to be locked</li>
+<li><strong>timeout</strong> &#8211; timeout (in seconds)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.mkdirs">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">mkdirs</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#swift.common.utils.mkdirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensures the path is a directory or makes it if not. Errors if the path
+exists but is a file or on permissions failure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; path to create</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.normalize_timestamp">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">normalize_timestamp</tt><big>(</big><em>timestamp</em><big>)</big><a class="headerlink" href="#swift.common.utils.normalize_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format a timestamp (string or numeric) into a standardized
+xxxxxxxxxx.xxxxx format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>timestamp</strong> &#8211; unix timestamp</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">normalized timestamp as a string</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.parse_options">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">parse_options</tt><big>(</big><em>usage='%prog CONFIG</em><span class="optional">[</span>, <em>options</em><span class="optional">]</span>, <em>'</em>, <em>once=False</em>, <em>test_args=None</em><big>)</big><a class="headerlink" href="#swift.common.utils.parse_options" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse standard swift server/daemon options with optparse.OptionParser.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>usage</strong> &#8211; String describing usage</li>
+<li><strong>once</strong> &#8211; Boolean indicating the &#8220;once&#8221; option is available</li>
+<li><strong>test_args</strong> &#8211; Override sys.argv; used in testing</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>:returns <span class="classifier-delimiter">:</span> <span class="classifier">Tuple of (config, options); config is an absolute path to the</span></dt>
+<dd>config file, options is the parser options as a dictionary.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name" colspan="2">Raises SystemExit:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body">First arg (CONFIG) is required, file must exist</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.ratelimit_sleep">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">ratelimit_sleep</tt><big>(</big><em>running_time</em>, <em>max_rate</em>, <em>incr_by=1</em>, <em>rate_buffer=5</em><big>)</big><a class="headerlink" href="#swift.common.utils.ratelimit_sleep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will eventlet.sleep() for the appropriate time so that the max_rate
+is never exceeded.  If max_rate is 0, will not ratelimit.  The
+maximum recommended rate should not exceed (1000 * incr_by) a second
+as eventlet.sleep() does involve some overhead.  Returns running_time
+that should be used for subsequent calls.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>running_time</strong> &#8211; the running time of the next allowable request. Best
+to start at zero.</li>
+<li><strong>max_rate</strong> &#8211; The maximum rate per second allowed for the process.</li>
+<li><strong>incr_by</strong> &#8211; How much to increment the counter.  Useful if you want
+to ratelimit 1024 bytes/sec and have differing sizes
+of requests. Must be &gt;= 0.</li>
+<li><strong>rate_buffer</strong> &#8211; Number of seconds the rate counter can drop and be
+allowed to catch up (at a faster than listed rate).
+A larger number will result in larger spikes in rate
+but better average accuracy.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.readconf">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">readconf</tt><big>(</big><em>conf</em>, <em>section_name=None</em>, <em>log_name=None</em>, <em>defaults=None</em><big>)</big><a class="headerlink" href="#swift.common.utils.readconf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read config file and return config items as a dict</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>conf</strong> &#8211; path to config file</li>
+<li><strong>section_name</strong> &#8211; config section to read (will return all sections if
+not defined)</li>
+<li><strong>log_name</strong> &#8211; name to be used with logging (will use section_name if
+not defined)</li>
+<li><strong>defaults</strong> &#8211; dict of default values to pre-populate the config with</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">dict of config items</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.renamer">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">renamer</tt><big>(</big><em>old</em>, <em>new</em><big>)</big><a class="headerlink" href="#swift.common.utils.renamer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attempt to fix^H^H^Hhide race conditions like empty object directories
+being removed by backend processes during uploads, by retrying.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>old</strong> &#8211; old path to be renamed</li>
+<li><strong>new</strong> &#8211; new path to be renamed to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.split_path">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">split_path</tt><big>(</big><em>path</em>, <em>minsegs=1</em>, <em>maxsegs=None</em>, <em>rest_with_last=False</em><big>)</big><a class="headerlink" href="#swift.common.utils.split_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate and split the given HTTP request path.</p>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">split_path</span><span class="p">(</span><span class="s">&#39;/a&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span> <span class="o">=</span> <span class="n">split_path</span><span class="p">(</span><span class="s">&#39;/a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">split_path</span><span class="p">(</span><span class="s">&#39;/a/c&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">,</span> <span class="s">&#39;c&#39;</span><span class="p">,</span> <span class="s">&#39;o/r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">split_path</span><span class="p">(</span><span class="s">&#39;/a/c/o/r&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> &#8211; HTTP Request path to be split</li>
+<li><strong>minsegs</strong> &#8211; Minimum number of segments to be extracted</li>
+<li><strong>maxsegs</strong> &#8211; Maximum number of segments to be extracted</li>
+<li><strong>rest_with_last</strong> &#8211; If True, trailing data will be returned as part
+of last segment.  If False, and there is
+trailing data, raises ValueError.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">list of segments with a length of maxsegs (non-existant
+segments will return as None)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Raises :</th><td class="field-body"><p class="first last">ValueError if given an invalid path</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.storage_directory">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">storage_directory</tt><big>(</big><em>datadir</em>, <em>partition</em>, <em>hash</em><big>)</big><a class="headerlink" href="#swift.common.utils.storage_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the storage directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>datadir</strong> &#8211; Base data directory</li>
+<li><strong>partition</strong> &#8211; Partition</li>
+<li><strong>hash</strong> &#8211; Account, container or object hash</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Storage directory</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.unlink_older_than">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">unlink_older_than</tt><big>(</big><em>path</em>, <em>mtime</em><big>)</big><a class="headerlink" href="#swift.common.utils.unlink_older_than" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove any file in a given path that that was last modified before mtime.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> &#8211; path to remove file from</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Mtime :</th><td class="field-body"><p class="first last">timestamp of oldest file to keep</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.whataremyips">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">whataremyips</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.utils.whataremyips" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the machine&#8217;s ip addresses</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">list of Strings of ip addresses</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.utils.write_pickle">
+<tt class="descclassname">swift.common.utils.</tt><tt class="descname">write_pickle</tt><big>(</big><em>obj</em>, <em>dest</em>, <em>tmp</em><big>)</big><a class="headerlink" href="#swift.common.utils.write_pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ensure that a pickle file gets written to disk.  The file
+is first written to a tmp location, ensure it is synced to disk, then
+perform a move to its final location</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>obj</strong> &#8211; python object to be pickled</li>
+<li><strong>dest</strong> &#8211; path of final destination file</li>
+<li><strong>tmp</strong> &#8211; path to tmp to use</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.middleware.auth">
+<span id="auth"></span><span id="common-auth"></span><h2>Auth<a class="headerlink" href="#module-swift.common.middleware.auth" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.common.middleware.auth.DevAuth">
+<em class="property">class </em><tt class="descclassname">swift.common.middleware.auth.</tt><tt class="descname">DevAuth</tt><big>(</big><em>app</em>, <em>conf</em><big>)</big><a class="headerlink" href="#swift.common.middleware.auth.DevAuth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Auth Middleware that uses the dev auth server.</p>
+<dl class="method">
+<dt id="swift.common.middleware.auth.DevAuth.authorize">
+<tt class="descname">authorize</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.auth.DevAuth.authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns None if the request is authorized to continue or a standard
+WSGI response callable if not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.auth.DevAuth.denied_response">
+<tt class="descname">denied_response</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.auth.DevAuth.denied_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a standard WSGI response callable with the status of 403 or 401
+depending on whether the REMOTE_USER is set or not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.auth.DevAuth.get_groups">
+<tt class="descname">get_groups</tt><big>(</big><em>env</em>, <em>token</em>, <em>memcache_client=None</em><big>)</big><a class="headerlink" href="#swift.common.middleware.auth.DevAuth.get_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get groups for the given token.</p>
+<p>If memcache_client is set, token credentials will be cached
+appropriately.</p>
+<p>With a cache miss, or no memcache_client, the configurated external
+authentication server will be queried for the group information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>token</strong> &#8211; Token to validate and return a group string for.</li>
+<li><strong>memcache_client</strong> &#8211; Memcached client to use for caching token
+credentials; None if no caching is desired.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None if the token is invalid or a string containing a comma
+separated list of groups the authenticated user is a member
+of. The first group in the list is also considered a unique
+identifier for that user.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.middleware.auth.filter_factory">
+<tt class="descclassname">swift.common.middleware.auth.</tt><tt class="descname">filter_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.common.middleware.auth.filter_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a WSGI filter app for use with paste.deploy.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.middleware.swauth">
+<span id="swauth"></span><span id="common-swauth"></span><h2>Swauth<a class="headerlink" href="#module-swift.common.middleware.swauth" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.common.middleware.swauth.Swauth">
+<em class="property">class </em><tt class="descclassname">swift.common.middleware.swauth.</tt><tt class="descname">Swauth</tt><big>(</big><em>app</em>, <em>conf</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Scalable authentication and authorization system that uses Swift as its
+backing store.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>app</strong> &#8211; The next WSGI app in the pipeline</li>
+<li><strong>conf</strong> &#8211; The dict of configuration values</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.authorize">
+<tt class="descname">authorize</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.authorize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns None if the request is authorized to continue or a standard
+WSGI response callable if not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.credentials_match">
+<tt class="descname">credentials_match</tt><big>(</big><em>user_detail</em>, <em>key</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.credentials_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the key is valid for the user_detail. Currently, this
+only supports plaintext key matching.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user_detail</strong> &#8211; The dict for the user.</li>
+<li><strong>key</strong> &#8211; The key to validate for the user.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if the key is valid for the user, False if not.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.denied_response">
+<tt class="descname">denied_response</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.denied_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a standard WSGI response callable with the status of 403 or 401
+depending on whether the REMOTE_USER is set or not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.get_admin_detail">
+<tt class="descname">get_admin_detail</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.get_admin_detail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the dict for the user specified as the admin in the request
+with the addition of an <cite>account</cite> key set to the admin user&#8217;s account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob request to retrieve X-Auth-Admin-User and
+X-Auth-Admin-Key from.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The dict for the admin user with the addition of the
+<cite>account</cite> key.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.get_conn">
+<tt class="descname">get_conn</tt><big>(</big><em>urlparsed=None</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.get_conn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an HTTPConnection based on the urlparse result given or the
+default Swift cluster (internal url) urlparse result.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>urlparsed</strong> &#8211; The result from urlparse.urlparse or None to use the
+default Swift cluster&#8217;s value</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.get_groups">
+<tt class="descname">get_groups</tt><big>(</big><em>env</em>, <em>token</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.get_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get groups for the given token.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>env</strong> &#8211; The current WSGI environment dictionary.</li>
+<li><strong>token</strong> &#8211; Token to validate and return a group string for.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">None if the token is invalid or a string containing a comma
+separated list of groups the authenticated user is a member
+of. The first group in the list is also considered a unique
+identifier for that user.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.get_itoken">
+<tt class="descname">get_itoken</tt><big>(</big><em>env</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.get_itoken" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current internal token to use for the auth system&#8217;s own
+actions with other services. Each process will create its own
+itoken and the token will be deleted and recreated based on the
+token_life configuration value. The itoken information is stored in
+memcache because the auth process that is asked by Swift to validate
+the token may not be the same as the auth process that created the
+token.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle">
+<tt class="descname">handle</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>WSGI entry point for auth requests (ones that match the
+self.auth_prefix).
+Wraps env in webob.Request object and passes it down.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>env</strong> &#8211; WSGI environment dictionary</li>
+<li><strong>start_response</strong> &#8211; WSGI callable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_delete_account">
+<tt class="descname">handle_delete_account</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_delete_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the DELETE v2/&lt;account&gt; call for removing an account from the
+auth system. Can only be called by a .reseller_admin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_delete_user">
+<tt class="descname">handle_delete_user</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_delete_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the DELETE v2/&lt;account&gt;/&lt;user&gt; call for deleting a user from an
+account.</p>
+<p>Can only be called by an account .admin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_get_account">
+<tt class="descname">handle_get_account</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_get_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the GET v2/&lt;account&gt; call for getting account information.
+Can only be called by an account .admin.</p>
+<p>On success, a JSON dictionary will be returned containing the keys
+<cite>account_id</cite>, <cite>services</cite>, and <cite>users</cite>. The <cite>account_id</cite> is the value
+used when creating service accounts. The <cite>services</cite> value is a dict as
+described in the <a class="reference internal" href="#swift.common.middleware.swauth.Swauth.handle_get_token" title="swift.common.middleware.swauth.Swauth.handle_get_token"><tt class="xref py py-func docutils literal"><span class="pre">handle_get_token()</span></tt></a> call. The <cite>users</cite> value is a
+list of dicts, each dict representing a user and currently only
+containing the single key <cite>name</cite>. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;account_id&quot;</span><span class="p">:</span> <span class="s">&quot;AUTH_018c3946-23f8-4efb-a8fb-b67aae8e4162&quot;</span><span class="p">,</span>
+ <span class="s">&quot;services&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;storage&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;default&quot;</span><span class="p">:</span> <span class="s">&quot;local&quot;</span><span class="p">,</span>
+                          <span class="s">&quot;local&quot;</span><span class="p">:</span> <span class="s">&quot;http://127.0.0.1:8080/v1/AUTH_018c3946-23f8-4efb-a8fb-b67aae8e4162&quot;</span><span class="p">}},</span>
+ <span class="s">&quot;users&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;tester&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;tester3&quot;</span><span class="p">}]}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success with a JSON dictionary as
+explained above.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_get_reseller">
+<tt class="descname">handle_get_reseller</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_get_reseller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the GET v2 call for getting general reseller information
+(currently just a list of accounts). Can only be called by a
+.reseller_admin.</p>
+<p>On success, a JSON dictionary will be returned with a single <cite>accounts</cite>
+key whose value is list of dicts. Each dict represents an account and
+currently only contains the single key <cite>name</cite>. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;accounts&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;reseller&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;test&quot;</span><span class="p">},</span>
+              <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;test2&quot;</span><span class="p">}]}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success with a JSON dictionary as
+explained above.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_get_token">
+<tt class="descname">handle_get_token</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_get_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the various <cite>request for token and service end point(s)</cite> calls.
+There are various formats to support the various auth servers in the
+past. Examples:</p>
+<div class="highlight-python"><pre>GET &lt;auth-prefix&gt;/v1/&lt;act&gt;/auth
+    X-Auth-User: &lt;act&gt;:&lt;usr&gt;  or  X-Storage-User: &lt;usr&gt;
+    X-Auth-Key: &lt;key&gt;         or  X-Storage-Pass: &lt;key&gt;
+GET &lt;auth-prefix&gt;/auth
+    X-Auth-User: &lt;act&gt;:&lt;usr&gt;  or  X-Storage-User: &lt;act&gt;:&lt;usr&gt;
+    X-Auth-Key: &lt;key&gt;         or  X-Storage-Pass: &lt;key&gt;
+GET &lt;auth-prefix&gt;/v1.0
+    X-Auth-User: &lt;act&gt;:&lt;usr&gt;  or  X-Storage-User: &lt;act&gt;:&lt;usr&gt;
+    X-Auth-Key: &lt;key&gt;         or  X-Storage-Pass: &lt;key&gt;</pre>
+</div>
+<p>On successful authentication, the response will have X-Auth-Token and
+X-Storage-Token set to the token to use with Swift and X-Storage-URL
+set to the URL to the default Swift cluster to use.</p>
+<p>The response body will be set to the account&#8217;s services JSON object as
+described here:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;storage&quot;</span><span class="p">:</span> <span class="p">{</span>     <span class="c"># Represents the Swift storage service end points</span>
+    <span class="s">&quot;default&quot;</span><span class="p">:</span> <span class="s">&quot;cluster1&quot;</span><span class="p">,</span> <span class="c"># Indicates which cluster is the default</span>
+    <span class="s">&quot;cluster1&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;URL to use with Swift&gt;&quot;</span><span class="p">,</span>
+        <span class="c"># A Swift cluster that can be used with this account,</span>
+        <span class="c"># &quot;cluster1&quot; is the name of the cluster which is usually a</span>
+        <span class="c"># location indicator (like &quot;dfw&quot; for a datacenter region).</span>
+    <span class="s">&quot;cluster2&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;URL to use with Swift&gt;&quot;</span>
+        <span class="c"># Another Swift cluster that can be used with this account,</span>
+        <span class="c"># there will always be at least one Swift cluster to use or</span>
+        <span class="c"># this whole &quot;storage&quot; dict won&#39;t be included at all.</span>
+ <span class="p">},</span>
+ <span class="s">&quot;servers&quot;</span><span class="p">:</span> <span class="p">{</span>       <span class="c"># Represents the Nova server service end points</span>
+    <span class="c"># Expected to be similar to the &quot;storage&quot; dict, but not</span>
+    <span class="c"># implemented yet.</span>
+ <span class="p">},</span>
+ <span class="c"># Possibly other service dicts, not implemented yet.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success with data set as explained
+above.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_get_user">
+<tt class="descname">handle_get_user</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_get_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the GET v2/&lt;account&gt;/&lt;user&gt; call for getting user information.
+Can only be called by an account .admin.</p>
+<p>On success, a JSON dict will be returned as described:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span>  <span class="c"># List of groups the user is a member of</span>
+    <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;act&gt;:&lt;usr&gt;&quot;</span><span class="p">},</span>
+        <span class="c"># The first group is a unique user identifier</span>
+    <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;account&gt;&quot;</span><span class="p">},</span>
+        <span class="c"># The second group is the auth account name</span>
+    <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;additional-group&gt;&quot;</span><span class="p">}</span>
+        <span class="c"># There may be additional groups, .admin being a special</span>
+        <span class="c"># group indicating an account admin and .reseller_admin</span>
+        <span class="c"># indicating a reseller admin.</span>
+ <span class="p">],</span>
+ <span class="s">&quot;auth&quot;</span><span class="p">:</span> <span class="s">&quot;plaintext:&lt;key&gt;&quot;</span>
+ <span class="c"># The auth-type and key for the user; currently only plaintext is</span>
+ <span class="c"># implemented.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;test:tester&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;test&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;.admin&quot;</span><span class="p">}],</span>
+ <span class="s">&quot;auth&quot;</span><span class="p">:</span> <span class="s">&quot;plaintext:testing&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If the &lt;user&gt; in the request is the special user <cite>.groups</cite>, the JSON
+dict will contain a single key of <cite>groups</cite> whose value is a list of
+dicts representing the active groups within the account. Each dict
+currently has the single key <cite>name</cite>. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;.admin&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;test&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;test:tester&quot;</span><span class="p">},</span> <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="s">&quot;test:tester3&quot;</span><span class="p">}]}</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success with a JSON dictionary as
+explained above.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_prep">
+<tt class="descname">handle_prep</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_prep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the POST v2/.prep call for preparing the backing store Swift
+cluster for use with the auth subsystem. Can only be called by
+.super_admin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 204 on success</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_put_account">
+<tt class="descname">handle_put_account</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_put_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the PUT v2/&lt;account&gt; call for adding an account to the auth
+system. Can only be called by a .reseller_admin.</p>
+<p>By default, a newly created UUID4 will be used with the reseller prefix
+as the account id used when creating corresponding service accounts.
+However, you can provide an X-Account-Suffix header to replace the
+UUID4 part.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_put_user">
+<tt class="descname">handle_put_user</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_put_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the PUT v2/&lt;account&gt;/&lt;user&gt; call for adding a user to an
+account.</p>
+<p>X-Auth-User-Key represents the user&#8217;s key, X-Auth-User-Admin may be set
+to <cite>true</cite> to create an account .admin, and X-Auth-User-Reseller-Admin
+may be set to <cite>true</cite> to create a .reseller_admin.</p>
+<p>Can only be called by an account .admin unless the user is to be a
+.reseller_admin, in which case the request must be by .super_admin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_request">
+<tt class="descname">handle_request</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Entry point for auth requests (ones that match the self.auth_prefix).
+Should return a WSGI-style callable (such as webob.Response).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req</strong> &#8211; webob.Request object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_set_services">
+<tt class="descname">handle_set_services</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_set_services" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the POST v2/&lt;account&gt;/.services call for setting services
+information. Can only be called by a reseller .admin.</p>
+<p>In the <a class="reference internal" href="#swift.common.middleware.swauth.Swauth.handle_get_account" title="swift.common.middleware.swauth.Swauth.handle_get_account"><tt class="xref py py-func docutils literal"><span class="pre">handle_get_account()</span></tt></a> (GET v2/&lt;account&gt;) call, a section of
+the returned JSON dict is <cite>services</cite>. This section looks something like
+this:</p>
+<div class="highlight-python"><pre>"services": {"storage": {"default": "local",
+                         "local": "http://127.0.0.1:8080/v1/AUTH_018c3946-23f8-4efb-a8fb-b67aae8e4162"}}</pre>
+</div>
+<p>Making use of this section is described in <a class="reference internal" href="#swift.common.middleware.swauth.Swauth.handle_get_token" title="swift.common.middleware.swauth.Swauth.handle_get_token"><tt class="xref py py-func docutils literal"><span class="pre">handle_get_token()</span></tt></a>.</p>
+<p>This function allows setting values within this section for the
+&lt;account&gt;, allowing the addition of new service end points or updating
+existing ones.</p>
+<p>The body of the POST request should contain a JSON dict with the
+following format:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="s">&quot;service_name&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;end_point_name&quot;</span><span class="p">:</span> <span class="s">&quot;end_point_value&quot;</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>There can be multiple services and multiple end points in the same
+call.</p>
+<p>Any new services or end points will be added to the existing set of
+services and end points. Any existing services with the same service
+name will be merged with the new end points. Any existing end points
+with the same end point name will have their values updated.</p>
+<p>The updated services dictionary will be returned on success.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success with the udpated services JSON
+dict as described above</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.handle_validate_token">
+<tt class="descname">handle_validate_token</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.handle_validate_token" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the GET v2/.token/&lt;token&gt; call for validating a token, usually
+called by a service like Swift.</p>
+<p>On a successful validation, X-Auth-TTL will be set for how much longer
+this token is valid and X-Auth-Groups will contain a comma separated
+list of groups the user belongs to.</p>
+<p>The first group listed will be a unique identifier for the user the
+token represents.</p>
+<p>.reseller_admin is a special group that indicates the user should be
+allowed to do anything on any account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>req</strong> &#8211; The webob.Request to process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Response, 2xx on success with data set as explained
+above.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.is_account_admin">
+<tt class="descname">is_account_admin</tt><big>(</big><em>req</em>, <em>account</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.is_account_admin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the admin specified in the request represents a .admin
+for the account specified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req</strong> &#8211; The webob.Request to check.</li>
+<li><strong>account</strong> &#8211; The account to check for .admin against.</li>
+<li><strong>returns</strong> &#8211; True if .admin.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.is_reseller_admin">
+<tt class="descname">is_reseller_admin</tt><big>(</big><em>req</em>, <em>admin_detail=None</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.is_reseller_admin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the admin specified in the request represents a
+.reseller_admin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req</strong> &#8211; The webob.Request to check.</li>
+<li><strong>admin_detail</strong> &#8211; The previously retrieved dict from
+<a class="reference internal" href="#swift.common.middleware.swauth.Swauth.get_admin_detail" title="swift.common.middleware.swauth.Swauth.get_admin_detail"><tt class="xref py py-func docutils literal"><span class="pre">get_admin_detail()</span></tt></a> or None for this function
+to retrieve the admin_detail itself.</li>
+<li><strong>returns</strong> &#8211; True if .reseller_admin.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.is_super_admin">
+<tt class="descname">is_super_admin</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.is_super_admin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the admin specified in the request represents the
+.super_admin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req</strong> &#8211; The webob.Request to check.</li>
+<li><strong>returns</strong> &#8211; True if .super_admin.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swauth.Swauth.make_request">
+<tt class="descname">make_request</tt><big>(</big><em>env</em>, <em>method</em>, <em>path</em>, <em>body=None</em>, <em>headers=None</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.Swauth.make_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a new webob.Request based on the current env but with the
+parameters specified.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>env</strong> &#8211; Current WSGI environment dictionary</li>
+<li><strong>method</strong> &#8211; HTTP method of new request</li>
+<li><strong>path</strong> &#8211; HTTP path of new request</li>
+<li><strong>body</strong> &#8211; HTTP body of new request; None by default</li>
+<li><strong>headers</strong> &#8211; Extra HTTP headers of new request; None by default</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.Request object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.middleware.swauth.filter_factory">
+<tt class="descclassname">swift.common.middleware.swauth.</tt><tt class="descname">filter_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swauth.filter_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a WSGI filter app for use with paste.deploy.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="acls">
+<span id="id5"></span><h2>ACLs<a class="headerlink" href="#acls" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.middleware.acl"></span><dl class="function">
+<dt id="swift.common.middleware.acl.clean_acl">
+<tt class="descclassname">swift.common.middleware.acl.</tt><tt class="descname">clean_acl</tt><big>(</big><em>name</em>, <em>value</em><big>)</big><a class="headerlink" href="#swift.common.middleware.acl.clean_acl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a cleaned ACL header value, validating that it meets the formatting
+requirements for standard Swift ACL strings.</p>
+<p>The ACL format is:</p>
+<div class="highlight-python"><pre>[item[,item...]]</pre>
+</div>
+<p>Each item can be a group name to give access to or a referrer designation
+to grant or deny based on the HTTP Referer header.</p>
+<p>The referrer designation format is:</p>
+<div class="highlight-python"><pre>.r:[-]value</pre>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">.r</span></tt> can also be <tt class="docutils literal"><span class="pre">.ref</span></tt>, <tt class="docutils literal"><span class="pre">.referer</span></tt>, or <tt class="docutils literal"><span class="pre">.referrer</span></tt>; though it
+will be shortened to just <tt class="docutils literal"><span class="pre">.r</span></tt> for decreased character count usage.</p>
+<p>The value can be <tt class="docutils literal"><span class="pre">*</span></tt> to specify any referrer host is allowed access, a
+specific host name like <tt class="docutils literal"><span class="pre">www.example.com</span></tt>, or if it has a leading period
+<tt class="docutils literal"><span class="pre">.</span></tt> or leading <tt class="docutils literal"><span class="pre">*.</span></tt> it is a domain name specification, like
+<tt class="docutils literal"><span class="pre">.example.com</span></tt> or <tt class="docutils literal"><span class="pre">*.example.com</span></tt>. The leading minus sign <tt class="docutils literal"><span class="pre">-</span></tt>
+indicates referrer hosts that should be denied access.</p>
+<p>Referrer access is applied in the order they are specified. For example,
+.r:.example.com,.r:-thief.example.com would allow all hosts ending with
+.example.com except for the specific host thief.example.com.</p>
+<p>Example valid ACLs:</p>
+<div class="highlight-python"><pre>.r:*
+.r:*,.r:-.thief.com
+.r:*,.r:.example.com,.r:-thief.example.com
+.r:*,.r:-.thief.com,bobs_account,sues_account:sue
+bobs_account,sues_account:sue</pre>
+</div>
+<p>Example invalid ACLs:</p>
+<div class="highlight-python"><pre>.r:
+.r:-</pre>
+</div>
+<p>Also, .r designations aren&#8217;t allowed in headers whose names include the
+word &#8216;write&#8217;.</p>
+<p>ACLs that are &#8220;messy&#8221; will be cleaned up. Examples:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Original</td>
+<td>Cleaned</td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">bob,</span> <span class="pre">sue</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">bob,sue</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">bob</span> <span class="pre">,</span> <span class="pre">sue</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">bob,sue</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">bob,,,sue</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">bob,sue</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">.referrer</span> <span class="pre">:</span> <span class="pre">*</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">.r:*</span></tt></td>
+</tr>
+<tr><td><tt class="docutils literal"><span class="pre">.ref:*.example.com</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">.r:.example.com</span></tt></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> &#8211; The name of the header being cleaned, such as X-Container-Read
+or X-Container-Write.</li>
+<li><strong>value</strong> &#8211; The value of the header being cleaned.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The value, cleaned of extraneous formatting.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ValueError:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">If the value does not meet the ACL formatting
+requirements; the error message will indicate why.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.middleware.acl.parse_acl">
+<tt class="descclassname">swift.common.middleware.acl.</tt><tt class="descname">parse_acl</tt><big>(</big><em>acl_string</em><big>)</big><a class="headerlink" href="#swift.common.middleware.acl.parse_acl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses a standard Swift ACL string into a referrers list and groups list.</p>
+<p>See <a class="reference internal" href="#swift.common.middleware.acl.clean_acl" title="swift.common.middleware.acl.clean_acl"><tt class="xref py py-func docutils literal"><span class="pre">clean_acl()</span></tt></a> for documentation of the standard Swift ACL format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>acl_string</strong> &#8211; The standard Swift ACL string to parse.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A tuple of (referrers, groups) where referrers is a list of
+referrer designations (without the leading .r:) and groups is a
+list of groups to allow access.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.middleware.acl.referrer_allowed">
+<tt class="descclassname">swift.common.middleware.acl.</tt><tt class="descname">referrer_allowed</tt><big>(</big><em>referrer</em>, <em>referrer_acl</em><big>)</big><a class="headerlink" href="#swift.common.middleware.acl.referrer_allowed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the referrer should be allowed based on the referrer_acl
+list (as returned by <a class="reference internal" href="#swift.common.middleware.acl.parse_acl" title="swift.common.middleware.acl.parse_acl"><tt class="xref py py-func docutils literal"><span class="pre">parse_acl()</span></tt></a>).</p>
+<p>See <a class="reference internal" href="#swift.common.middleware.acl.clean_acl" title="swift.common.middleware.acl.clean_acl"><tt class="xref py py-func docutils literal"><span class="pre">clean_acl()</span></tt></a> for documentation of the standard Swift ACL format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>referrer</strong> &#8211; The value of the HTTP Referer header.</li>
+<li><strong>referrer_acl</strong> &#8211; The list of referrer designations as returned by
+<a class="reference internal" href="#swift.common.middleware.acl.parse_acl" title="swift.common.middleware.acl.parse_acl"><tt class="xref py py-func docutils literal"><span class="pre">parse_acl()</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if the referrer should be allowed; False if not.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="wsgi">
+<span id="id6"></span><h2>WSGI<a class="headerlink" href="#wsgi" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.wsgi"></span><p>WSGI tools for use with swift.</p>
+<dl class="function">
+<dt id="swift.common.wsgi.get_socket">
+<tt class="descclassname">swift.common.wsgi.</tt><tt class="descname">get_socket</tt><big>(</big><em>conf</em>, <em>default_port=8080</em><big>)</big><a class="headerlink" href="#swift.common.wsgi.get_socket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bind socket to bind ip:port in conf</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conf</strong> &#8211; Configuration dict to read settings from</li>
+<li><strong>default_port</strong> &#8211; port to use if not specified in conf</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>:returns <span class="classifier-delimiter">:</span> <span class="classifier">a socket object as returned from socket.listen or</span></dt>
+<dd>ssl.wrap_socket if conf specifies cert_file</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.wsgi.monkey_patch_mimetools">
+<tt class="descclassname">swift.common.wsgi.</tt><tt class="descname">monkey_patch_mimetools</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.wsgi.monkey_patch_mimetools" title="Permalink to this definition">¶</a></dt>
+<dd><p>mimetools.Message defaults content-type to &#8220;text/plain&#8221;
+This changes it to default to None, so we can detect missing headers.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.wsgi.run_wsgi">
+<tt class="descclassname">swift.common.wsgi.</tt><tt class="descname">run_wsgi</tt><big>(</big><em>conf_file</em>, <em>app_section</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.wsgi.run_wsgi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads common settings from conf, then instantiates app and runs
+the server using the specified number of workers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>conf_file</strong> &#8211; Path to paste.deploy style configuration file</li>
+<li><strong>app_section</strong> &#8211; App name from conf file to load config from</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="client">
+<span id="id7"></span><h2>Client<a class="headerlink" href="#client" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.client"></span><p>Cloud Files client library used internally</p>
+<dl class="exception">
+<dt id="swift.common.client.ClientException">
+<em class="property">exception </em><tt class="descclassname">swift.common.client.</tt><tt class="descname">ClientException</tt><big>(</big><em>msg</em>, <em>http_scheme=''</em>, <em>http_host=''</em>, <em>http_port=''</em>, <em>http_path=''</em>, <em>http_query=''</em>, <em>http_status=0</em>, <em>http_reason=''</em>, <em>http_device=''</em><big>)</big><a class="headerlink" href="#swift.common.client.ClientException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.client.Connection">
+<em class="property">class </em><tt class="descclassname">swift.common.client.</tt><tt class="descname">Connection</tt><big>(</big><em>authurl</em>, <em>user</em>, <em>key</em>, <em>retries=5</em>, <em>preauthurl=None</em>, <em>preauthtoken=None</em>, <em>snet=False</em>, <em>starting_backoff=1</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Convenience class to make requests that will also retry the request</p>
+<dl class="method">
+<dt id="swift.common.client.Connection.delete_container">
+<tt class="descname">delete_container</tt><big>(</big><em>container</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.delete_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.delete_container" title="swift.common.client.delete_container"><tt class="xref py py-func docutils literal"><span class="pre">delete_container()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.delete_object">
+<tt class="descname">delete_object</tt><big>(</big><em>container</em>, <em>obj</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.delete_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.delete_object" title="swift.common.client.delete_object"><tt class="xref py py-func docutils literal"><span class="pre">delete_object()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.get_account">
+<tt class="descname">get_account</tt><big>(</big><em>marker=None</em>, <em>limit=None</em>, <em>prefix=None</em>, <em>full_listing=False</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.get_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.get_account" title="swift.common.client.get_account"><tt class="xref py py-func docutils literal"><span class="pre">get_account()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.get_auth">
+<tt class="descname">get_auth</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.client.Connection.get_auth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.get_container">
+<tt class="descname">get_container</tt><big>(</big><em>container</em>, <em>marker=None</em>, <em>limit=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>full_listing=False</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.get_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.get_container" title="swift.common.client.get_container"><tt class="xref py py-func docutils literal"><span class="pre">get_container()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.get_object">
+<tt class="descname">get_object</tt><big>(</big><em>container</em>, <em>obj</em>, <em>resp_chunk_size=None</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.get_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.get_object" title="swift.common.client.get_object"><tt class="xref py py-func docutils literal"><span class="pre">get_object()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.head_account">
+<tt class="descname">head_account</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.client.Connection.head_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.head_account" title="swift.common.client.head_account"><tt class="xref py py-func docutils literal"><span class="pre">head_account()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.head_container">
+<tt class="descname">head_container</tt><big>(</big><em>container</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.head_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.head_container" title="swift.common.client.head_container"><tt class="xref py py-func docutils literal"><span class="pre">head_container()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.head_object">
+<tt class="descname">head_object</tt><big>(</big><em>container</em>, <em>obj</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.head_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.head_object" title="swift.common.client.head_object"><tt class="xref py py-func docutils literal"><span class="pre">head_object()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.http_connection">
+<tt class="descname">http_connection</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.client.Connection.http_connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.post_account">
+<tt class="descname">post_account</tt><big>(</big><em>headers</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.post_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.post_account" title="swift.common.client.post_account"><tt class="xref py py-func docutils literal"><span class="pre">post_account()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.post_container">
+<tt class="descname">post_container</tt><big>(</big><em>container</em>, <em>headers</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.post_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.post_container" title="swift.common.client.post_container"><tt class="xref py py-func docutils literal"><span class="pre">post_container()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.post_object">
+<tt class="descname">post_object</tt><big>(</big><em>container</em>, <em>obj</em>, <em>headers</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.post_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.post_object" title="swift.common.client.post_object"><tt class="xref py py-func docutils literal"><span class="pre">post_object()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.put_container">
+<tt class="descname">put_container</tt><big>(</big><em>container</em>, <em>headers=None</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.put_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.put_container" title="swift.common.client.put_container"><tt class="xref py py-func docutils literal"><span class="pre">put_container()</span></tt></a></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.client.Connection.put_object">
+<tt class="descname">put_object</tt><big>(</big><em>container</em>, <em>obj</em>, <em>contents</em>, <em>content_length=None</em>, <em>etag=None</em>, <em>chunk_size=65536</em>, <em>content_type=None</em>, <em>headers=None</em><big>)</big><a class="headerlink" href="#swift.common.client.Connection.put_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wrapper for <a class="reference internal" href="#swift.common.client.put_object" title="swift.common.client.put_object"><tt class="xref py py-func docutils literal"><span class="pre">put_object()</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.delete_container">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">delete_container</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.delete_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a container</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name to delete</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP DELETE request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.delete_object">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">delete_object</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>name</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.delete_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name that the object is in</li>
+<li><strong>name</strong> &#8211; object name to delete</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP DELETE request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.get_account">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">get_account</tt><big>(</big><em>url</em>, <em>token</em>, <em>marker=None</em>, <em>limit=None</em>, <em>prefix=None</em>, <em>http_conn=None</em>, <em>full_listing=False</em><big>)</big><a class="headerlink" href="#swift.common.client.get_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a listing of containers for the account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>marker</strong> &#8211; marker query</li>
+<li><strong>limit</strong> &#8211; limit query</li>
+<li><strong>prefix</strong> &#8211; prefix query</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+<li><strong>full_listing</strong> &#8211; if True, return a full listing, else returns a max
+of 10000 listings</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a tuple of (response headers, a list of containers) The response
+headers will be a dict and all header names will be lowercase.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP GET request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.get_auth">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">get_auth</tt><big>(</big><em>url</em>, <em>user</em>, <em>key</em>, <em>snet=False</em><big>)</big><a class="headerlink" href="#swift.common.client.get_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get authentication/authorization credentials.</p>
+<p>The snet parameter is used for Rackspace&#8217;s ServiceNet internal network
+implementation. In this function, it simply adds <em>snet-</em> to the beginning
+of the host name for the returned storage URL. With Rackspace Cloud Files,
+use of this network path causes no bandwidth charges but requires the
+client to be running on Rackspace&#8217;s ServiceNet network.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; authentication/authorization URL</li>
+<li><strong>user</strong> &#8211; user to authenticate as</li>
+<li><strong>key</strong> &#8211; key or password for authorization</li>
+<li><strong>snet</strong> &#8211; use SERVICENET internal network (see above), default is False</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple of (storage URL, auth token)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP GET request to auth URL failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.get_container">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">get_container</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>marker=None</em>, <em>limit=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>http_conn=None</em>, <em>full_listing=False</em><big>)</big><a class="headerlink" href="#swift.common.client.get_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a listing of objects for the container.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name to get a listing for</li>
+<li><strong>marker</strong> &#8211; marker query</li>
+<li><strong>limit</strong> &#8211; limit query</li>
+<li><strong>prefix</strong> &#8211; prefix query</li>
+<li><strong>delimeter</strong> &#8211; string to delimit the queries on</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+<li><strong>full_listing</strong> &#8211; if True, return a full listing, else returns a max
+of 10000 listings</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a tuple of (response headers, a list of objects) The response
+headers will be a dict and all header names will be lowercase.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP GET request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.get_object">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">get_object</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>name</em>, <em>http_conn=None</em>, <em>resp_chunk_size=None</em><big>)</big><a class="headerlink" href="#swift.common.client.get_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name that the object is in</li>
+<li><strong>name</strong> &#8211; object name to get</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+<li><strong>resp_chunk_size</strong> &#8211; if defined, chunk size of data to read. NOTE: If
+you specify a resp_chunk_size you must fully read
+the object&#8217;s contents before making another
+request.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a tuple of (response headers, the object&#8217;s contents) The response
+headers will be a dict and all header names will be lowercase.</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP GET request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.head_account">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">head_account</tt><big>(</big><em>url</em>, <em>token</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.head_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get account stats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a dict containing the response&#8217;s headers (all header names will
+be lowercase)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP HEAD request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.head_container">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">head_container</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.head_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get container stats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name to get stats for</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a dict containing the response&#8217;s headers (all header names will
+be lowercase)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP HEAD request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.head_object">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">head_object</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>name</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.head_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get object info</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name that the object is in</li>
+<li><strong>name</strong> &#8211; object name to get info for</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a dict containing the response&#8217;s headers (all header names will
+be lowercase)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP HEAD request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.http_connection">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">http_connection</tt><big>(</big><em>url</em><big>)</big><a class="headerlink" href="#swift.common.client.http_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an HTTPConnection or HTTPSConnection</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; url to connect to</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">tuple of (parsed url, connection object)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">Unable to handle protocol scheme</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.post_account">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">post_account</tt><big>(</big><em>url</em>, <em>token</em>, <em>headers</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.post_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update an account&#8217;s metadata.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>headers</strong> &#8211; additional headers to include in the request</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP POST request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.post_container">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">post_container</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>headers</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.post_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update a container&#8217;s metadata.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name to update</li>
+<li><strong>headers</strong> &#8211; additional headers to include in the request</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP POST request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.post_object">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">post_object</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>name</em>, <em>headers</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.post_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update object metadata</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name that the object is in</li>
+<li><strong>name</strong> &#8211; name of the object to update</li>
+<li><strong>headers</strong> &#8211; additional headers to include in the request</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP POST request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.put_container">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">put_container</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>headers=None</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.put_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a container</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name to create</li>
+<li><strong>headers</strong> &#8211; additional headers to include in the request</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP PUT request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.put_object">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">put_object</tt><big>(</big><em>url</em>, <em>token</em>, <em>container</em>, <em>name</em>, <em>contents</em>, <em>content_length=None</em>, <em>etag=None</em>, <em>chunk_size=65536</em>, <em>content_type=None</em>, <em>headers=None</em>, <em>http_conn=None</em><big>)</big><a class="headerlink" href="#swift.common.client.put_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>url</strong> &#8211; storage URL</li>
+<li><strong>token</strong> &#8211; auth token</li>
+<li><strong>container</strong> &#8211; container name that the object is in</li>
+<li><strong>name</strong> &#8211; object name to put</li>
+<li><strong>contents</strong> &#8211; a string or a file like object to read object data from</li>
+<li><strong>content_length</strong> &#8211; value to send as content-length header; also limits
+the amount read from contents</li>
+<li><strong>etag</strong> &#8211; etag of contents</li>
+<li><strong>chunk_size</strong> &#8211; chunk size of data to write</li>
+<li><strong>content_type</strong> &#8211; value to send as content-type header</li>
+<li><strong>headers</strong> &#8211; additional headers to include in the request</li>
+<li><strong>http_conn</strong> &#8211; HTTP connection object (If None, it will create the
+conn object)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">etag from server response</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises ClientException:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">HTTP PUT request failed</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.client.quote">
+<tt class="descclassname">swift.common.client.</tt><tt class="descname">quote</tt><big>(</big><em>value</em>, <em>safe='/'</em><big>)</big><a class="headerlink" href="#swift.common.client.quote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Patched version of urllib.quote that encodes utf8 strings before quoting</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.direct_client">
+<span id="id8"></span><span id="direct-client"></span><h2>Direct Client<a class="headerlink" href="#module-swift.common.direct_client" title="Permalink to this headline">¶</a></h2>
+<p>Internal client library for making calls directly to the servers rather than
+through the proxy.</p>
+<dl class="function">
+<dt id="swift.common.direct_client.direct_delete_container">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">direct_delete_container</tt><big>(</big><em>node</em>, <em>part</em>, <em>account</em>, <em>container</em>, <em>conn_timeout=5</em>, <em>response_timeout=15</em>, <em>headers={}</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.direct_delete_container" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="swift.common.direct_client.direct_delete_object">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">direct_delete_object</tt><big>(</big><em>node</em>, <em>part</em>, <em>account</em>, <em>container</em>, <em>obj</em>, <em>conn_timeout=5</em>, <em>response_timeout=15</em>, <em>headers={}</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.direct_delete_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete object directly from the object server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> &#8211; node dictionary from the ring</li>
+<li><strong>part</strong> &#8211; partition the container is on</li>
+<li><strong>account</strong> &#8211; account name</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>obj</strong> &#8211; object name</li>
+<li><strong>conn_timeout</strong> &#8211; timeout in seconds for establishing the connection</li>
+<li><strong>response_timeout</strong> &#8211; timeout in seconds for getting the response</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">response from server</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.direct_client.direct_get_container">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">direct_get_container</tt><big>(</big><em>node</em>, <em>part</em>, <em>account</em>, <em>container</em>, <em>marker=None</em>, <em>limit=None</em>, <em>prefix=None</em>, <em>delimiter=None</em>, <em>conn_timeout=5</em>, <em>response_timeout=15</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.direct_get_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get container listings directly from the container server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> &#8211; node dictionary from the ring</li>
+<li><strong>part</strong> &#8211; partition the container is on</li>
+<li><strong>account</strong> &#8211; account name</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>marker</strong> &#8211; marker query</li>
+<li><strong>limit</strong> &#8211; query limit</li>
+<li><strong>prefix</strong> &#8211; prefix query</li>
+<li><strong>delimeter</strong> &#8211; delimeter for the query</li>
+<li><strong>conn_timeout</strong> &#8211; timeout in seconds for establishing the connection</li>
+<li><strong>response_timeout</strong> &#8211; timeout in seconds for getting the response</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a tuple of (response headers, a list of objects) The response
+headers will be a dict and all header names will be lowercase.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.direct_client.direct_get_object">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">direct_get_object</tt><big>(</big><em>node</em>, <em>part</em>, <em>account</em>, <em>container</em>, <em>obj</em>, <em>conn_timeout=5</em>, <em>response_timeout=15</em>, <em>resp_chunk_size=None</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.direct_get_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get object directly from the object server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> &#8211; node dictionary from the ring</li>
+<li><strong>part</strong> &#8211; partition the container is on</li>
+<li><strong>account</strong> &#8211; account name</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>obj</strong> &#8211; object name</li>
+<li><strong>conn_timeout</strong> &#8211; timeout in seconds for establishing the connection</li>
+<li><strong>response_timeout</strong> &#8211; timeout in seconds for getting the response</li>
+<li><strong>resp_chunk_size</strong> &#8211; if defined, chunk size of data to read.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a tuple of (response headers, the object&#8217;s contents) The response
+headers will be a dict and all header names will be lowercase.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.direct_client.direct_head_container">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">direct_head_container</tt><big>(</big><em>node</em>, <em>part</em>, <em>account</em>, <em>container</em>, <em>conn_timeout=5</em>, <em>response_timeout=15</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.direct_head_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request container information directly from the container server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> &#8211; node dictionary from the ring</li>
+<li><strong>part</strong> &#8211; partition the container is on</li>
+<li><strong>account</strong> &#8211; account name</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>conn_timeout</strong> &#8211; timeout in seconds for establishing the connection</li>
+<li><strong>response_timeout</strong> &#8211; timeout in seconds for getting the response</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dict containing the response&#8217;s headers (all header names will
+be lowercase)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.direct_client.direct_head_object">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">direct_head_object</tt><big>(</big><em>node</em>, <em>part</em>, <em>account</em>, <em>container</em>, <em>obj</em>, <em>conn_timeout=5</em>, <em>response_timeout=15</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.direct_head_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Request object information directly from the object server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> &#8211; node dictionary from the ring</li>
+<li><strong>part</strong> &#8211; partition the container is on</li>
+<li><strong>account</strong> &#8211; account name</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>obj</strong> &#8211; object name</li>
+<li><strong>conn_timeout</strong> &#8211; timeout in seconds for establishing the connection</li>
+<li><strong>response_timeout</strong> &#8211; timeout in seconds for getting the response</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a dict containing the response&#8217;s headers (all header names will
+be lowercase)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.direct_client.direct_put_object">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">direct_put_object</tt><big>(</big><em>node</em>, <em>part</em>, <em>account</em>, <em>container</em>, <em>name</em>, <em>contents</em>, <em>content_length=None</em>, <em>etag=None</em>, <em>content_type=None</em>, <em>headers=None</em>, <em>conn_timeout=5</em>, <em>response_timeout=15</em>, <em>resp_chunk_size=None</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.direct_put_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put object directly from the object server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> &#8211; node dictionary from the ring</li>
+<li><strong>part</strong> &#8211; partition the container is on</li>
+<li><strong>account</strong> &#8211; account name</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>name</strong> &#8211; object name</li>
+<li><strong>contents</strong> &#8211; a string to read object data from</li>
+<li><strong>content_length</strong> &#8211; value to send as content-length header</li>
+<li><strong>etag</strong> &#8211; etag of contents</li>
+<li><strong>content_type</strong> &#8211; value to send as content-type header</li>
+<li><strong>headers</strong> &#8211; additional headers to include in the request</li>
+<li><strong>conn_timeout</strong> &#8211; timeout in seconds for establishing the connection</li>
+<li><strong>response_timeout</strong> &#8211; timeout in seconds for getting the response</li>
+<li><strong>chunk_size</strong> &#8211; if defined, chunk size of data to send.</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">etag from the server response</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.direct_client.quote">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">quote</tt><big>(</big><em>value</em>, <em>safe='/'</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.quote" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="swift.common.direct_client.retry">
+<tt class="descclassname">swift.common.direct_client.</tt><tt class="descname">retry</tt><big>(</big><em>func</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.direct_client.retry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to retry a given function a number of times.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>func</strong> &#8211; callable to be called</li>
+<li><strong>retries</strong> &#8211; number of retries</li>
+<li><strong>error_log</strong> &#8211; logger for errors</li>
+<li><strong>args</strong> &#8211; arguments to send to func</li>
+<li><strong>kwargs</strong> &#8211; keyward arguments to send to func (if retries or
+error_log are sent, they will be deleted from kwargs
+before sending on to func)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">restult of func</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.bufferedhttp">
+<span id="id9"></span><span id="buffered-http"></span><h2>Buffered HTTP<a class="headerlink" href="#module-swift.common.bufferedhttp" title="Permalink to this headline">¶</a></h2>
+<p>Monkey Patch httplib.HTTPResponse to buffer reads of headers. This can improve
+performance when making large numbers of small HTTP requests.  This module
+also provides helper functions to make HTTP connections using
+BufferedHTTPResponse.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you use this, be sure that the libraries you are using do not access
+the socket directly (xmlrpclib, I&#8217;m looking at you :/), and instead
+make all calls through httplib.</p>
+</div>
+<dl class="class">
+<dt id="swift.common.bufferedhttp.BufferedHTTPConnection">
+<em class="property">class </em><tt class="descclassname">swift.common.bufferedhttp.</tt><tt class="descname">BufferedHTTPConnection</tt><big>(</big><em>host</em>, <em>port=None</em>, <em>strict=None</em>, <em>timeout=&lt;object object at 0xb7869750&gt;</em><big>)</big><a class="headerlink" href="#swift.common.bufferedhttp.BufferedHTTPConnection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/httplib.html#httplib.HTTPConnection" title="(in Python v2.7)"><tt class="docutils literal"><span class="pre">httplib.HTTPConnection</span></tt></a></p>
+<p>HTTPConnection class that uses BufferedHTTPResponse</p>
+<dl class="attribute">
+<dt id="swift.common.bufferedhttp.BufferedHTTPConnection.response_class">
+<tt class="descname">response_class</tt><a class="headerlink" href="#swift.common.bufferedhttp.BufferedHTTPConnection.response_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#swift.common.bufferedhttp.BufferedHTTPResponse" title="swift.common.bufferedhttp.BufferedHTTPResponse"><tt class="xref py py-class docutils literal"><span class="pre">BufferedHTTPResponse</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.bufferedhttp.BufferedHTTPResponse">
+<em class="property">class </em><tt class="descclassname">swift.common.bufferedhttp.</tt><tt class="descname">BufferedHTTPResponse</tt><big>(</big><em>sock</em>, <em>debuglevel=0</em>, <em>strict=0</em>, <em>method=None</em><big>)</big><a class="headerlink" href="#swift.common.bufferedhttp.BufferedHTTPResponse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/httplib.html#httplib.HTTPResponse" title="(in Python v2.7)"><tt class="docutils literal"><span class="pre">httplib.HTTPResponse</span></tt></a></p>
+<p>HTTPResponse class that buffers reading of headers</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.bufferedhttp.http_connect">
+<tt class="descclassname">swift.common.bufferedhttp.</tt><tt class="descname">http_connect</tt><big>(</big><em>ipaddr</em>, <em>port</em>, <em>device</em>, <em>partition</em>, <em>method</em>, <em>path</em>, <em>headers=None</em>, <em>query_string=None</em>, <em>ssl=False</em><big>)</big><a class="headerlink" href="#swift.common.bufferedhttp.http_connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to create an HTTPConnection object. If ssl is set True,
+HTTPSConnection will be used. However, if ssl=False, BufferedHTTPConnection
+will be used, which is buffered for backend Swift services.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ipaddr</strong> &#8211; IPv4 address to connect to</li>
+<li><strong>port</strong> &#8211; port to connect to</li>
+<li><strong>device</strong> &#8211; device of the node to query</li>
+<li><strong>partition</strong> &#8211; partition on the device</li>
+<li><strong>method</strong> &#8211; HTTP method to request (&#8216;GET&#8217;, &#8216;PUT&#8217;, &#8216;POST&#8217;, etc.)</li>
+<li><strong>path</strong> &#8211; request path</li>
+<li><strong>headers</strong> &#8211; dictionary of headers</li>
+<li><strong>query_string</strong> &#8211; request query string</li>
+<li><strong>ssl</strong> &#8211; set True if SSL should be used (default: False)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">HTTPConnection object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.bufferedhttp.http_connect_raw">
+<tt class="descclassname">swift.common.bufferedhttp.</tt><tt class="descname">http_connect_raw</tt><big>(</big><em>ipaddr</em>, <em>port</em>, <em>method</em>, <em>path</em>, <em>headers=None</em>, <em>query_string=None</em>, <em>ssl=False</em><big>)</big><a class="headerlink" href="#swift.common.bufferedhttp.http_connect_raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helper function to create an HTTPConnection object. If ssl is set True,
+HTTPSConnection will be used. However, if ssl=False, BufferedHTTPConnection
+will be used, which is buffered for backend Swift services.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ipaddr</strong> &#8211; IPv4 address to connect to</li>
+<li><strong>port</strong> &#8211; port to connect to</li>
+<li><strong>method</strong> &#8211; HTTP method to request (&#8216;GET&#8217;, &#8216;PUT&#8217;, &#8216;POST&#8217;, etc.)</li>
+<li><strong>path</strong> &#8211; request path</li>
+<li><strong>headers</strong> &#8211; dictionary of headers</li>
+<li><strong>query_string</strong> &#8211; request query string</li>
+<li><strong>ssl</strong> &#8211; set True if SSL should be used (default: False)</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">HTTPConnection object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="healthcheck">
+<span id="id10"></span><h2>Healthcheck<a class="headerlink" href="#healthcheck" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.middleware.healthcheck"></span><dl class="class">
+<dt id="swift.common.middleware.healthcheck.HealthCheckMiddleware">
+<em class="property">class </em><tt class="descclassname">swift.common.middleware.healthcheck.</tt><tt class="descname">HealthCheckMiddleware</tt><big>(</big><em>app</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.middleware.healthcheck.HealthCheckMiddleware" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Healthcheck middleware used for monitoring.</p>
+<p>If the path is /healthcheck, it will respond with &#8220;OK&#8221; in the body</p>
+<dl class="method">
+<dt id="swift.common.middleware.healthcheck.HealthCheckMiddleware.GET">
+<tt class="descname">GET</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.common.middleware.healthcheck.HealthCheckMiddleware.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a 200 response with &#8220;OK&#8221; in the body.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.memcached">
+<span id="memcached"></span><span id="memecached"></span><h2>MemCacheD<a class="headerlink" href="#module-swift.common.memcached" title="Permalink to this headline">¶</a></h2>
+<p>Lucid comes with memcached: v1.4.2.  Protocol documentation for that
+version is at:</p>
+<p><a class="reference external" href="http://github.com/memcached/memcached/blob/1.4.2/doc/protocol.txt">http://github.com/memcached/memcached/blob/1.4.2/doc/protocol.txt</a></p>
+<dl class="class">
+<dt id="swift.common.memcached.MemcacheRing">
+<em class="property">class </em><tt class="descclassname">swift.common.memcached.</tt><tt class="descname">MemcacheRing</tt><big>(</big><em>servers</em>, <em>connect_timeout=0.29999999999999999</em>, <em>io_timeout=2.0</em>, <em>tries=3</em><big>)</big><a class="headerlink" href="#swift.common.memcached.MemcacheRing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Simple, consistent-hashed memcache client.</p>
+<dl class="method">
+<dt id="swift.common.memcached.MemcacheRing.decr">
+<tt class="descname">decr</tt><big>(</big><em>key</em>, <em>delta=1</em>, <em>timeout=0</em><big>)</big><a class="headerlink" href="#swift.common.memcached.MemcacheRing.decr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decrements a key which has a numeric value by delta. Calls incr with
+-delta.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> &#8211; key</li>
+<li><strong>delta</strong> &#8211; amount to subtract to the value of key (or set the
+value to 0 if the key is not found) will be cast to
+an int</li>
+<li><strong>timeout</strong> &#8211; ttl in memcache</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.memcached.MemcacheRing.delete">
+<tt class="descname">delete</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#swift.common.memcached.MemcacheRing.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes a key/value pair from memcache.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> &#8211; key to be deleted</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.memcached.MemcacheRing.get">
+<tt class="descname">get</tt><big>(</big><em>key</em><big>)</big><a class="headerlink" href="#swift.common.memcached.MemcacheRing.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the object specified by key.  It will also unpickle the object
+before returning if it is pickled in memcache.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>key</strong> &#8211; key</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">value of the key in memcache</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.memcached.MemcacheRing.get_multi">
+<tt class="descname">get_multi</tt><big>(</big><em>keys</em>, <em>server_key</em><big>)</big><a class="headerlink" href="#swift.common.memcached.MemcacheRing.get_multi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets multiple values from memcache for the given keys.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>keys</strong> &#8211; keys for values to be retrieved from memcache</li>
+<li><strong>servery_key</strong> &#8211; key to use in determining which server in the ring
+is used</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of values</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.memcached.MemcacheRing.incr">
+<tt class="descname">incr</tt><big>(</big><em>key</em>, <em>delta=1</em>, <em>timeout=0</em><big>)</big><a class="headerlink" href="#swift.common.memcached.MemcacheRing.incr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Increments a key which has a numeric value by delta.
+If the key can&#8217;t be found, it&#8217;s added as delta or 0 if delta &lt; 0.
+If passed a negative number, will use memcached&#8217;s decr. Returns
+the int stored in memcached
+Note: The data memcached stores as the result of incr/decr is
+an unsigned int.  decr&#8217;s that result in a number below 0 are
+stored as 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> &#8211; key</li>
+<li><strong>delta</strong> &#8211; amount to add to the value of key (or set as the value
+if the key is not found) will be cast to an int</li>
+<li><strong>timeout</strong> &#8211; ttl in memcache</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.memcached.MemcacheRing.set">
+<tt class="descname">set</tt><big>(</big><em>key</em>, <em>value</em>, <em>serialize=True</em>, <em>timeout=0</em><big>)</big><a class="headerlink" href="#swift.common.memcached.MemcacheRing.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set a key/value pair in memcache</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>key</strong> &#8211; key</li>
+<li><strong>value</strong> &#8211; value</li>
+<li><strong>serialize</strong> &#8211; if True, value is pickled before sending to memcache</li>
+<li><strong>timeout</strong> &#8211; ttl in memcache</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.memcached.MemcacheRing.set_multi">
+<tt class="descname">set_multi</tt><big>(</big><em>mapping</em>, <em>server_key</em>, <em>serialize=True</em>, <em>timeout=0</em><big>)</big><a class="headerlink" href="#swift.common.memcached.MemcacheRing.set_multi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets multiple key/value pairs in memcache.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>mapping</strong> &#8211; dictonary of keys and values to be set in memcache</li>
+<li><strong>servery_key</strong> &#8211; key to use in determining which server in the ring
+is used</li>
+<li><strong>serialize</strong> &#8211; if True, value is pickled before sending to memcache</li>
+<li><strong>timeout</strong> &#8211; ttl for memcache</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.middleware.ratelimit">
+<span id="ratelimit"></span><h2>Ratelimit<a class="headerlink" href="#module-swift.common.middleware.ratelimit" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.common.middleware.ratelimit.RateLimitMiddleware">
+<em class="property">class </em><tt class="descclassname">swift.common.middleware.ratelimit.</tt><tt class="descname">RateLimitMiddleware</tt><big>(</big><em>app</em>, <em>conf</em>, <em>logger=None</em><big>)</big><a class="headerlink" href="#swift.common.middleware.ratelimit.RateLimitMiddleware" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Rate limiting middleware</p>
+<p>Rate limits requests on both an Account and Container level.  Limits are
+configurable.</p>
+<dl class="method">
+<dt id="swift.common.middleware.ratelimit.RateLimitMiddleware.get_container_maxrate">
+<tt class="descname">get_container_maxrate</tt><big>(</big><em>container_size</em><big>)</big><a class="headerlink" href="#swift.common.middleware.ratelimit.RateLimitMiddleware.get_container_maxrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns number of requests allowed per second for given container size.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.ratelimit.RateLimitMiddleware.get_ratelimitable_key_tuples">
+<tt class="descname">get_ratelimitable_key_tuples</tt><big>(</big><em>req_method</em>, <em>account_name</em>, <em>container_name=None</em>, <em>obj_name=None</em><big>)</big><a class="headerlink" href="#swift.common.middleware.ratelimit.RateLimitMiddleware.get_ratelimitable_key_tuples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of key (used in memcache), ratelimit tuples. Keys
+should be checked in order.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>req_method</strong> &#8211; HTTP method</li>
+<li><strong>account_name</strong> &#8211; account name from path</li>
+<li><strong>container_name</strong> &#8211; container name from path</li>
+<li><strong>obj_name</strong> &#8211; object name from path</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.ratelimit.RateLimitMiddleware.handle_ratelimit">
+<tt class="descname">handle_ratelimit</tt><big>(</big><em>req</em>, <em>account_name</em>, <em>container_name</em>, <em>obj_name</em><big>)</big><a class="headerlink" href="#swift.common.middleware.ratelimit.RateLimitMiddleware.handle_ratelimit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs rate limiting and account white/black listing.  Sleeps
+if necessary.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>account_name</strong> &#8211; account name from path</li>
+<li><strong>container_name</strong> &#8211; container name from path</li>
+<li><strong>obj_name</strong> &#8211; object name from path</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.middleware.ratelimit.filter_factory">
+<tt class="descclassname">swift.common.middleware.ratelimit.</tt><tt class="descname">filter_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.common.middleware.ratelimit.filter_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>paste.deploy app factory for creating WSGI proxy apps.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.middleware.swift3">
+<span id="swift3"></span><h2>Swift3<a class="headerlink" href="#module-swift.common.middleware.swift3" title="Permalink to this headline">¶</a></h2>
+<p>The swift3 middleware will emulate the S3 REST api on top of swift.</p>
+<p>The following opperations are currently supported:</p>
+<blockquote>
+<ul class="simple">
+<li>GET Service</li>
+<li>DELETE Bucket</li>
+<li>GET Bucket (List Objects)</li>
+<li>PUT Bucket</li>
+<li>DELETE Object</li>
+<li>GET Object</li>
+<li>HEAD Object</li>
+<li>PUT Object</li>
+<li>PUT Object (Copy)</li>
+</ul>
+</blockquote>
+<p>To add this middleware to your configuration, add the swift3 middleware
+in front of the auth middleware, and before any other middleware that
+look at swift requests (like rate limiting).</p>
+<p>To set up your client, the access key will be the concatenation of the
+account and user strings that should look like test:tester, and the
+secret access key is the account password.  The host should also point
+to the swift storage hostname.  It also will have to use the old style
+calling format, and not the hostname based container format.</p>
+<p>An example client using the python boto library might look like the
+following for an SAIO setup:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">connection</span> <span class="o">=</span> <span class="n">boto</span><span class="o">.</span><span class="n">s3</span><span class="o">.</span><span class="n">Connection</span><span class="p">(</span>
+    <span class="n">aws_access_key_id</span><span class="o">=</span><span class="s">&#39;test:tester&#39;</span><span class="p">,</span>
+    <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="s">&#39;testing&#39;</span><span class="p">,</span>
+    <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">,</span>
+    <span class="n">host</span><span class="o">=</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+    <span class="n">is_secure</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">calling_format</span><span class="o">=</span><span class="n">boto</span><span class="o">.</span><span class="n">s3</span><span class="o">.</span><span class="n">connection</span><span class="o">.</span><span class="n">OrdinaryCallingFormat</span><span class="p">())</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="swift.common.middleware.swift3.BucketController">
+<em class="property">class </em><tt class="descclassname">swift.common.middleware.swift3.</tt><tt class="descname">BucketController</tt><big>(</big><em>env</em>, <em>app</em>, <em>account_name</em>, <em>token</em>, <em>container_name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.BucketController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.middleware.swift3.Controller</span></tt></p>
+<p>Handles bucket request.</p>
+<dl class="method">
+<dt id="swift.common.middleware.swift3.BucketController.DELETE">
+<tt class="descname">DELETE</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.BucketController.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle DELETE Bucket request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swift3.BucketController.GET">
+<tt class="descname">GET</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.BucketController.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle GET Bucket (List Objects) request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swift3.BucketController.PUT">
+<tt class="descname">PUT</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.BucketController.PUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle PUT Bucket request</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.middleware.swift3.ObjectController">
+<em class="property">class </em><tt class="descclassname">swift.common.middleware.swift3.</tt><tt class="descname">ObjectController</tt><big>(</big><em>env</em>, <em>app</em>, <em>account_name</em>, <em>token</em>, <em>container_name</em>, <em>object_name</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.ObjectController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.middleware.swift3.Controller</span></tt></p>
+<p>Handles requests on objects</p>
+<dl class="method">
+<dt id="swift.common.middleware.swift3.ObjectController.DELETE">
+<tt class="descname">DELETE</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.ObjectController.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle DELETE Object request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swift3.ObjectController.GET">
+<tt class="descname">GET</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.ObjectController.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle GET Object request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swift3.ObjectController.HEAD">
+<tt class="descname">HEAD</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.ObjectController.HEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HEAD Object request</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.middleware.swift3.ObjectController.PUT">
+<tt class="descname">PUT</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.ObjectController.PUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle PUT Object and PUT Object (Copy) request</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.middleware.swift3.ServiceController">
+<em class="property">class </em><tt class="descclassname">swift.common.middleware.swift3.</tt><tt class="descname">ServiceController</tt><big>(</big><em>env</em>, <em>app</em>, <em>account_name</em>, <em>token</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.ServiceController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.middleware.swift3.Controller</span></tt></p>
+<p>Handles account level requests.</p>
+<dl class="method">
+<dt id="swift.common.middleware.swift3.ServiceController.GET">
+<tt class="descname">GET</tt><big>(</big><em>env</em>, <em>start_response</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.ServiceController.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle GET Service request</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.middleware.swift3.Swift3Middleware">
+<em class="property">class </em><tt class="descclassname">swift.common.middleware.swift3.</tt><tt class="descname">Swift3Middleware</tt><big>(</big><em>app</em>, <em>conf</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.Swift3Middleware" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Swift3 S3 compatibility midleware</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.middleware.swift3.filter_factory">
+<tt class="descclassname">swift.common.middleware.swift3.</tt><tt class="descname">filter_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.filter_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Standard filter factory to use the middleware with paste.deploy</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.common.middleware.swift3.get_err_response">
+<tt class="descclassname">swift.common.middleware.swift3.</tt><tt class="descname">get_err_response</tt><big>(</big><em>code</em><big>)</big><a class="headerlink" href="#swift.common.middleware.swift3.get_err_response" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an HTTP response code, create a properly formatted xml error response</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>code</strong> &#8211; error code</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">webob.response object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="auth.html" title="Developer’s Authorization"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Replication &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Swift stats system" href="overview_stats.html" />
+    <link rel="prev" title="The Auth System" href="overview_auth.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview_stats.html" title="Swift stats system"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview_auth.html" title="The Auth System"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Replication</a><ul>
+<li><a class="reference internal" href="#db-replication">DB Replication</a></li>
+<li><a class="reference internal" href="#object-replication">Object Replication</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview_auth.html"
+                        title="previous chapter">The Auth System</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview_stats.html"
+                        title="next chapter">Swift stats system</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/overview_replication.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="replication">
+<h1>Replication<a class="headerlink" href="#replication" title="Permalink to this headline">¶</a></h1>
+<p>Since each replica in swift functions independently, and clients generally require only a simple majority of nodes responding to consider an operation successful, transient failures like network partitions can quickly cause replicas to diverge.  These differences are eventually reconciled by asynchronous, peer-to-peer replicator processes.  The replicator processes traverse their local filesystems, concurrently performing operations in a manner that balances load across physical disks.</p>
+<p>Replication uses a push model, with records and files generally only being copied from local to remote replicas.  This is important because data on the node may not belong there (as in the case of handoffs and ring changes), and a replicator can&#8217;t know what data exists elsewhere in the cluster that it should pull in.  It&#8217;s the duty of any node that contains data to ensure that data gets to where it belongs.  Replica placement is handled by the ring.</p>
+<p>Every deleted record or file in the system is marked by a tombstone, so that deletions can be replicated alongside creations.  These tombstones are cleaned up by the replication process after a period of time referred to as the consistency window, which is related to replication duration and how long transient failures can remove a node from the cluster.  Tombstone cleanup must be tied to replication to reach replica convergence.</p>
+<p>If a replicator detects that a remote drive is has failed, it will use the ring&#8217;s &#8220;get_more_nodes&#8221; interface to choose an alternate node to synchronize with.  The replicator can generally maintain desired levels of replication in the face of hardware failures, though some replicas may not be in an immediately usable location.</p>
+<p>Replication is an area of active development, and likely rife with potential improvements to speed and correctness.</p>
+<p>There are two major classes of replicator - the db replicator, which replicates accounts and containers, and the object replicator, which replicates object data.</p>
+<div class="section" id="db-replication">
+<h2>DB Replication<a class="headerlink" href="#db-replication" title="Permalink to this headline">¶</a></h2>
+<p>The first step performed by db replication is a low-cost hash comparison to find out whether or not two replicas already match.  Under normal operation, this check is able to verify that most databases in the system are already synchronized very quickly.  If the hashes differ, the replicator brings the databases in sync by sharing records added since the last sync point.</p>
+<p>This sync point is a high water mark noting the last record at which two databases were known to be in sync, and is stored in each database as a tuple of the remote database id and record id.  Database ids are unique amongst all replicas of the database, and record ids are monotonically increasing integers.  After all new records have been pushed to the remote database, the entire sync table of the local database is pushed, so the remote database knows it&#8217;s now in sync with everyone the local database has previously synchronized with.</p>
+<p>If a replica is found to be missing entirely, the whole local database file is transmitted to the peer using rsync(1) and vested with a new unique id.</p>
+<p>In practice, DB replication can process hundreds of databases per concurrency setting per second (up to the number of available CPUs or disks) and is bound by the number of DB transactions that must be performed.</p>
+</div>
+<div class="section" id="object-replication">
+<h2>Object Replication<a class="headerlink" href="#object-replication" title="Permalink to this headline">¶</a></h2>
+<p>The initial implementation of object replication simply performed an rsync to push data from a local partition to all remote servers it was expected to exist on.  While this performed adequately at small scale, replication times skyrocketed once directory structures could no longer be held in RAM.  We now use a modification of this scheme in which a hash of the contents for each suffix directory is saved to a per-partition hashes file.  The hash for a suffix directory is invalidated when the contents of that suffix directory are modified.</p>
+<p>The object replication process reads in these hash files, calculating any invalidated hashes.  It then transmits the hashes to each remote server that should hold the partition, and only suffix directories with differing hashes on the remote server are rsynced.  After pushing files to the remote server, the replication process notifies it to recalculate hashes for the rsynced suffix directories.</p>
+<p>Performance of object replication is generally bound by the number of uncached directories it has to traverse, usually as a result of invalidated suffix directory hashes.  Using write volume and partition counts from our running systems, it was designed so that around 2% of the hash space on a normal node will be invalidated per day, which has experimentally given us acceptable replication speeds.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview_stats.html" title="Swift stats system"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview_auth.html" title="The Auth System"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

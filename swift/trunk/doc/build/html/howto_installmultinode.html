@@ -1,0 +1,617 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Instructions for a Multiple Server Swift Installation (Ubuntu) &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Deployment Guide" href="deployment_guide.html" />
+    <link rel="prev" title="Auth Server and Middleware" href="development_auth.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="deployment_guide.html" title="Deployment Guide"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="development_auth.html" title="Auth Server and Middleware"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Instructions for a Multiple Server Swift Installation (Ubuntu)</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#basic-architecture-and-terms">Basic architecture and terms</a></li>
+<li><a class="reference internal" href="#network-setup-notes">Network Setup Notes</a></li>
+<li><a class="reference internal" href="#general-os-configuration-and-partitioning-for-each-node">General OS configuration and partitioning for each node</a></li>
+<li><a class="reference internal" href="#configure-the-proxy-node">Configure the Proxy node</a></li>
+<li><a class="reference internal" href="#configure-the-auth-node">Configure the Auth node</a></li>
+<li><a class="reference internal" href="#configure-the-storage-nodes">Configure the Storage nodes</a></li>
+<li><a class="reference internal" href="#create-swift-admin-account-and-test">Create Swift admin account and test</a></li>
+<li><a class="reference internal" href="#adding-a-proxy-server">Adding a Proxy Server</a></li>
+<li><a class="reference internal" href="#additional-cleanup-script-for-swauth">Additional Cleanup Script for Swauth</a></li>
+<li><a class="reference internal" href="#troubleshooting-notes">Troubleshooting Notes</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="development_auth.html"
+                        title="previous chapter">Auth Server and Middleware</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="deployment_guide.html"
+                        title="next chapter">Deployment Guide</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/howto_installmultinode.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="instructions-for-a-multiple-server-swift-installation-ubuntu">
+<h1>Instructions for a Multiple Server Swift Installation (Ubuntu)<a class="headerlink" href="#instructions-for-a-multiple-server-swift-installation-ubuntu" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Ubuntu Server 10.04 LTS installation media</li>
+</ul>
+</div>
+<div class="section" id="basic-architecture-and-terms">
+<h2>Basic architecture and terms<a class="headerlink" href="#basic-architecture-and-terms" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><em>node</em> - a host machine running one or more Swift services</li>
+<li><em>Proxy node</em> - node that runs Proxy services; can also run Swauth</li>
+<li><em>Auth node</em> - node that runs the Auth service; only required for DevAuth</li>
+<li><em>Storage node</em> - node that runs Account, Container, and Object services</li>
+<li><em>ring</em> - a set of mappings of Swift data to physical devices</li>
+</ul>
+<p>This document shows a cluster using the following types of nodes:</p>
+<ul class="simple">
+<li>one Proxy node<ul>
+<li>Runs the swift-proxy-server processes which proxy requests to the
+appropriate Storage nodes. For Swauth, the proxy server will also contain
+the Swauth service as WSGI middleware.</li>
+</ul>
+</li>
+<li>one Auth node<ul>
+<li>Runs the swift-auth-server which controls authentication and
+authorization for all requests.  This can be on the same node as a
+Proxy node. This is only required for DevAuth.</li>
+</ul>
+</li>
+<li>five Storage nodes<ul>
+<li>Runs the swift-account-server, swift-container-server, and
+swift-object-server processes which control storage of the account
+databases, the container databases, as well as the actual stored
+objects.</li>
+</ul>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Fewer Storage nodes can be used initially, but a minimum of 5 is
+recommended for a production cluster.</p>
+</div>
+<p>This document describes each Storage node as a separate zone in the ring.
+It is recommended to have a minimum of 5 zones. A zone is a group of nodes
+that is as isolated as possible from other nodes (separate servers, network,
+power, even geography). The ring guarantees that every replica is stored
+in a separate zone.  For more information about the ring and zones, see: <a class="reference internal" href="overview_ring.html"><em>The Rings</em></a>.</p>
+<p>To increase reliability, you may want to add additional Proxy servers for performance which is described in <a class="reference internal" href="#add-proxy-server"><em>Adding a Proxy Server</em></a>.</p>
+</div>
+<div class="section" id="network-setup-notes">
+<h2>Network Setup Notes<a class="headerlink" href="#network-setup-notes" title="Permalink to this headline">¶</a></h2>
+<p>This document refers to two networks.  An external network for connecting to the Proxy server, and a storage network that is not accessibile from outside the cluster, to which all of the nodes are connected.  All of the Swift services, as well as the rsync daemon on the Storage nodes are configured to listen on their STORAGE_LOCAL_NET IP addresses.</p>
+</div>
+<div class="section" id="general-os-configuration-and-partitioning-for-each-node">
+<h2>General OS configuration and partitioning for each node<a class="headerlink" href="#general-os-configuration-and-partitioning-for-each-node" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p class="first">Install the baseline Ubuntu Server 10.04 LTS on all nodes.</p>
+</li>
+<li><p class="first">Install common Swift software prereqs:</p>
+<div class="highlight-python"><pre>apt-get install python-software-properties
+add-apt-repository ppa:swift-core/ppa
+apt-get update
+apt-get install swift openssh-server</pre>
+</div>
+</li>
+<li><p class="first">Create and populate configuration directories:</p>
+<div class="highlight-python"><pre>mkdir -p /etc/swift
+chown -R swift:swift /etc/swift/</pre>
+</div>
+</li>
+<li><p class="first">Create /etc/swift/swift.conf:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">swift</span><span class="o">-</span><span class="nb">hash</span><span class="p">]</span>
+<span class="c"># random unique string that can never change (DO NOT LOSE)</span>
+<span class="n">swift_hash_path_suffix</span> <span class="o">=</span> <span class="n">changeme</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">/etc/swift/swift.conf should be set to some random string of text to be
+used as a salt when hashing to determine mappings in the ring.  This
+file should be the same on every node in the cluster!</p>
+</div>
+</div>
+<div class="section" id="configure-the-proxy-node">
+<span id="config-proxy"></span><h2>Configure the Proxy node<a class="headerlink" href="#configure-the-proxy-node" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is assumed that all commands are run as the root user</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Install swift-proxy service:</p>
+<div class="highlight-python"><pre>apt-get install swift-proxy memcached</pre>
+</div>
+</li>
+<li><p class="first">Create self-signed cert for SSL:</p>
+<div class="highlight-python"><pre>cd /etc/swift
+openssl req -new -x509 -nodes -out cert.crt -keyout cert.key</pre>
+</div>
+</li>
+<li><p class="first">Modify memcached to listen on the default interfaces.  Preferably this should be on a local, non-public network.  Edit the following line in /etc/memcached.conf, changing:</p>
+<div class="highlight-python"><pre>-l 127.0.0.1
+to
+-l &lt;PROXY_LOCAL_NET_IP&gt;</pre>
+</div>
+</li>
+<li><p class="first">Restart the memcached server:</p>
+<div class="highlight-python"><pre>service memcached restart</pre>
+</div>
+</li>
+<li><p class="first">Create /etc/swift/proxy-server.conf:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+cert_file = /etc/swift/cert.crt
+key_file = /etc/swift/cert.key
+bind_port = 8080
+workers = 8
+user = swift
+
+[pipeline:main]
+# For DevAuth:
+pipeline = healthcheck cache auth proxy-server
+# For Swauth:
+# pipeline = healthcheck cache swauth proxy-server
+
+[app:proxy-server]
+use = egg:swift#proxy
+allow_account_management = true
+
+# Only needed for DevAuth
+[filter:auth]
+use = egg:swift#auth
+ssl = true
+
+# Only needed for Swauth
+[filter:swauth]
+use = egg:swift#swauth
+default_swift_cluster = local#https://&lt;PROXY_LOCAL_NET_IP&gt;:8080/v1
+# Highly recommended to change this key to something else!
+super_admin_key = swauthkey
+
+[filter:healthcheck]
+use = egg:swift#healthcheck
+
+[filter:cache]
+use = egg:swift#memcache
+memcache_servers = &lt;PROXY_LOCAL_NET_IP&gt;:11211</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you run multiple memcache servers, put the multiple IP:port listings
+in the [filter:cache] section of the proxy-server.conf file like:
+<cite>10.1.2.3:11211,10.1.2.4:11211</cite>. Only the proxy server uses memcache.</p>
+</div>
+</li>
+<li><p class="first">Create the account, container and object rings:</p>
+<div class="highlight-python"><pre>cd /etc/swift
+swift-ring-builder account.builder create 18 3 1
+swift-ring-builder container.builder create 18 3 1
+swift-ring-builder object.builder create 18 3 1</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For more information on building rings, see <a class="reference internal" href="overview_ring.html"><em>The Rings</em></a>.</p>
+</div>
+</li>
+<li><p class="first">For every storage device on each node add entries to each ring:</p>
+<div class="highlight-python"><pre>swift-ring-builder account.builder add z&lt;ZONE&gt;-&lt;STORAGE_LOCAL_NET_IP&gt;:6002/&lt;DEVICE&gt; 100
+swift-ring-builder container.builder add z&lt;ZONE&gt;-&lt;STORAGE_LOCAL_NET_IP_1&gt;:6001/&lt;DEVICE&gt; 100
+swift-ring-builder object.builder add z&lt;ZONE&gt;-&lt;STORAGE_LOCAL_NET_IP_1&gt;:6000/&lt;DEVICE&gt; 100</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Assuming there are 5 zones with 1 node per zone, ZONE should start at
+1 and increment by one for each additional node.</p>
+</div>
+</li>
+<li><p class="first">Verify the ring contents for each ring:</p>
+<div class="highlight-python"><pre>swift-ring-builder account.builder
+swift-ring-builder container.builder
+swift-ring-builder object.builder</pre>
+</div>
+</li>
+<li><p class="first">Rebalance the rings:</p>
+<div class="highlight-python"><pre>swift-ring-builder account.builder rebalance
+swift-ring-builder container.builder rebalance
+swift-ring-builder object.builder rebalance</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Rebalancing rings can take some time.</p>
+</div>
+</li>
+<li><p class="first">Copy the account.ring.gz, container.ring.gz, and object.ring.gz files
+to each of the Proxy and Storage nodes in /etc/swift.</p>
+</li>
+<li><p class="first">Make sure all the config files are owned by the swift user:</p>
+<div class="highlight-python"><pre>chown -R swift:swift /etc/swift</pre>
+</div>
+</li>
+<li><p class="first">Start Proxy services:</p>
+<div class="highlight-python"><pre>swift-init proxy start</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="configure-the-auth-node">
+<h2>Configure the Auth node<a class="headerlink" href="#configure-the-auth-node" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only required for DevAuth; you can skip this section for Swauth.</p>
+</div>
+<ol class="arabic">
+<li><p class="first">If this node is not running on the same node as a proxy, create a
+self-signed cert as you did for the Proxy node</p>
+</li>
+<li><p class="first">Install swift-auth service:</p>
+<div class="highlight-python"><pre>apt-get install swift-auth</pre>
+</div>
+</li>
+<li><p class="first">Create /etc/swift/auth-server.conf:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+cert_file = /etc/swift/cert.crt
+key_file = /etc/swift/cert.key
+user = swift
+
+[pipeline:main]
+pipeline = auth-server
+
+[app:auth-server]
+use = egg:swift#auth
+default_cluster_url = https://&lt;PROXY_HOSTNAME&gt;:8080/v1
+# Highly recommended to change this key to something else!
+super_admin_key = devauth</pre>
+</div>
+</li>
+<li><p class="first">Start Auth services:</p>
+<div class="highlight-python"><pre>swift-init auth start
+chown swift:swift /etc/swift/auth.db
+swift-init auth restart            # 1.1.0 workaround because swift creates auth.db owned as root</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="configure-the-storage-nodes">
+<h2>Configure the Storage nodes<a class="headerlink" href="#configure-the-storage-nodes" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Swift <em>should</em> work on any modern filesystem that supports
+Extended Attributes (XATTRS).  We currently recommend XFS as it
+demonstrated the best overall performance for the swift use case after
+considerable testing and benchmarking at Rackspace.  It is also the
+only filesystem that has been thoroughly tested.</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Install Storage node packages:</p>
+<div class="highlight-python"><pre>apt-get install swift-account swift-container swift-object xfsprogs</pre>
+</div>
+</li>
+<li><p class="first">For every device on the node, setup the XFS volume (/dev/sdb is used
+as an example):</p>
+<div class="highlight-python"><pre>fdisk /dev/sdb  (set up a single partition)
+mkfs.xfs -i size=1024 /dev/sdb1
+echo "/dev/sdb1 /srv/node/sdb1 xfs noatime,nodiratime,nobarrier,logbufs=8 0 0" &gt;&gt; /etc/fstab
+mkdir -p /srv/node/sdb1
+mount /srv/node/sdb1
+chown -R swift:swift /srv/node</pre>
+</div>
+</li>
+<li><p class="first">Create /etc/rsyncd.conf:</p>
+<div class="highlight-python"><pre>uid = swift
+gid = swift
+log file = /var/log/rsyncd.log
+pid file = /var/run/rsyncd.pid
+address = &lt;STORAGE_LOCAL_NET_IP&gt;
+
+[account]
+max connections = 2
+path = /srv/node/
+read only = false
+lock file = /var/lock/account.lock
+
+[container]
+max connections = 2
+path = /srv/node/
+read only = false
+lock file = /var/lock/container.lock
+
+[object]
+max connections = 2
+path = /srv/node/
+read only = false
+lock file = /var/lock/object.lock</pre>
+</div>
+</li>
+<li><p class="first">Edit the following line in /etc/default/rsync:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RSYNC_ENABLE</span><span class="o">=</span><span class="n">true</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Start rsync daemon:</p>
+<div class="highlight-python"><pre>service rsync start</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The rsync daemon requires no authentication, so it should be run on
+a local, private network.</p>
+</div>
+</li>
+<li><p class="first">Create /etc/swift/account-server.conf:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+bind_ip = &lt;STORAGE_LOCAL_NET_IP&gt;
+workers = 2
+
+[pipeline:main]
+pipeline = account-server
+
+[app:account-server]
+use = egg:swift#account
+
+[account-replicator]
+
+[account-auditor]
+
+[account-reaper]</pre>
+</div>
+</li>
+<li><p class="first">Create /etc/swift/container-server.conf:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+bind_ip = &lt;STORAGE_LOCAL_NET_IP&gt;
+workers = 2
+
+[pipeline:main]
+pipeline = container-server
+
+[app:container-server]
+use = egg:swift#container
+
+[container-replicator]
+
+[container-updater]
+
+[container-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Create /etc/swift/object-server.conf:</p>
+<div class="highlight-python"><pre>[DEFAULT]
+bind_ip = &lt;STORAGE_LOCAL_NET_IP&gt;
+workers = 2
+
+[pipeline:main]
+pipeline = object-server
+
+[app:object-server]
+use = egg:swift#object
+
+[object-replicator]
+
+[object-updater]
+
+[object-auditor]</pre>
+</div>
+</li>
+<li><p class="first">Start the storage services:</p>
+<div class="highlight-python"><pre>swift-init object-server start
+swift-init object-replicator start
+swift-init object-updater start
+swift-init object-auditor start
+swift-init container-server start
+swift-init container-replicator start
+swift-init container-updater start
+swift-init container-auditor start
+swift-init account-server start
+swift-init account-replicator start
+swift-init account-auditor start</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="create-swift-admin-account-and-test">
+<h2>Create Swift admin account and test<a class="headerlink" href="#create-swift-admin-account-and-test" title="Permalink to this headline">¶</a></h2>
+<p>You run these commands from the Auth node.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For Swauth, replace the <a class="reference external" href="https:/">https:/</a>/&lt;AUTH_HOSTNAME&gt;:11000/v1.0 with
+<a class="reference external" href="https:/">https:/</a>/&lt;PROXY_HOSTNAME&gt;:8080/auth/v1.0</p>
+</div>
+<ol class="arabic">
+<li><p class="first">Create a user with administrative privileges (account = system,
+username = root, password = testpass).  Make sure to replace
+<tt class="docutils literal"><span class="pre">devauth</span></tt> (or <tt class="docutils literal"><span class="pre">swauthkey</span></tt>) with whatever super_admin key you assigned in
+the auth-server.conf file (or proxy-server.conf file in the case of Swauth)
+above.  <em>Note: None of the values of
+account, username, or password are special - they can be anything.</em>:</p>
+<div class="highlight-python"><pre># For DevAuth:
+swift-auth-add-user -K devauth -a system root testpass
+# For Swauth:
+swauth-add-user -K swauthkey -a system root testpass</pre>
+</div>
+</li>
+<li><p class="first">Get an X-Storage-Url and X-Auth-Token:</p>
+<div class="highlight-python"><pre>curl -k -v -H 'X-Storage-User: system:root' -H 'X-Storage-Pass: testpass' https://&lt;AUTH_HOSTNAME&gt;:11000/v1.0</pre>
+</div>
+</li>
+<li><p class="first">Check that you can HEAD the account:</p>
+<div class="highlight-python"><pre>curl -k -v -H 'X-Auth-Token: &lt;token-from-x-auth-token-above&gt;' &lt;url-from-x-storage-url-above&gt;</pre>
+</div>
+</li>
+<li><p class="first">Check that <tt class="docutils literal"><span class="pre">st</span></tt> works:</p>
+<div class="highlight-python"><pre>st -A https://&lt;AUTH_HOSTNAME&gt;:11000/v1.0 -U system:root -K testpass stat</pre>
+</div>
+</li>
+<li><p class="first">Use <tt class="docutils literal"><span class="pre">st</span></tt> to upload a few files named &#8216;bigfile[1-2].tgz&#8217; to a container named &#8216;myfiles&#8217;:</p>
+<div class="highlight-python"><pre>st -A https://&lt;AUTH_HOSTNAME&gt;:11000/v1.0 -U system:root -K testpass upload myfiles bigfile1.tgz
+st -A https://&lt;AUTH_HOSTNAME&gt;:11000/v1.0 -U system:root -K testpass upload myfiles bigfile2.tgz</pre>
+</div>
+</li>
+<li><p class="first">Use <tt class="docutils literal"><span class="pre">st</span></tt> to download all files from the &#8216;myfiles&#8217; container:</p>
+<div class="highlight-python"><pre>st -A https://&lt;AUTH_HOSTNAME&gt;:11000/v1.0 -U system:root -K testpass download myfiles</pre>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="adding-a-proxy-server">
+<span id="add-proxy-server"></span><h2>Adding a Proxy Server<a class="headerlink" href="#adding-a-proxy-server" title="Permalink to this headline">¶</a></h2>
+<p>For reliability&#8217;s sake you may want to have more than one proxy server. You can set up the additional proxy node in the same manner that you set up the first proxy node but with additional configuration steps.</p>
+<p>Once you have more than two proxies, you also want to load balance between the two, which means your storage endpoint also changes. You can select from different strategies for load balancing. For example, you could use round robin dns, or an actual load balancer (like pound) in front of the two proxies, and point your storage url to the load balancer.</p>
+<p>See <a class="reference internal" href="#config-proxy"><em>Configure the Proxy node</em></a> for the initial setup, and then follow these additional steps.</p>
+<ol class="arabic">
+<li><p class="first">Update the list of memcache servers in /etc/swift/proxy-server.conf for all the added proxy servers. If you run multiple memcache servers, use this pattern for the multiple IP:port listings: <cite>10.1.2.3:11211,10.1.2.4:11211</cite> in each proxy server&#8217;s conf file.:</p>
+<div class="highlight-python"><pre>[filter:cache]
+use = egg:swift#memcache
+memcache_servers = &lt;PROXY_LOCAL_NET_IP&gt;:11211</pre>
+</div>
+</li>
+<li><p class="first">Change the default_cluster_url to point to the load balanced url, rather than the first proxy server you created in /etc/swift/auth-server.conf (for DevAuth) or in /etc/swift/proxy-server.conf (for Swauth):</p>
+<div class="highlight-python"><pre># For DevAuth, in /etc/swift/auth-server.conf
+[app:auth-server]
+use = egg:swift#auth
+default_cluster_url = https://&lt;LOAD_BALANCER_HOSTNAME&gt;/v1
+# Highly recommended to change this key to something else!
+super_admin_key = devauth
+
+# For Swauth, in /etc/swift/proxy-server.conf
+[filter:swauth]
+use = egg:swift#swauth
+default_swift_cluster = local#http://&lt;LOAD_BALANCER_HOSTNAME&gt;/v1
+# Highly recommended to change this key to something else!
+super_admin_key = swauthkey</pre>
+</div>
+</li>
+<li><p class="first">For DevAuth, after you change the default_cluster_url setting, you have to delete the auth database and recreate the Swift users, or manually update the auth database with the correct URL for each account.</p>
+<p>For Swauth, you can change a service URL with:</p>
+<div class="highlight-python"><pre>swauth-set-account-service -K swauthkey &lt;account&gt; storage local &lt;new_url_for_the_account&gt;</pre>
+</div>
+<p>You can obtain old service URLs with:</p>
+<div class="highlight-python"><pre>swauth-list -K swauthkey &lt;account&gt;</pre>
+</div>
+</li>
+<li><p class="first">Next, copy all the ring information to all the nodes, including your new proxy nodes, and ensure the ring info gets to all the storage nodes as well.</p>
+</li>
+<li><p class="first">After you sync all the nodes, make sure the admin has the keys in /etc/swift and the ownership for the ring file is correct.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="additional-cleanup-script-for-swauth">
+<h2>Additional Cleanup Script for Swauth<a class="headerlink" href="#additional-cleanup-script-for-swauth" title="Permalink to this headline">¶</a></h2>
+<p>If you decide to use Swauth, you&#8217;ll want to install a cronjob to clean up any
+orphaned expired tokens. These orphaned tokens can occur when a &#8220;stampede&#8221;
+occurs where a single user authenticates several times concurrently. Generally,
+these orphaned tokens don&#8217;t pose much of an issue, but it&#8217;s good to clean them
+up once a &#8220;token life&#8221; period (default: 1 day or 86400 seconds).</p>
+<p>This should be as simple as adding <cite>swauth-cleanup-tokens -K swauthkey &gt;
+/dev/null</cite> to a crontab entry on one of the proxies that is running Swauth; but
+run <cite>swauth-cleanup-tokens</cite> with no arguments for detailed help on the options
+available.</p>
+</div>
+<div class="section" id="troubleshooting-notes">
+<h2>Troubleshooting Notes<a class="headerlink" href="#troubleshooting-notes" title="Permalink to this headline">¶</a></h2>
+<p>If you see problems, look in var/log/syslog (or messages on some distros).</p>
+<p>Also, at Rackspace we have seen hints at drive failures by looking at error messages in /var/log/kern.log.</p>
+<p>There are more debugging hints and tips in the <a class="reference internal" href="admin_guide.html"><em>Administrator&#8217;s Guide</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="deployment_guide.html" title="Deployment Guide"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="development_auth.html" title="Auth Server and Middleware"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

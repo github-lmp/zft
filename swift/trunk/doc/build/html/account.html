@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Account &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Container" href="container.html" />
+    <link rel="prev" title="Proxy" href="proxy.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="container.html" title="Container"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="proxy.html" title="Proxy"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Account</a><ul>
+<li><a class="reference internal" href="#module-swift.account.server">Account Server</a></li>
+<li><a class="reference internal" href="#module-swift.account.auditor">Account Auditor</a></li>
+<li><a class="reference internal" href="#module-swift.account.reaper">Account Reaper</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="proxy.html"
+                        title="previous chapter">Proxy</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="container.html"
+                        title="next chapter">Container</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/account.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="account">
+<span id="id1"></span><h1>Account<a class="headerlink" href="#account" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-swift.account.server">
+<span id="id2"></span><span id="account-server"></span><h2>Account Server<a class="headerlink" href="#module-swift.account.server" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.account.server.AccountController">
+<em class="property">class </em><tt class="descclassname">swift.account.server.</tt><tt class="descname">AccountController</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.account.server.AccountController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>WSGI controller for the account server.</p>
+<dl class="method">
+<dt id="swift.account.server.AccountController.DELETE">
+<tt class="descname">DELETE</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.account.server.AccountController.DELETE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP DELETE request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.server.AccountController.GET">
+<tt class="descname">GET</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.account.server.AccountController.GET" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP GET request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.server.AccountController.HEAD">
+<tt class="descname">HEAD</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.account.server.AccountController.HEAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP HEAD request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.server.AccountController.POST">
+<tt class="descname">POST</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.account.server.AccountController.POST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP POST request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.server.AccountController.PUT">
+<tt class="descname">PUT</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.account.server.AccountController.PUT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP PUT request.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.server.AccountController.REPLICATE">
+<tt class="descname">REPLICATE</tt><big>(</big><em>req</em><big>)</big><a class="headerlink" href="#swift.account.server.AccountController.REPLICATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handle HTTP REPLICATE request.
+Handler for RPC calls for account replication.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.account.server.app_factory">
+<tt class="descclassname">swift.account.server.</tt><tt class="descname">app_factory</tt><big>(</big><em>global_conf</em>, <em>**local_conf</em><big>)</big><a class="headerlink" href="#swift.account.server.app_factory" title="Permalink to this definition">¶</a></dt>
+<dd><p>paste.deploy app factory for creating WSGI account server apps</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.account.auditor">
+<span id="id3"></span><span id="account-auditor"></span><h2>Account Auditor<a class="headerlink" href="#module-swift.account.auditor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.account.auditor.AccountAuditor">
+<em class="property">class </em><tt class="descclassname">swift.account.auditor.</tt><tt class="descname">AccountAuditor</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.account.auditor.AccountAuditor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.daemon.Daemon</span></tt></p>
+<p>Audit accounts.</p>
+<dl class="method">
+<dt id="swift.account.auditor.AccountAuditor.account_audit">
+<tt class="descname">account_audit</tt><big>(</big><em>path</em><big>)</big><a class="headerlink" href="#swift.account.auditor.AccountAuditor.account_audit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Audits the given account path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; the path to an account db</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.auditor.AccountAuditor.run_forever">
+<tt class="descname">run_forever</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.account.auditor.AccountAuditor.run_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the account audit until stopped.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.auditor.AccountAuditor.run_once">
+<tt class="descname">run_once</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.account.auditor.AccountAuditor.run_once" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the account audit once.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="swift.account.auditor.random">
+<tt class="descclassname">swift.account.auditor.</tt><tt class="descname">random</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.account.auditor.random" title="Permalink to this definition">¶</a></dt>
+<dd><p>random() -&gt; x in the interval [0, 1).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.account.reaper">
+<span id="id4"></span><span id="account-reaper"></span><h2>Account Reaper<a class="headerlink" href="#module-swift.account.reaper" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.account.reaper.AccountReaper">
+<em class="property">class </em><tt class="descclassname">swift.account.reaper.</tt><tt class="descname">AccountReaper</tt><big>(</big><em>conf</em><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">swift.common.daemon.Daemon</span></tt></p>
+<p>Removes data from status=DELETED accounts. These are accounts that have
+been asked to be removed by the reseller via services
+remove_storage_account XMLRPC call.</p>
+<p>The account is not deleted immediately by the services call, but instead
+the account is simply marked for deletion by setting the status column in
+the account_stat table of the account database. This account reaper scans
+for such accounts and removes the data in the background. The background
+deletion process will occur on the primary account server for the account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>server_conf</strong> &#8211; The [account-server] dictionary of the account server
+configuration file</li>
+<li><strong>reaper_conf</strong> &#8211; The [account-reaper] dictionary of the account server
+configuration file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See the etc/account-server.conf-sample for information on the possible
+configuration parameters.</p>
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.get_account_ring">
+<tt class="descname">get_account_ring</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.get_account_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The account <tt class="xref py py-class docutils literal"><span class="pre">swift.common.ring.Ring</span></tt> for the cluster.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.get_container_ring">
+<tt class="descname">get_container_ring</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.get_container_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The container <tt class="xref py py-class docutils literal"><span class="pre">swift.common.ring.Ring</span></tt> for the cluster.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.get_object_ring">
+<tt class="descname">get_object_ring</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.get_object_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object <tt class="xref py py-class docutils literal"><span class="pre">swift.common.ring.Ring</span></tt> for the cluster.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.reap_account">
+<tt class="descname">reap_account</tt><big>(</big><em>broker</em>, <em>partition</em>, <em>nodes</em><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.reap_account" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called once per pass for each account this server is the primary for
+and attempts to delete the data for the given account. The reaper will
+only delete one account at any given time. It will call
+<a class="reference internal" href="#swift.account.reaper.AccountReaper.reap_container" title="swift.account.reaper.AccountReaper.reap_container"><tt class="xref py py-func docutils literal"><span class="pre">reap_container()</span></tt></a> up to sqrt(self.concurrency) times concurrently
+while reaping the account.</p>
+<p>If there is any exception while deleting a single container, the
+process will continue for any other containers and the failed
+containers will be tried again the next time this function is called
+with the same parameters.</p>
+<p>If there is any exception while listing the containers for deletion,
+the process will stop (but will obviously be tried again the next time
+this function is called with the same parameters). This isn&#8217;t likely
+since the listing comes from the local database.</p>
+<p>After the process completes (successfully or not) statistics about what
+was accomplished will be logged.</p>
+<p>This function returns nothing and should raise no exception but only
+update various self.stats_* values for what occurs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>broker</strong> &#8211; The AccountBroker for the account to delete.</li>
+<li><strong>partition</strong> &#8211; The partition in the account ring the account is on.</li>
+<li><strong>nodes</strong> &#8211; The primary node dicts for the account to delete.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="db.html#swift.common.db.AccountBroker" title="swift.common.db.AccountBroker"><tt class="xref py py-class docutils literal"><span class="pre">swift.common.db.AccountBroker</span></tt></a> for the broker class.</p>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><tt class="xref py py-func docutils literal"><span class="pre">swift.common.ring.Ring.get_nodes()</span></tt> for a description
+of the node dicts.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.reap_container">
+<tt class="descname">reap_container</tt><big>(</big><em>account</em>, <em>account_partition</em>, <em>account_nodes</em>, <em>container</em><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.reap_container" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the data and the container itself for the given container. This
+will call <a class="reference internal" href="#swift.account.reaper.AccountReaper.reap_object" title="swift.account.reaper.AccountReaper.reap_object"><tt class="xref py py-func docutils literal"><span class="pre">reap_object()</span></tt></a> up to sqrt(self.concurrency) times
+concurrently for the objects in the container.</p>
+<p>If there is any exception while deleting a single object, the process
+will continue for any other objects in the container and the failed
+objects will be tried again the next time this function is called with
+the same parameters.</p>
+<p>If there is any exception while listing the objects for deletion, the
+process will stop (but will obviously be tried again the next time this
+function is called with the same parameters). This is a possibility
+since the listing comes from querying just the primary remote container
+server.</p>
+<p>Once all objects have been attempted to be deleted, the container
+itself will be attempted to be deleted by sending a delete request to
+all container nodes. The format of the delete request is such that each
+container server will update a corresponding account server, removing
+the container from the account&#8217;s listing.</p>
+<p>This function returns nothing and should raise no exception but only
+update various self.stats_* values for what occurs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>account</strong> &#8211; The name of the account for the container.</li>
+<li><strong>account_partition</strong> &#8211; The partition for the account on the account
+ring.</li>
+<li><strong>account_nodes</strong> &#8211; The primary node dicts for the account.</li>
+<li><strong>container</strong> &#8211; The name of the container to delete.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>See also: <tt class="xref py py-func docutils literal"><span class="pre">swift.common.ring.Ring.get_nodes()</span></tt> for a description
+of the account node dicts.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.reap_device">
+<tt class="descname">reap_device</tt><big>(</big><em>device</em><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.reap_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called once per pass for each device on the server. This will scan the
+accounts directory for the device, looking for partitions this device
+is the primary for, then looking for account databases that are marked
+status=DELETED and still have containers and calling
+<a class="reference internal" href="#swift.account.reaper.AccountReaper.reap_account" title="swift.account.reaper.AccountReaper.reap_account"><tt class="xref py py-func docutils literal"><span class="pre">reap_account()</span></tt></a>. Account databases marked status=DELETED that no
+longer have containers will eventually be permanently removed by the
+reclaim process within the account replicator (see
+<tt class="xref py py-mod docutils literal"><span class="pre">swift.db_replicator</span></tt>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>device</strong> &#8211; The device to look for accounts to be deleted.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.reap_object">
+<tt class="descname">reap_object</tt><big>(</big><em>account</em>, <em>container</em>, <em>container_partition</em>, <em>container_nodes</em>, <em>obj</em><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.reap_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the given object by issuing a delete request to each node for
+the object. The format of the delete request is such that each object
+server will update a corresponding container server, removing the
+object from the container&#8217;s listing.</p>
+<p>This function returns nothing and should raise no exception but only
+update various self.stats_* values for what occurs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>account</strong> &#8211; The name of the account for the object.</li>
+<li><strong>container</strong> &#8211; The name of the container for the object.</li>
+<li><strong>container_partition</strong> &#8211; The partition for the container on the
+container ring.</li>
+<li><strong>container_nodes</strong> &#8211; The primary node dicts for the container.</li>
+<li><strong>obj</strong> &#8211; The name of the object to delete.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>See also: <tt class="xref py py-func docutils literal"><span class="pre">swift.common.ring.Ring.get_nodes()</span></tt> for a description
+of the container node dicts.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.run_forever">
+<tt class="descname">run_forever</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.run_forever" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main entry point when running the reaper in its normal daemon mode.
+This repeatedly calls <tt class="xref py py-func docutils literal"><span class="pre">reap_once()</span></tt> no quicker than the
+configuration interval.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.account.reaper.AccountReaper.run_once">
+<tt class="descname">run_once</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.account.reaper.AccountReaper.run_once" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main entry point when running the reaper in &#8216;once&#8217; mode, where it will
+do a single pass over all accounts on the server. This is called
+repeatedly by <a class="reference internal" href="#swift.account.reaper.AccountReaper.run_forever" title="swift.account.reaper.AccountReaper.run_forever"><tt class="xref py py-func docutils literal"><span class="pre">run_forever()</span></tt></a>. This will call <a class="reference internal" href="#swift.account.reaper.AccountReaper.reap_device" title="swift.account.reaper.AccountReaper.reap_device"><tt class="xref py py-func docutils literal"><span class="pre">reap_device()</span></tt></a>
+once for each device on the server.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="container.html" title="Container"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="proxy.html" title="Proxy"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

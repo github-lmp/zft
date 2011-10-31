@@ -1,0 +1,416 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Administrator’s Guide &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Building and Deploying Custom Debian packages for Swift" href="debian_package_guide.html" />
+    <link rel="prev" title="Deployment Guide" href="deployment_guide.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="debian_package_guide.html" title="Building and Deploying Custom Debian packages for Swift"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="deployment_guide.html" title="Deployment Guide"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Administrator&#8217;s Guide</a><ul>
+<li><a class="reference internal" href="#managing-the-rings">Managing the Rings</a></li>
+<li><a class="reference internal" href="#scripting-ring-creation">Scripting Ring Creation</a></li>
+<li><a class="reference internal" href="#handling-system-updates">Handling System Updates</a></li>
+<li><a class="reference internal" href="#handling-drive-failure">Handling Drive Failure</a></li>
+<li><a class="reference internal" href="#handling-server-failure">Handling Server Failure</a></li>
+<li><a class="reference internal" href="#detecting-failed-drives">Detecting Failed Drives</a></li>
+<li><a class="reference internal" href="#cluster-health">Cluster Health</a></li>
+<li><a class="reference internal" href="#additional-cleanup-script-for-swauth">Additional Cleanup Script for Swauth</a></li>
+<li><a class="reference internal" href="#debugging-tips-and-tools">Debugging Tips and Tools</a></li>
+<li><a class="reference internal" href="#managing-services">Managing Services</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="deployment_guide.html"
+                        title="previous chapter">Deployment Guide</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="debian_package_guide.html"
+                        title="next chapter">Building and Deploying Custom Debian packages for Swift</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/admin_guide.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="administrator-s-guide">
+<h1>Administrator&#8217;s Guide<a class="headerlink" href="#administrator-s-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="managing-the-rings">
+<h2>Managing the Rings<a class="headerlink" href="#managing-the-rings" title="Permalink to this headline">¶</a></h2>
+<p>You need to build the storage rings on the proxy server node, and distribute them to all the servers in the cluster. Storage rings contain information about all the Swift storage partitions and how they are distributed between the different nodes and disks. For more information see <a class="reference internal" href="overview_ring.html"><em>The Rings</em></a>.</p>
+<p>Removing a device from the ring:</p>
+<div class="highlight-python"><pre>swift-ring-builder &lt;builder-file&gt; remove &lt;ip_address&gt;/&lt;device_name&gt;</pre>
+</div>
+<p>Removing a server from the ring:</p>
+<div class="highlight-python"><pre>swift-ring-builder &lt;builder-file&gt; remove &lt;ip_address&gt;</pre>
+</div>
+<p>Adding devices to the ring:</p>
+<p>See <a class="reference internal" href="deployment_guide.html#ring-preparing"><em>Preparing the Ring</em></a></p>
+<p>See what devices for a server are in the ring:</p>
+<div class="highlight-python"><pre>swift-ring-builder &lt;builder-file&gt; search &lt;ip_address&gt;</pre>
+</div>
+<p>Once you are done with all changes to the ring, the changes need to be
+&#8220;committed&#8221;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">swift</span><span class="o">-</span><span class="n">ring</span><span class="o">-</span><span class="n">builder</span> <span class="o">&lt;</span><span class="n">builder</span><span class="o">-</span><span class="nb">file</span><span class="o">&gt;</span> <span class="n">rebalance</span>
+</pre></div>
+</div>
+<p>Once the new rings are built, they should be pushed out to all the servers
+in the cluster.</p>
+</div>
+<div class="section" id="scripting-ring-creation">
+<h2>Scripting Ring Creation<a class="headerlink" href="#scripting-ring-creation" title="Permalink to this headline">¶</a></h2>
+<p>You can create scripts to create the account and container rings and rebalance. Here&#8217;s an example script for the Account ring. Use similar commands to create a make-container-ring.sh script on the proxy server node.</p>
+<ol class="arabic">
+<li><p class="first">Create a script file called make-account-ring.sh on the proxy server node with the following content:</p>
+<div class="highlight-python"><pre>#!/bin/bash
+cd /etc/swift
+rm -f account.builder account.ring.gz backups/account.builder backups/account.ring.gz
+swift-ring-builder account.builder create 18 3 1
+swift-ring-builder account.builder add z1-&lt;account-server-1&gt;:6002/sdb1 1
+swift-ring-builder account.builder add z2-&lt;account-server-2&gt;:6002/sdb1 1
+swift-ring-builder account.builder rebalance</pre>
+</div>
+</li>
+</ol>
+<p>You need to replace the values of &lt;account-server-1&gt;, &lt;account-server-2&gt;, etc. with the IP addresses of the account servers used in your setup. You can have as many account servers as you need. All account servers are assumed to be listening on port 6002, and have a storage device called &#8220;sdb1&#8221; (this is a directory name created under /drives when we setup the account server). The &#8220;z1&#8221;, &#8220;z2&#8221;, etc. designate zones, and you can choose whether you put devices in the same or different zones.</p>
+<ol class="arabic" start="2">
+<li><p class="first">Make the script file executable and run it to create the account ring file:</p>
+<div class="highlight-python"><pre>chmod +x make-account-ring.sh
+sudo ./make-account-ring.sh</pre>
+</div>
+</li>
+<li><p class="first">Copy the resulting ring file /etc/swift/account.ring.gz to all the account server nodes in your Swift environment, and put them in the /etc/swift directory on these nodes. Make sure that every time you change the account ring configuration, you copy the resulting ring file to all the account nodes.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="handling-system-updates">
+<h2>Handling System Updates<a class="headerlink" href="#handling-system-updates" title="Permalink to this headline">¶</a></h2>
+<p>It is recommended that system updates and reboots are done a zone at a time.
+This allows the update to happen, and for the Swift cluster to stay available
+and responsive to requests.  It is also advisable when updating a zone, let
+it run for a while before updating the other zones to make sure the update
+doesn&#8217;t have any adverse effects.</p>
+</div>
+<div class="section" id="handling-drive-failure">
+<h2>Handling Drive Failure<a class="headerlink" href="#handling-drive-failure" title="Permalink to this headline">¶</a></h2>
+<p>In the event that a drive has failed, the first step is to make sure the drive
+is unmounted.  This will make it easier for swift to work around the failure
+until it has been resolved.  If the drive is going to be replaced immediately,
+then it is just best to replace the drive, format it, remount it, and let
+replication fill it up.</p>
+<p>If the drive can&#8217;t be replaced immediately, then it is best to leave it
+unmounted, and remove the drive from the ring. This will allow all the
+replicas that were on that drive to be replicated elsewhere until the drive
+is replaced.  Once the drive is replaced, it can be re-added to the ring.</p>
+</div>
+<div class="section" id="handling-server-failure">
+<h2>Handling Server Failure<a class="headerlink" href="#handling-server-failure" title="Permalink to this headline">¶</a></h2>
+<p>If a server is having hardware issues, it is a good idea to make sure the
+swift services are not running.  This will allow Swift to work around the
+failure while you troubleshoot.</p>
+<p>If the server just needs a reboot, or a small amount of work that should
+only last a couple of hours, then it is probably best to let Swift work
+around the failure and get the machine fixed and back online.  When the
+machine comes back online, replication will make sure that anything that is
+missing during the downtime will get updated.</p>
+<p>If the server has more serious issues, then it is probably best to remove
+all of the server&#8217;s devices from the ring.  Once the server has been repaired
+and is back online, the server&#8217;s devices can be added back into the ring.
+It is important that the devices are reformatted before putting them back
+into the ring as it is likely to be responsible for a different set of
+partitions than before.</p>
+</div>
+<div class="section" id="detecting-failed-drives">
+<h2>Detecting Failed Drives<a class="headerlink" href="#detecting-failed-drives" title="Permalink to this headline">¶</a></h2>
+<p>It has been our experience that when a drive is about to fail, error messages
+will spew into <cite>/var/log/kern.log</cite>.  There is a script called
+<cite>swift-drive-audit</cite> that can be run via cron to watch for bad drives.  If
+errors are detected, it will unmount the bad drive, so that Swift can
+work around it.  The script takes a configuration file with the following
+settings:</p>
+<p>[drive-audit]</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="14%" />
+<col width="61%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>log_facility</td>
+<td>LOG_LOCAL0</td>
+<td>Syslog log facility</td>
+</tr>
+<tr><td>log_level</td>
+<td>INFO</td>
+<td>Log level</td>
+</tr>
+<tr><td>device_dir</td>
+<td>/srv/node</td>
+<td>Directory devices are mounted under</td>
+</tr>
+<tr><td>minutes</td>
+<td>60</td>
+<td>Number of minutes to look back in
+<cite>/var/log/kern.log</cite></td>
+</tr>
+<tr><td>error_limit</td>
+<td>1</td>
+<td>Number of errors to find before a device
+is unmounted</td>
+</tr>
+</tbody>
+</table>
+<p>This script has only been tested on Ubuntu 10.04, so if you are using a
+different distro or OS, some care should be taken before using in production.</p>
+</div>
+<div class="section" id="cluster-health">
+<h2>Cluster Health<a class="headerlink" href="#cluster-health" title="Permalink to this headline">¶</a></h2>
+<p>There is a swift-stats-report tool for measuring overall cluster health. This
+is accomplished by checking if a set of deliberately distributed containers and
+objects are currently in their proper places within the cluster.</p>
+<p>For instance, a common deployment has three replicas of each object. The health
+of that object can be measured by checking if each replica is in its proper
+place. If only 2 of the 3 is in place the object&#8217;s heath can be said to be at
+66.66%, where 100% would be perfect.</p>
+<p>A single object&#8217;s health, especially an older object, usually reflects the
+health of that entire partition the object is in. If we make enough objects on
+a distinct percentage of the partitions in the cluster, we can get a pretty
+valid estimate of the overall cluster health. In practice, about 1% partition
+coverage seems to balance well between accuracy and the amount of time it takes
+to gather results.</p>
+<p>The first thing that needs to be done to provide this health value is create a
+new account solely for this usage. Next, we need to place the containers and
+objects throughout the system so that they are on distinct partitions. The
+swift-stats-populate tool does this by making up random container and object
+names until they fall on distinct partitions. Last, and repeatedly for the life
+of the cluster, we need to run the swift-stats-report tool to check the health
+of each of these containers and objects.</p>
+<p>These tools need direct access to the entire cluster and to the ring files
+(installing them on an auth server or a proxy server will probably do). Both
+swift-stats-populate and swift-stats-report use the same configuration file,
+/etc/swift/stats.conf. Example conf file:</p>
+<div class="highlight-python"><pre>[stats]
+# For DevAuth:
+auth_url = http://saio:11000/v1.0
+# For Swauth:
+# auth_url = http://saio:11000/auth/v1.0
+auth_user = test:tester
+auth_key = testing</pre>
+</div>
+<p>There are also options for the conf file for specifying the dispersion coverage
+(defaults to 1%), retries, concurrency, CSV output file, etc. though usually
+the defaults are fine.</p>
+<p>Once the configuration is in place, run <cite>swift-stats-populate -d</cite> to populate
+the containers and objects throughout the cluster.</p>
+<p>Now that those containers and objects are in place, you can run
+<cite>swift-stats-report -d</cite> to get a dispersion report, or the overall health of
+the cluster. Here is an example of a cluster in perfect health:</p>
+<div class="highlight-python"><pre>$ swift-stats-report -d
+Queried 2621 containers for dispersion reporting, 19s, 0 retries
+100.00% of container copies found (7863 of 7863)
+Sample represents 1.00% of the container partition space
+
+Queried 2619 objects for dispersion reporting, 7s, 0 retries
+100.00% of object copies found (7857 of 7857)
+Sample represents 1.00% of the object partition space</pre>
+</div>
+<p>Now I&#8217;ll deliberately double the weight of a device in the object ring (with
+replication turned off) and rerun the dispersion report to show what impact
+that has:</p>
+<div class="highlight-python"><pre>$ swift-ring-builder object.builder set_weight d0 200
+$ swift-ring-builder object.builder rebalance
+...
+$ swift-stats-report -d
+Queried 2621 containers for dispersion reporting, 8s, 0 retries
+100.00% of container copies found (7863 of 7863)
+Sample represents 1.00% of the container partition space
+
+Queried 2619 objects for dispersion reporting, 7s, 0 retries
+There were 1763 partitions missing one copy.
+77.56% of object copies found (6094 of 7857)
+Sample represents 1.00% of the object partition space</pre>
+</div>
+<p>You can see the health of the objects in the cluster has gone down
+significantly. Of course, I only have four devices in this test environment, in
+a production environment with many many devices the impact of one device change
+is much less. Next, I&#8217;ll run the replicators to get everything put back into
+place and then rerun the dispersion report:</p>
+<div class="highlight-python"><pre>... start object replicators and monitor logs until they're caught up ...
+$ swift-stats-report -d
+Queried 2621 containers for dispersion reporting, 17s, 0 retries
+100.00% of container copies found (7863 of 7863)
+Sample represents 1.00% of the container partition space
+
+Queried 2619 objects for dispersion reporting, 7s, 0 retries
+100.00% of object copies found (7857 of 7857)
+Sample represents 1.00% of the object partition space</pre>
+</div>
+<p>So that&#8217;s a summation of how to use swift-stats-report to monitor the health of
+a cluster. There are a few other things it can do, such as performance
+monitoring, but those are currently in their infancy and little used. For
+instance, you can run <cite>swift-stats-populate -p</cite> and <cite>swift-stats-report -p</cite> to
+get performance timings (warning: the initial populate takes a while). These
+timings are dumped into a CSV file (/etc/swift/stats.csv by default) and can
+then be graphed to see how cluster performance is trending.</p>
+</div>
+<div class="section" id="additional-cleanup-script-for-swauth">
+<h2>Additional Cleanup Script for Swauth<a class="headerlink" href="#additional-cleanup-script-for-swauth" title="Permalink to this headline">¶</a></h2>
+<p>If you decide to use Swauth, you&#8217;ll want to install a cronjob to clean up any
+orphaned expired tokens. These orphaned tokens can occur when a &#8220;stampede&#8221;
+occurs where a single user authenticates several times concurrently. Generally,
+these orphaned tokens don&#8217;t pose much of an issue, but it&#8217;s good to clean them
+up once a &#8220;token life&#8221; period (default: 1 day or 86400 seconds).</p>
+<p>This should be as simple as adding <cite>swauth-cleanup-tokens -K swauthkey &gt;
+/dev/null</cite> to a crontab entry on one of the proxies that is running Swauth; but
+run <cite>swauth-cleanup-tokens</cite> with no arguments for detailed help on the options
+available.</p>
+</div>
+<div class="section" id="debugging-tips-and-tools">
+<h2>Debugging Tips and Tools<a class="headerlink" href="#debugging-tips-and-tools" title="Permalink to this headline">¶</a></h2>
+<p>When a request is made to Swift, it is given a unique transaction id.  This
+id should be in every log line that has to do with that request.  This can
+be useful when looking at all the services that are hit by a single request.</p>
+<p>If you need to know where a specific account, container or object is in the
+cluster, <cite>swift-get-nodes</cite> will show the location where each replica should be.</p>
+<p>If you are looking at an object on the server and need more info,
+<cite>swift-object-info</cite> will display the account, container, replica locations
+and metadata of the object.</p>
+<p>If you want to audit the data for an account, <cite>swift-account-audit</cite> can be
+used to crawl the account, checking that all containers and objects can be
+found.</p>
+</div>
+<div class="section" id="managing-services">
+<h2>Managing Services<a class="headerlink" href="#managing-services" title="Permalink to this headline">¶</a></h2>
+<p>Swift services are generally managed with <cite>swift-init</cite>. the general usage is
+<tt class="docutils literal"><span class="pre">swift-init</span> <span class="pre">&lt;service&gt;</span> <span class="pre">&lt;command&gt;</span></tt>, where service is the swift service to
+manage (for example object, container, account, proxy) and command is one of:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Command</td>
+<td>Description</td>
+</tr>
+<tr><td>start</td>
+<td>Start the service</td>
+</tr>
+<tr><td>stop</td>
+<td>Stop the service</td>
+</tr>
+<tr><td>restart</td>
+<td>Restart the service</td>
+</tr>
+<tr><td>shutdown</td>
+<td>Attempt to gracefully shutdown the service</td>
+</tr>
+<tr><td>reload</td>
+<td>Attempt to gracefully restart the service</td>
+</tr>
+</tbody>
+</table>
+<p>A graceful shutdown or reload will finish any current requests before
+completely stopping the old service.  There is also a special case of
+<cite>swift-init all &lt;command&gt;</cite>, which will run the command for all swift services.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="debian_package_guide.html" title="Building and Deploying Custom Debian packages for Swift"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="deployment_guide.html" title="Deployment Guide"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

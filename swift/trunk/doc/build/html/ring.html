@@ -1,0 +1,513 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Partitioned Consistent Hash Ring &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Proxy" href="proxy.html" />
+    <link rel="prev" title="Talking to Swift with Cyberduck" href="howto_cyberduck.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="proxy.html" title="Proxy"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="howto_cyberduck.html" title="Talking to Swift with Cyberduck"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Partitioned Consistent Hash Ring</a><ul>
+<li><a class="reference internal" href="#ring">Ring</a></li>
+<li><a class="reference internal" href="#module-swift.common.ring.builder">Ring Builder</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="howto_cyberduck.html"
+                        title="previous chapter">Talking to Swift with Cyberduck</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="proxy.html"
+                        title="next chapter">Proxy</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ring.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="partitioned-consistent-hash-ring">
+<span id="consistent-hashing-ring"></span><h1>Partitioned Consistent Hash Ring<a class="headerlink" href="#partitioned-consistent-hash-ring" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ring">
+<span id="id1"></span><h2>Ring<a class="headerlink" href="#ring" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-swift.common.ring.ring"></span><dl class="class">
+<dt id="swift.common.ring.ring.Ring">
+<em class="property">class </em><tt class="descclassname">swift.common.ring.ring.</tt><tt class="descname">Ring</tt><big>(</big><em>pickle_gz_path</em>, <em>reload_time=15</em><big>)</big><a class="headerlink" href="#swift.common.ring.ring.Ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Partitioned consistent hashing ring.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pickle_gz_path</strong> &#8211; path to ring file</li>
+<li><strong>reload_time</strong> &#8211; time interval in seconds to check for a ring change</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="swift.common.ring.ring.Ring.get_more_nodes">
+<tt class="descname">get_more_nodes</tt><big>(</big><em>part</em><big>)</big><a class="headerlink" href="#swift.common.ring.ring.Ring.get_more_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generator to get extra nodes for a partition for hinted handoff.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>part</strong> &#8211; partition to get handoff nodes for</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">generator of node dicts</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See <a class="reference internal" href="#swift.common.ring.ring.Ring.get_nodes" title="swift.common.ring.ring.Ring.get_nodes"><tt class="xref py py-func docutils literal"><span class="pre">get_nodes()</span></tt></a> for a description of the node dicts.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.ring.Ring.get_nodes">
+<tt class="descname">get_nodes</tt><big>(</big><em>account</em>, <em>container=None</em>, <em>obj=None</em><big>)</big><a class="headerlink" href="#swift.common.ring.ring.Ring.get_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the partition and nodes for an account/container/object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>account</strong> &#8211; account name</li>
+<li><strong>container</strong> &#8211; container name</li>
+<li><strong>obj</strong> &#8211; object name</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a tuple of (partition, list of node dicts)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Each node dict will have at least the following keys:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>id</td>
+<td>unique integer identifier amongst devices</td>
+</tr>
+<tr><td>weight</td>
+<td>a float of the relative weight of this device as compared to
+others; this indicates how many partitions the builder will try
+to assign to this device</td>
+</tr>
+<tr><td>zone</td>
+<td>integer indicating which zone the device is in; a given
+partition will not be assigned to multiple devices within the
+same zone ip the ip address of the device</td>
+</tr>
+<tr><td>port</td>
+<td>the tcp port of the device</td>
+</tr>
+<tr><td>device</td>
+<td>the device&#8217;s name on disk (sdb1, for example)</td>
+</tr>
+<tr><td>meta</td>
+<td>general use &#8216;extra&#8217; field; for example: the online date, the
+hardware description</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.ring.Ring.get_part_nodes">
+<tt class="descname">get_part_nodes</tt><big>(</big><em>part</em><big>)</big><a class="headerlink" href="#swift.common.ring.ring.Ring.get_part_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the nodes that are responsible for the partition.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>part</strong> &#8211; partition to get nodes for</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of node dicts</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>See <a class="reference internal" href="#swift.common.ring.ring.Ring.get_nodes" title="swift.common.ring.ring.Ring.get_nodes"><tt class="xref py py-func docutils literal"><span class="pre">get_nodes()</span></tt></a> for a description of the node dicts.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.ring.Ring.has_changed">
+<tt class="descname">has_changed</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.ring.ring.Ring.has_changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check to see if the ring on disk is different than the current one in
+memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">True if the ring on disk has changed, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="swift.common.ring.ring.Ring.partition_count">
+<tt class="descname">partition_count</tt><a class="headerlink" href="#swift.common.ring.ring.Ring.partition_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of partitions in the ring.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="swift.common.ring.ring.Ring.replica_count">
+<tt class="descname">replica_count</tt><a class="headerlink" href="#swift.common.ring.ring.Ring.replica_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of replicas used in the ring.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="swift.common.ring.ring.RingData">
+<em class="property">class </em><tt class="descclassname">swift.common.ring.ring.</tt><tt class="descname">RingData</tt><big>(</big><em>replica2part2dev_id</em>, <em>devs</em>, <em>part_shift</em><big>)</big><a class="headerlink" href="#swift.common.ring.ring.RingData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Partitioned consistent hashing ring data (used for serialization).</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-swift.common.ring.builder">
+<span id="id2"></span><span id="ring-builder"></span><h2>Ring Builder<a class="headerlink" href="#module-swift.common.ring.builder" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="swift.common.ring.builder.RingBuilder">
+<em class="property">class </em><tt class="descclassname">swift.common.ring.builder.</tt><tt class="descname">RingBuilder</tt><big>(</big><em>part_power</em>, <em>replicas</em>, <em>min_part_hours</em><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Used to build swift.common.RingData instances to be written to disk and
+used with swift.common.ring.Ring instances. See bin/ring-builder.py for
+example usage.</p>
+<p>The instance variable devs_changed indicates if the device information has
+changed since the last balancing. This can be used by tools to know whether
+a rebalance request is an isolated request or due to added, changed, or
+removed devices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>part_power</strong> &#8211; number of partitions = 2**part_power</li>
+<li><strong>replicas</strong> &#8211; number of replicas for each partition</li>
+<li><strong>min_part_hours</strong> &#8211; minimum number of hours between partition changes</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.add_dev">
+<tt class="descname">add_dev</tt><big>(</big><em>dev</em><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.add_dev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a device to the ring. This device dict should have a minimum of the
+following keys:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>id</td>
+<td>unique integer identifier amongst devices</td>
+</tr>
+<tr><td>weight</td>
+<td>a float of the relative weight of this device as compared to
+others; this indicates how many partitions the builder will try
+to assign to this device</td>
+</tr>
+<tr><td>zone</td>
+<td>integer indicating which zone the device is in; a given
+partition will not be assigned to multiple devices within the
+same zone ip the ip address of the device</td>
+</tr>
+<tr><td>port</td>
+<td>the tcp port of the device</td>
+</tr>
+<tr><td>device</td>
+<td>the device&#8217;s name on disk (sdb1, for example)</td>
+</tr>
+<tr><td>meta</td>
+<td>general use &#8216;extra&#8217; field; for example: the online date, the
+hardware description</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will not rebalance the ring immediately as you may want to
+make multiple changes for a single rebalance.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dev</strong> &#8211; device dict</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.change_min_part_hours">
+<tt class="descname">change_min_part_hours</tt><big>(</big><em>min_part_hours</em><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.change_min_part_hours" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the value used to decide if a given partition can be moved
+again. This restriction is to give the overall system enough time to
+settle a partition to its new location before moving it to yet another
+location. While no data would be lost if a partition is moved several
+times quickly, it could make that data unreachable for a short period
+of time.</p>
+<p>This should be set to at least the average full partition replication
+time. Starting it at 24 hours and then lowering it to what the
+replicator reports as the longest partition cycle is best.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>min_part_hours</strong> &#8211; new value for min_part_hours</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.get_balance">
+<tt class="descname">get_balance</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.get_balance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the balance of the ring. The balance value is the highest
+percentage off the desired amount of partitions a given device wants.
+For instance, if the &#8220;worst&#8221; device wants (based on its relative weight
+and its zone&#8217;s relative weight) 123 partitions and it has 124
+partitions, the balance value would be 0.83 (1 extra / 123 wanted * 100
+for percentage).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body">balance of the ring</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.get_ring">
+<tt class="descname">get_ring</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.get_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the ring, or more specifically, the swift.common.ring.RingData.
+This ring data is the minimum required for use of the ring. The ring
+builder itself keeps additional data such as when partitions were last
+moved.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.pretend_min_part_hours_passed">
+<tt class="descname">pretend_min_part_hours_passed</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.pretend_min_part_hours_passed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override min_part_hours by marking all partitions as having been moved
+255 hours ago. This can be used to force a full rebalance on the next
+call to rebalance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.rebalance">
+<tt class="descname">rebalance</tt><big>(</big><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.rebalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rebalance the ring.</p>
+<p>This is the main work function of the builder, as it will assign and
+reassign partitions to devices in the ring based on weights, distinct
+zones, recent reassignments, etc.</p>
+<p>The process doesn&#8217;t always perfectly assign partitions (that&#8217;d take a
+lot more analysis and therefore a lot more time &#8211; I had code that did
+that before). Because of this, it keeps rebalancing until the device
+skew (number of partitions a device wants compared to what it has) gets
+below 1% or doesn&#8217;t change by more than 1% (only happens with ring that
+can&#8217;t be balanced no matter what &#8211; like with 3 zones of differing
+weights with replicas set to 3).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.remove_dev">
+<tt class="descname">remove_dev</tt><big>(</big><em>dev_id</em><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.remove_dev" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a device from the ring.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will not rebalance the ring immediately as you may want to
+make multiple changes for a single rebalance.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dev_id</strong> &#8211; device id</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.set_dev_weight">
+<tt class="descname">set_dev_weight</tt><big>(</big><em>dev_id</em>, <em>weight</em><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.set_dev_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the weight of a device. This should be called rather than just
+altering the weight key in the device dict directly, as the builder
+will need to rebuild some internal state to reflect the change.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will not rebalance the ring immediately as you may want to
+make multiple changes for a single rebalance.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dev_id</strong> &#8211; device id</li>
+<li><strong>weight</strong> &#8211; new weight for device</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="swift.common.ring.builder.RingBuilder.validate">
+<tt class="descname">validate</tt><big>(</big><em>stats=False</em><big>)</big><a class="headerlink" href="#swift.common.ring.builder.RingBuilder.validate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validate the ring.</p>
+<p>This is a safety function to try to catch any bugs in the building
+process. It ensures partitions have been assigned to distinct zones,
+aren&#8217;t doubly assigned, etc. It can also optionally check the even
+distribution of partitions across devices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>stats</strong> &#8211; if True, check distribution of partitions across devices</li>
+</ul>
+</td>
+</tr>
+<tr class="field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">if stats is True, a tuple of (device usage, worst stat), else
+(None, None)</p>
+</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">Raises Exception:</th></tr>
+<tr><td>&nbsp;</td><td class="field-body"><p class="first last">problem was found with the ring.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="proxy.html" title="Proxy"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="howto_cyberduck.html" title="Talking to Swift with Cyberduck"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>

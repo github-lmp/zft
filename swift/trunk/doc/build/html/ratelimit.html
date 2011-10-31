@@ -1,0 +1,234 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Rate Limiting &mdash; Swift v1.2.0 documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/tweaks.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Swift v1.2.0 documentation" href="index.html" />
+    <link rel="next" title="Large Object Support" href="overview_large_objects.html" />
+    <link rel="prev" title="Swift stats system" href="overview_stats.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview_large_objects.html" title="Large Object Support"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview_stats.html" title="Swift stats system"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Rate Limiting</a><ul>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="overview_stats.html"
+                        title="previous chapter">Swift stats system</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="overview_large_objects.html"
+                        title="next chapter">Large Object Support</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ratelimit.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="rate-limiting">
+<h1>Rate Limiting<a class="headerlink" href="#rate-limiting" title="Permalink to this headline">¶</a></h1>
+<p>Rate limiting in swift is implemented as a pluggable middleware.  Rate
+limiting is performed on requests that result in database writes to the
+account and container sqlite dbs.  It uses memcached and is dependent on
+the proxy servers having highly synchronized time.  The rate limits are
+limited by the accuracy of the proxy server clocks.</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>All configuration is optional.  If no account or container limits are provided
+there will be no rate limiting.  Configuration available:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="31%" />
+<col width="12%" />
+<col width="57%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Option</td>
+<td>Default</td>
+<td>Description</td>
+</tr>
+<tr><td>clock_accuracy</td>
+<td>1000</td>
+<td>Represents how accurate the proxy servers&#8217;
+system clocks are with each other. 1000
+means that all the proxies&#8217; clock are
+accurate to each other within 1
+millisecond.  No ratelimit should be
+higher than the clock accuracy.</td>
+</tr>
+<tr><td>max_sleep_time_seconds</td>
+<td>60</td>
+<td>App will immediately return a 498 response
+if the necessary sleep time ever exceeds
+the given max_sleep_time_seconds.</td>
+</tr>
+<tr><td>log_sleep_time_seconds</td>
+<td>0</td>
+<td>To allow visibility into rate limiting set
+this value &gt; 0 and all sleeps greater than
+the number will be logged.</td>
+</tr>
+<tr><td>rate_buffer_seconds</td>
+<td>5</td>
+<td>Number of seconds the rate counter can
+drop and be allowed to catch up (at a
+faster than listed rate). A larger number
+will result in larger spikes in rate but
+better average accuracy.</td>
+</tr>
+<tr><td>account_ratelimit</td>
+<td>0</td>
+<td>If set, will limit all requests to
+/account_name and PUTs to
+/account_name/container_name. Number is in
+requests per second</td>
+</tr>
+<tr><td>account_whitelist</td>
+<td>&#8216;&#8217;</td>
+<td>Comma separated lists of account names that
+will not be rate limited.</td>
+</tr>
+<tr><td>account_blacklist</td>
+<td>&#8216;&#8217;</td>
+<td>Comma separated lists of account names that
+will not be allowed. Returns a 497 response.</td>
+</tr>
+<tr><td>container_ratelimit_size</td>
+<td>&#8216;&#8217;</td>
+<td>When set with container_limit_x = r:
+for containers of size x, limit requests
+per second to r.  Will limit GET and HEAD
+requests to /account_name/container_name
+and PUTs and DELETEs to
+/account_name/container_name/object_name</td>
+</tr>
+</tbody>
+</table>
+<p>The container rate limits are linearly interpolated from the values given.  A
+sample container rate limiting could be:</p>
+<p>container_ratelimit_100 = 100</p>
+<p>container_ratelimit_200 = 50</p>
+<p>container_ratelimit_500 = 20</p>
+<p>This would result in</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>Container Size</td>
+<td>Rate Limit</td>
+</tr>
+<tr><td>0-99</td>
+<td>No limiting</td>
+</tr>
+<tr><td>100</td>
+<td>100</td>
+</tr>
+<tr><td>150</td>
+<td>75</td>
+</tr>
+<tr><td>500</td>
+<td>20</td>
+</tr>
+<tr><td>1000</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview_large_objects.html" title="Large Object Support"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview_stats.html" title="Swift stats system"
+             >previous</a> |</li>
+        <li><a href="index.html">Swift v1.2.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, OpenStack, LLC.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+  </body>
+</html>
