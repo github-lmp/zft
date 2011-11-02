@@ -128,6 +128,7 @@ class Ccont:
         print x
         ccont_name = x["ccont_name"]
         h = httplib2.Http(".cache")
+        print 'web.ctx.session', web.ctx.session
         resp, content = h.request(web.ctx.session.XStorageUrl + "/" + \
                 ccont_name, "PUT", \
                 headers={"X-Auth-Token":web.ctx.session.XAuthToken})

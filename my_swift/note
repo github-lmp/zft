@@ -1,3 +1,5 @@
+启动一个wsgi-server, Proxy，--(ring)--(http_connect)》account, container, object,
+=====================================================
 1,
     proxyr/server.py
     168行的eventlet.posthooks()
@@ -52,4 +54,17 @@
 
 ------------------------------------------------------------
 2,
+
+    在AccountC里面，x-account-meta 在此之前在什么时候设置的？如果没有
+    设置的话，执行到这里就会自动退出？
+
+    这个是个傻冒问题，哈哈，在没有的情况下，check_meta返回的是None，Account
+    的put是不会退出的。
+
+3，
+    account_partition, accounts =
+self.app.account_ring.get_nodes(self.account_name)
+    到这里开始看ring的计算方法，
+
+4,
 
