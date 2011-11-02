@@ -11,7 +11,7 @@ http://www.svnchina.com/svn/swift_demo/
 	要修改common/config.py里面的内容。config.py里面有说明
 
 2,
-这个是为了学习swift而编写的，参考swift提供的REST接口。 
+这个是为了帮助调试学习swift而编写的，参考swift提供的REST接口。
 通过界面在swift集群中创建一个容器，上传下载文件。
 
 更多swift相关内容请参考下面网址

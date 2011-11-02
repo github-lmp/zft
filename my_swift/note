@@ -1,0 +1,55 @@
+1,
+    proxyr/server.py
+    168行的eventlet.posthooks()
+    是什么用？在此之前在什么时候，在什么地方会设置env[‘eventlet.posthooks']
+    这个应该是wsgi-server设置的，如果支持这个参数的话，
+    就会在完全发送一个response后执行posthooks,
+    如果不支持这个参数的话，就不能记录请求的发送量
+
+    http://eventlet.net/doc/modules/wsgi.html
+
+    Non-Standard Extension to Support Post Hooks¶
+    Eventlet’s WSGI server supports a non-standard extension to the WSGI
+    specification where env['eventlet.posthooks'] contains an array of post
+    hooks that will be called after fully sending a response. Each post hook
+    is a tuple of (func, args, kwargs) and the func will be called with the
+    WSGI environment dictionary, followed by the args and then the kwargs in
+    the post hook.
+
+    For example:
+
+    from eventlet import wsgi
+    import eventlet
+
+    def hook(env, arg1, arg2, kwarg3=None, kwarg4=None):
+        print 'Hook called: %s %s %s %s %s' % (env, arg1, arg2, kwarg3,
+                                               kwarg4)
+
+        def hello_world(env, start_response):
+            env['eventlet.posthooks'].append(
+                                             (hook, ('arg1',
+                                                     'arg2'),
+                                              {'kwarg3': 3,
+                                              'kwarg4': 4}))
+            start_response('200 OK', [('Content-Type',
+                                       'text/plain')])
+            return ['Hello, World!\r\n']
+
+            wsgi.server(eventlet.listen(('', 8090)),
+                        hello_world)
+
+            The above code will print the WSGI environment and
+            the other passed function arguments for every
+            request processed.
+
+            Post hooks are useful when code needs to be
+            executed after a response has been fully sent to
+            the client (or when the client disconnects early).
+            One example is for more accurate logging of
+            bandwidth used, as client disconnects use less
+            bandwidth than the actual Content-Length.
+
+
+------------------------------------------------------------
+2,
+
