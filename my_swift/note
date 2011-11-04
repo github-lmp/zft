@@ -61,10 +61,16 @@
     这个是个傻冒问题，哈哈，在没有的情况下，check_meta返回的是None，Account
     的put是不会退出的。
 
+    ??????????
 3，
     account_partition, accounts =
 self.app.account_ring.get_nodes(self.account_name)
     到这里开始看ring的计算方法，
 
 4,
+    为什么选用2的次方来做韦partition,
+    在创建ring时，分两种情况，第一种是存在了objct.build
+    ，另一种是不存在objct.build，分别怎么处理?
 
+5,
+ RingBuilder(18, 3, 1)
