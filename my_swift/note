@@ -74,3 +74,16 @@ self.app.account_ring.get_nodes(self.account_name)
 
 5,
  RingBuilder(18, 3, 1)
+
+list	
++---+									+----------------------------+
+|dev1(index=device_id)   +dict-id, zone, ip, port, device, weight, meta-                            |
++---+									+-------------------------+--+
+|   |
+|dev2(index=device_id)   +dict-id, zone, ip, port, device, weight, meta-                            |
++---+
+|   |
++---+
+|   |
+|   |
+    |
