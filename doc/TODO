@@ -4,5 +4,9 @@ webob-refernce
 
 
 看了swift的启动过程，启动一个wsgi-server,
+     从swift里面摘出了一个独立运行的web-server，在my-swift/example
+
+2,
+    eventlet.net/doc
 
 看proxy的实现，

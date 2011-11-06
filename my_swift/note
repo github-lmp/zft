@@ -74,3 +74,61 @@ self.app.account_ring.get_nodes(self.account_name)
 
 5,
  RingBuilder(18, 3, 1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    6, reblance后，怎么找到之前的位置
+
+
+    7,
+    how to understand this ?
+    Various hashing algorithms were tried. SHA offers better security, but the
+    ring doesn’t need to be cryptographically secure and SHA is slower. Murmur
+    was much faster, but MD5 was built-in and hash computation is a small
+    percentage of the overall request handling time. In all, once it was
+    decided the servers wouldn’t be maintaining the rings themselves anyway
+    and only doing hash lookups, MD5 was chosen for its general availability,
+    good distribution, and adequate speed.
+
+
+
+
+    8,
+    今日写了一个wsgi-server
+
+    9,
+    from eventlet import timeout
+    可以使用with timeout，
+
+    10,
+    看了eventlet，看了用eventlet来实现的一个简单的端口转发，
