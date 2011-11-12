@@ -75,6 +75,7 @@ self.app.account_ring.get_nodes(self.account_name)
 5,
  RingBuilder(18, 3, 1)
 
+<<<<<<< HEAD
 list	
 +---+									+----------------------------+
 |dev1(index=device_id)   +dict-id, zone, ip, port, device, weight, meta-                            |
@@ -87,3 +88,160 @@ list
 |   |
 |   |
     |
+=======
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    6, reblance后，怎么找到之前的位置
+
+
+    7,
+    how to understand this ?
+    Various hashing algorithms were tried. SHA offers better security, but the
+    ring doesn’t need to be cryptographically secure and SHA is slower. Murmur
+    was much faster, but MD5 was built-in and hash computation is a small
+    percentage of the overall request handling time. In all, once it was
+    decided the servers wouldn’t be maintaining the rings themselves anyway
+    and only doing hash lookups, MD5 was chosen for its general availability,
+    good distribution, and adequate speed.
+
+
+
+
+    8,
+    今日写了一个wsgi-server
+
+    9,
+    from eventlet import timeout
+    可以使用with timeout，
+
+    10,
+    看了eventlet，看了用eventlet来实现的一个简单的端口转发，
+>>>>>>> 80dbaa5cd478c2f0b4eafd0f8e956ee2ca9d9043
+
+
+
+		11,
+		删除一个container,后又创建一个同名的container？
+    conn.executescript("""
+            CREATE TABLE account_stat (
+                account TEXT,
+                created_at TEXT,
+                put_timestamp TEXT DEFAULT '0',
+                delete_timestamp TEXT DEFAULT '0',
+                container_count INTEGER,
+                object_count INTEGER DEFAULT 0,
+                bytes_used INTEGER DEFAULT 0,
+                hash TEXT default '00000000000000000000000000000000',
+                id TEXT,
+                status TEXT DEFAULT '',
+                status_changed_at TEXT DEFAULT '0',
+                metadata TEXT DEFAULT ''
+            );
+
+            INSERT INTO account_stat (container_count) VALUES (0);
+        """)
+        """
+        Create container table which is specific to the account DB.
+
+        :param conn: DB connection object
+        """
+        conn.executescript("""
+            CREATE TABLE container (
+                ROWID INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT UNIQUE,
+                put_timestamp TEXT,
+                delete_timestamp TEXT,
+                object_count INTEGER,
+                bytes_used INTEGER,
+                deleted INTEGER DEFAULT 0
+            );
+
+    conn.executescript("""
+            CREATE TABLE object (
+                ROWID INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT UNIQUE,
+                created_at TEXT,
+                size INTEGER,
+                content_type TEXT,
+                etag TEXT,
+                deleted INTEGER DEFAULT 0
+            );
+    conn.executescript("""
+            CREATE TABLE container_stat (
+                account TEXT,
+                container TEXT,
+                created_at TEXT,
+                put_timestamp TEXT DEFAULT '0',
+                delete_timestamp TEXT DEFAULT '0',
+                object_count INTEGER,
+                bytes_used INTEGER,
+                reported_put_timestamp TEXT DEFAULT '0',
+                reported_delete_timestamp TEXT DEFAULT '0',
+								reported_object_count INTEGER DEFAULT 0,
+                reported_bytes_used INTEGER DEFAULT 0,
+                hash TEXT default '00000000000000000000000000000000',
+                id TEXT,
+                status TEXT DEFAULT '',
+                status_changed_at TEXT DEFAULT '0',
+                metadata TEXT DEFAULT ''
+            );
+
+            INSERT INTO container_stat (object_count, bytes_used)
+                VALUES (0, 0);
+        """)
+
+				1，put account,(会initialize，），多次put account呢？检查如果存在，就返回accept,
+
+
+					delete account, broker.delete_db()把account_state中设置状态为删除，并且设置删除时间，状态改变时间，
+
+				2,  put /account/container
+						分三种情况，一种是account已经存在的情况, 一种是account不存在的情况，一种是account被删除后的情况
+						a,initialize container,
+						b,.(pending_file是在put container时创建的)pending_file是怎么创立的？首先会创建一个container这个数据库，接着去更新account，因为account此时还没有所有相当于是deleted的状态，如果此时x-account-overide-deleted为非yes，会（HTTPNotfound）
+							如果x-account-override-deleted为True?此时如果没有account，并没有account.db, 怎么执行put_container操作？会引起服务器的异常，？
+						c,
+						这个和上面类似，只是此时有数据库，
+
+
+				3,
+				PENDING_CAP 设置值的依据?
+
+				正常Put container是，先写入到pending里面，等超过pending_cap后写入文件，
+				在get container时，会先把pending里面的数据merge到数据库再查询，返回一个迭代器，
+
+				4，
+
+
+				5,
+				猜想outgong_sync, ingoing_sync和数据库的复制有关

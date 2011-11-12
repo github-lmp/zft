@@ -64,7 +64,7 @@ setup(
     entry_points={
         'paste.app_factory': [
             'proxy=zft.proxy:app_factory',
-#            'object=swift.obj.server:app_factory',
+            'object=zf.object:app_factory',
 #            'container=swift.container.server:app_factory',
 #            'account=swift.account.server:app_factory',
 #            'auth=swift.auth.server:app_factory',
