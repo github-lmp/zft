@@ -226,6 +226,7 @@ list
 					delete account, broker.delete_db()把account_state中设置状态为删除，并且设置删除时间，状态改变时间，
 
 				2,  put /account/container
+
 						分三种情况，一种是account已经存在的情况, 一种是account不存在的情况，一种是account被删除后的情况
 						a,initialize container,
 						b,.(pending_file是在put container时创建的)pending_file是怎么创立的？首先会创建一个container这个数据库，接着去更新account，因为account此时还没有所有相当于是deleted的状态，如果此时x-account-overide-deleted为非yes，会（HTTPNotfound）
@@ -233,6 +234,7 @@ list
 						c,
 						这个和上面类似，只是此时有数据库，
 
+						上面说的这三种情况不存在，因为在put container情况下，首先会检查是否存在account，不存在就直接退出。
 
 				3,
 				PENDING_CAP 设置值的依据?
@@ -245,3 +247,37 @@ list
 
 				5,
 				猜想outgong_sync, ingoing_sync和数据库的复制有关
+
+				6,
+				这个问题可能记录过，就是sqlite数据库表里面记录多少条数据合适，性能最好？这个和一个account里面几个container，一个ontainer里面多少个object有关。
+
+				7,
+				为什么container在删除的时候也是采用的insert 操作呢，可能是因为不管是生成，还是删除container时，最后一步的update account，都是put?
+
+				7,
+				account的 meta信息是存放在数据库中，是一条记录，
+
+				8,
+				基本看完了account的db操作
+
+
+				9,
+				container的get操作为什么要加上delay_denial呢？
+				o
+
+				10,
+				account的创建是写透三份，
+
+
+				11,
+				acl控制先保留后看？
+				在container的put时，为什么要先clean_acls呢？并检查check_metadata呢？
+				暂时猜测，clean_acls是进行验证，如果不符合就报错返回不执行。
+
+				12,
+				对proxy_server.py里面的get_update_nodes还有疑问？
+				理解了，就是为了确保返回和副本数相同的node，并且尽可能是没有error_limit的节点。
+				因为在创建，删除object, container时会涉及到上层目录的修改，所以需要get_update_nodes来获取和副本相同的节点。
+
+				todo 看下object的处理，Proxy和object server的处理，
+				之后，开始想下它的replication的处理
