@@ -8,7 +8,8 @@ class Auth(object):
         self.allowed_usernames = allowed_username
  
     def __call__(self, env, start_response):
-        if env.get('REMOTE_USER') not in self.allowed_usernames:
+        #if env.get('REMOTE_USER') not in self.allowed_usernames:
+        if True:
             return self.app(env, start_response)
         status = '403 Forbidden'
         response_header = [('Content-type', 'text/plain')] 
