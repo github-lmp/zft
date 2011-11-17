@@ -132,3 +132,42 @@ self.app.account_ring.get_nodes(self.account_name)
 
     10,
     看了eventlet，看了用eventlet来实现的一个简单的端口转发，
+
+    11,
+    common/db.py --182
+    how to understand ''
+    conn = sqlite3.connect(tmp_db_file, check_same_thread=False,
+                           factory=GreenDBConnection, timeout=0)
+
+    >>> print sqlite3.connect.__doc__
+    connect(database[, timeout, isolation_level, detect_types, factory])
+
+    Opens a connection to the SQLite database file *database*. You can use
+    ":memory:" to open a database connection to a database that resides in
+    RAM instead of on disk.
+    >>>
+    从上面这点用法里面可以看到，他没有check_same_thread的参赛，
+    timeout=0, 为什么要设置为0?
+
+    factory:
+    By default, the sqlite3 module uses its Connection class for the connect
+    call. You can, however, subclass the Connection class and make connect()
+    use your class instead by providing your class for the factory parameter.
+
+    GreenDBConnection是自定义的一个connection，但不知用意为何？
+
+    12,
+    一个account里面多少个container，一个container里面多少个Objgect最优
+
+    13,
+    swift能动态调整保存的份数，
+    好像不能。
+
+    14，
+    在swift/trunk/swift/proxy/server.py
+    里面，395行，是不是可能存在访问一个没有定义过的变量cache_key?
+
+    不会，看错了，:),这句之前，先判断了下是否有memcache..
+
+    15,
+    memcache缓存了一个数据信息，比如container_info, account_info,
