@@ -7,6 +7,7 @@ import signal
 import sys
 import time
 import mimetools
+from hashlib import md5
 
 import eventlet
 from eventlet import greenio, GreenPool, sleep, wsgi, listen
@@ -19,6 +20,10 @@ wsgi.ACCEPT_ERRNO.add(ECONNRESET)
 
 from eventlet.green import socket, ssl
 
+from webob import Request, Response
+from webob.exc import HTTPAccepted, HTTPCreated
+
+chunk_size = 65535
 def get_socket(default_port=8080):
     """Bind socket to bind ip:port in conf
 
@@ -59,7 +64,7 @@ def run_wsgi(app, *args, **kwargs):
     #drop_privileges(conf.get('user', 'swift'))
 
     def run_server():
-        wsgi.HttpProtocol.default_request_version = "HTTP/1.0"
+        wsgi.HttpProtocol.default_request_version = "HTTP/1.1"
         eventlet.hubs.use_hub('poll')
         eventlet.patcher.monkey_patch(all=False, socket=True)
         pool = GreenPool(size=1024)
@@ -121,12 +126,58 @@ class Application(object):
 
     def __call__(self, env, start_response):
         #print env
-        status = '200'
-        response_header = [('Content-type', 'text/plain')]
-        start_response(status, response_header)
-        return [self.name, time.ctime()]
+        req = Request(env)
+        print '*'*40
+        return self.hander(req)(env, start_response)
+        #status = '200'
+        #response_header = [('Content-type', 'text/plain')]
+        #start_response(status, response_header)
+        #return [self.name, time.ctime()]
+
+    def hander(self, request):
+        #print request, dir(request)
+        method = request.method
+        hander = getattr(self, method)
+        print hander
+        return hander(request)
+
+    def PUT(self, request):
+        file_name = request.headers['x-file-name']
+        with open(file_name, 'wb') as f:
+            n = 0
+            while True:
+                data = request.body_file.read(chunk_size)
+                if not data:
+                    break
+                f.write(data)
+                n += 1
+        print 'after put write', n
+        rs = Response()
+        return rs
+
+    def GET(self, request):
+        file_name = request.headers['x-file-name']
+        rs = Response()
+        body_f = rs.body_file
+        n = 0
+        with open(file_name, 'rb') as f:
+            n = 0
+            while True:
+                data = f.read(chunk_size)
+                if not data:
+                    break
+                body_f.write(data)
+                n += 1
+        print 'after get write', n
+        return rs
 
 
 if __name__ == '__main__':
     app = Application('app1')
     run_wsgi(app, {'worker_count':10})
+
+
+"""
+使用curl来上传文件
+curl -F upload=@./class_test.py http://127.0.0.1:8080
+"""

@@ -75,7 +75,7 @@ self.app.account_ring.get_nodes(self.account_name)
 5,
  RingBuilder(18, 3, 1)
 
-list	
+list
 +---+									+----------------------------+
 |dev1(index=device_id)   +dict-id, zone, ip, port, device, weight, meta-                            |
 +---+									+-------------------------+--+
@@ -344,3 +344,4 @@ list
 
 				16,
 				有必要，单独使用eventlet来写一个connect的发送文件客户端和然后用已经写好的wsgi上写一个接受文件的应用，
+                                这个已经实现，可以考虑添加一个Proxy?
