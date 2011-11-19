@@ -285,6 +285,9 @@ list
 
 				6,
 				这个问题可能记录过，就是sqlite数据库表里面记录多少条数据合适，性能最好？这个和一个account里面几个container，一个ontainer里面多少个object有关。
+				http://adrianotto.com/2010/09/openstack-os-is-great-for/
+				Don’t store unlimited objects per container
+				You can store as many objects in a container as you wish. However, your per-object upload latency will increase considerably one you reach a certain point. I found the optimal number of objects per container to be just under one million. This number will vary depending on your equipment, and how heavy of a workload it’s subjected to.
 
 				7,
 				为什么container在删除的时候也是采用的insert 操作呢，可能是因为不管是生成，还是删除container时，最后一步的update account，都是put?
@@ -298,11 +301,9 @@ list
 
 				9,
 				container的get操作为什么要加上delay_denial呢？
-				o
 
 				10,
 				account的创建是写透三份，
-
 
 				11,
 				acl控制先保留后看？
@@ -316,3 +317,30 @@ list
 
 				todo 看下object的处理，Proxy和object server的处理，
 				之后，开始想下它的replication的处理
+
+				13,
+				SegmentedIterable
+				x-object-mainifest 是什么用/
+				这两个功能是来支持大文件的。
+
+				14,
+				在Container的GETorHead里面，为什么要先执行，在执行完成后才进行swift.authorize呢？
+
+				15,
+				transfer-encoding的作用是什么？
+				3.3.2.2. Chunked Transfer Encoding
+				Users can upload data without needing to know in advance the amount of data to be
+				uploaded. Users can do this by specifying an HTTP header of Transfer-Encoding:
+				chunked and not using a Content-Length header. A good use of this feature would
+				be doing a DB dump, piping the output through gzip, then piping the data directly into
+				OpenStack Object Storage without having to buffer the data to disk to compute the file
+				size. If users attempt to upload more that 5GB with this method, the server will close
+				the TCP/IP connection after 5GB and purge the customer data from the system. Users
+				must take responsibility for ensuring the data they transfer will be less than 5GB or for
+				splitting it into 5GB chunks, each in its own storage object. If you have files that are larger
+				than 5GB and still want to use Object Storage, you can segment them prior to upload,
+				upload them to the same container, and then use a manifest file to allow downloading of a
+				concatenated object containing all the segmented objects, concatenated as a single object.
+
+				16,
+				有必要，单独使用eventlet来写一个connect的发送文件客户端和然后用已经写好的wsgi上写一个接受文件的应用，
