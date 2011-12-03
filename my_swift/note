@@ -345,3 +345,37 @@ list
 				16,
 				有必要，单独使用eventlet来写一个connect的发送文件客户端和然后用已经写好的wsgi上写一个接受文件的应用，
                                 这个已经实现，可以考虑添加一个Proxy?
+
+																要考虑下，swfit对httplib.Connection 做包装是为什么？但优先看下复制过程。
+																                                replication partion/partion_last_3/MD5sum/**
+																																replication的基本单元应该是partion/partion_last_3 
+																																并且mds计算的只是文件的名字，如果md5不对，就会进行rsync
+				17,
+
+
+				18,
+				文件名能否为中文，
+
+				19,
+				一个文件对象是怎么保存元数据信息的?.meta, .ts, .data的含义？
+
+				20,
+				在recalculate_hashes时会锁住一个文件夹，锁住后是不能往里面写数据了吗？为什么我锁住了，还能用shell去写数据，
+			原来在linux 中，锁是建议锁，只有两者都调用flock时才会生效，比如下面的例子
+			example$ flock -e lv www_www
+			example$ cat /usr/bin/www_www 
+
+			for i in `seq 100`
+			do
+			echo `date`
+			sleep 1
+			done
+
+			21,
+			查看下account,container的replication, 之后看看auditor和Update ,
+
+
+			12
+			在一个磁盘或一个节点宕机后，进行数据的修复（即）保证数据的份数是三份。
+			的时间间隔是？
+
