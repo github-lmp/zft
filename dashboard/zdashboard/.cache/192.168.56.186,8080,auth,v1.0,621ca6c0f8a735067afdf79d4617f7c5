@@ -1,0 +1,9 @@
+status: 200
+content-length: 112
+content-location: http://192.168.56.186:8080/auth/v1.0
+x-auth-token: AUTH_tkc92ab34d5b2a4ab39b8c7bca4086d0f4
+x-storage-token: AUTH_tkc92ab34d5b2a4ab39b8c7bca4086d0f4
+date: Wed, 21 Dec 2011 00:14:22 GMT
+x-storage-url: http://127.0.0.1:8080/v1/AUTH_9d033177-b0d9-4e04-84d8-45772ef3df27
+
+{"storage": {"default": "local", "local": "http://127.0.0.1:8080/v1/AUTH_9d033177-b0d9-4e04-84d8-45772ef3df27"}}

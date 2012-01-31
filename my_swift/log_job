@@ -1,0 +1,25 @@
+i日志系统分为两大块，一块是访问日志，另一块是account和container的信息，
+1
+访问日志，准备使用cron+logrotate+rsyslog来按照小时来转储日志，在一个单独的节点上进行日志的收集，每小时收集分析一次，分析完成后，进行压缩并 上传到swift中，
+a, 使用rsylog把相关swift的日志保存在一个单独的文件中
+
+root@swift-proxy:~# cat /etc/rsyslog.d/10-swift.conf 
+# Uncomment the following to have a log containing all logs together
+#local1,local2,local3,local4,local5.*   /var/log/swift/all.log
+
+$template HourlyProxyLog,"/var/log/swift/hourly/%$YEAR%%$MONTH%%$DAY%%$HOUR%"
+local1.*;local1.!notice ?HourlyProxyLog
+
+#local1.*;local1.!notice /var/log/swift/proxy.log
+local1.notice           /var/log/swift/proxy.error
+#local1.*                ~
+root@swift-proxy:~#
+c, 收集
+
+d, 分析
+获取每个小时内，某个user的流进流量和流出流量，和put次数，get次数，post次数，delete次数
+
+e, 上传
+
+2,
+account和container日志通过proxy来查询获取，（或许可以不通过proxy来获取？）

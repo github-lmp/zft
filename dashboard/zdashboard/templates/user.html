@@ -1,0 +1,83 @@
+<head>
+	<meta name="Content-Type" content="text/html; charset=UTF-8" />
+	<title>swift_demo</title>
+
+	<script type="text/javascript" src="static/js/jquery-1.4.2.min.js" ></script>
+	<!--
+	<script type="text/javascript" src="static/js/index.js" ></script>
+	-->
+
+</head>
+
+<body class="swift_demo">
+
+	<div id="logout_div" >
+		<a id="logout_a" href="/logout">Logout</a>
+		<br/>
+		<br/>
+	</div>
+
+	<div>
+		<hr/>
+		<a id="userlist_a" >userlist</a>
+		<div id="userlist_div">
+			{{ user }}
+		</div>
+	</div>
+
+
+	<div>
+		<hr/>
+		<a id="useradd_a">swauth add user</a>
+		<div id="useradd_div">
+			<form name="ccont" id="login_form" action="/user?option=useradd" method="post">
+				<table>
+					<tr>
+						<td>
+							<label>acount<br>
+							</td>
+							<td>
+								<input type="txt" name="ccont_name" id="ccont_name" ></label>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label>user<br>
+							</td>
+							<td>
+								<input type="txt" name="ccont_name" id="ccont_name" ></label>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label>passwd<br>
+							</td>
+							<td>
+								<input type="txt" name="ccont_name" id="ccont_name" ></label>
+						</td>
+					</tr>
+
+					<tr>
+						<td></td>
+						<td>
+							<input type="submit" value="swauth add user">
+						</td>
+					</tr>
+
+				</table>
+			</form>
+
+		</div>
+	</div>
+
+	<div>
+		<hr/>
+		<a id="userdel_a" >userdel</a>
+		<div id="userdel_div">
+		</div>
+	</div>
+</body>
+
+</html>

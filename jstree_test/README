@@ -1,0 +1,2 @@
+1, 一个用户对应一个sqlite db, 用户名，就是sqlitedb的名字。这里的用户名对应swift中的一个accout, 
+	目标是1-10万个用户，在dashboard上创建一个用户的时候创建一个对应的account和一个用于存放object的container0，并创建一个对应的sqlite db来把container下的文件映射成一个树形目录，

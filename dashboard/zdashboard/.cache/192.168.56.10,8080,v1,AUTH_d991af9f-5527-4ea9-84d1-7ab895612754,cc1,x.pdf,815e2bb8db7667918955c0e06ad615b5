@@ -1,0 +1,45 @@
+status: 304
+content-length: 0
+content-location: https://192.168.56.10:8080/v1/AUTH_d991af9f-5527-4ea9-84d1-7ab895612754/cc1/x.pdf
+accept-ranges: bytes
+last-modified: Sat, 10 Dec 2011 17:01:39 GMT
+etag: be9284f9d8fdc4bb8c6cc2b9e8f313f9
+date: Sat, 10 Dec 2011 17:02:04 GMT
+content-type: application/pdf
+
+<!DOCTYPE mysql>
+<mysql>
+ <xpm>
+  <file></file>
+ </xpm>
+ <schema>1</schema>
+ <password>1</password>
+ <from>0</from>
+ <to>100</to>
+ <style>-1</style>
+ <size>
+  <width>1366</width>
+  <height>694</height>
+ </size>
+ <exit>1</exit>
+ <clear>1</clear>
+ <log>0</log>
+ <server>
+  <host>127.0.0.1</host>
+  <user>root</user>
+  <password>$bWRzbWRz</password>
+  <database>paas</database>
+  <port>3306</port>
+  <socket></socket>
+  <timeout>30</timeout>
+ </server>
+ <save>0</save>
+ <font>
+  <family></family>
+  <bold>0</bold>
+  <italic>0</italic>
+  <size>0</size>
+  <strikeout>0</strikeout>
+  <underline>0</underline>
+ </font>
+</mysql>

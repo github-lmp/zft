@@ -1,3 +1,4 @@
+应该是有一套部署和管理的脚本，和一个最终用户使用的ui
 启动一个wsgi-server, Proxy，--(ring)--(http_connect)》account, container, object,
 =====================================================
 1,
@@ -378,4 +379,205 @@ list
 			12
 			在一个磁盘或一个节点宕机后，进行数据的修复（即）保证数据的份数是三份。
 			的时间间隔是？
+
+
+				17,
+				当前的版本中Diskfile每次读的时候没有做mds计算，为什么在1.4的时候加入了每次做mds5计算呢？
+
+				18,
+				数据库文件后面添加-journal后标示什么意思？
+
+
+				19,
+				container中object记录, account中container记录，里面的表记录可能会存在不一致，确认下在读一个Objcet时是不是尝试读三次，?
+				是的，
+
+				20，
+				数据存放了三份，如果在读第一份的时候成功，就返回成功，怎么保证读的第一份是正确的数据，而不是老数据？
+				暂时认为是有可能的，有待进一步的考证？
+
+				21，
+				数据库的复制，每个数据库都有一个唯一的id，并且有一个表来记录这个表（id）和另一个表进行同步的rowid，在复制时采用两种策略，
+				第一种，如果两个数据库不在或差别大约50%就把整个数据库rsync过去，在本地进行合并。另一种就是只传输不同的部分。
+				sync_id(point)记录的就是rowid，在每次进行复制后，根据当前的rowid重置sync_id，重置sync_id一步是个原子操作吗？会不会存在实际复制的row_id为100,可是等去重置sync_id时变成了101呢？
+
+				解答:
+			  针对第一种情况，在进行复制前，已经获得了point,这样在复制完成后，是直接把这个point插入到outputing-sync表中，
+				第二种情况，把整个表复制到远程，先复制成一个临时文件，比如xxxx.db.tmp 然后根据当前xxxx.db.tmp里面当前rowid来重置sync_id, 这个操作完成之后，才把这个xxxx.db.tmp 重命名位xxxx.db
+
+				22,应该理解下swift的日志系统，在此之前先看下account reaper, container 的---->sync和updater, obj的(expirer,  这个是1.4版本里面的，先不考虑),updater  --------->common里面的
+				日志系统，要知道一个account的当前状态，这个可以从数据库里面查询获得，或某个account的流量，因为现在知道了是从proxy日志里面读，所以先认为理解了这点，接下来看认证，
+
+				23, 日志系统看完，看下认证，
+.account_id
+    AUTH_2282f516-559f-4966-b239-b5c88829e927
+    AUTH_f6f57a3c-33b5-4e85-95a5-a801e67505c8
+    AUTH_fea96a36-c177-4ca4-8c7e-b8c715d9d37b
+.token_0
+.token_1
+.token_2
+.token_3
+.token_4
+.token_5
+.token_6
+    AUTH_tk9d2941b13d524b268367116ef956dee6
+.token_7
+.token_8
+    AUTH_tk93627c6324c64f78be746f1e6a4e3f98
+.token_9
+.token_a
+.token_b
+.token_c
+.token_d
+.token_e
+    AUTH_tk0d37d286af2c43ffad06e99112b3ec4e
+.token_f
+    AUTH_tk766bbde93771489982d8dc76979d11cf
+reseller
+    .services
+    reseller
+test
+    .services
+    tester
+    tester3
+test2
+    .services
+    tester2
+		http://swift.openstack.org/1.2/development_saio.html
+
+23, 日志系统看完，看下认证，
+日志里面怎么统计出，一个account的使用容量，和某个用户的get 次数，put 次数， 和put流量，get 流量
+
+
+
+swauth里面的super_admin_key在创建account和给account设置admin时用，身份验证
+acl是怎么实现的呢？
+		到此要告一段落，，，
+
+
+		swift@swift-proxy:/etc/swift$ for j in `seq 1 3`;do for i in `seq 1 3`;do swift-ring-builder object.builder add z${j}-192.168.56.1${j}:6000/sdb${i} 100;done;done
+		Device z1-192.168.56.11:6000/sdb1_"" with 100.0 weight got id 0
+		Device z1-192.168.56.11:6000/sdb2_"" with 100.0 weight got id 1
+		Device z1-192.168.56.11:6000/sdb3_"" with 100.0 weight got id 2
+		Device z2-192.168.56.12:6000/sdb1_"" with 100.0 weight got id 3
+		Device z2-192.168.56.12:6000/sdb2_"" with 100.0 weight got id 4
+		Device z2-192.168.56.12:6000/sdb3_"" with 100.0 weight got id 5
+		Device z3-192.168.56.13:6000/sdb1_"" with 100.0 weight got id 6
+		Device z3-192.168.56.13:6000/sdb2_"" with 100.0 weight got id 7
+		Device z3-192.168.56.13:6000/sdb3_"" with 100.0 weight got id 8
+		swift@swift-proxy:/etc/swift$ for j in `seq 1 3`;do for i in `seq 1 3`;do swift-ring-builder container.builder add z${j}-192.168.56.1${j}:6001/sdb${i} 100;done;doneDevice z1-192.168.56.11:6001/sdb1_"" with 100.0 weight got id 0b${i} 100;done;dDevice z1-192.168.56.11:6001/sdb2_"" with 100.0 weight got id 1
+		Device z1-192.168.56.11:6001/sdb3_"" with 100.0 weight got id 2
+		Device z2-192.168.56.12:6001/sdb1_"" with 100.0 weight got id 3
+		Device z2-192.168.56.12:6001/sdb2_"" with 100.0 weight got id 4
+		Device z2-192.168.56.12:6001/sdb3_"" with 100.0 weight got id 5
+		Device z3-192.168.56.13:6001/sdb1_"" with 100.0 weight got id 6
+		Device z3-192.168.56.13:6001/sdb2_"" with 100.0 weight got id 7
+		Device z3-192.168.56.13:6001/sdb3_"" with 100.0 weight got id 8
+		swift@swift-proxy:/etc/swift$ for j in `seq 1 3`;do for i in `seq 1 3`;do swift-ring-builder account.builder add z${j}-192.168.56.1${j}:6002/sdb${i} 100;done;doneDevice z1-192.168.56.11:6002/sdb1_"" with 100.0 weight got id 0db${i} 100;done;Device z1-192.168.56.11:6002/sdb2_"" with 100.0 weight got id 1
+		Device z1-192.168.56.11:6002/sdb3_"" with 100.0 weight got id 2
+		Device z2-192.168.56.12:6002/sdb1_"" with 100.0 weight got id 3
+		Device z2-192.168.56.12:6002/sdb2_"" with 100.0 weight got id 4
+		Device z2-192.168.56.12:6002/sdb3_"" with 100.0 weight got id 5
+		Device z3-192.168.56.13:6002/sdb1_"" with 100.0 weight got id 6
+		Device z3-192.168.56.13:6002/sdb2_"" with 100.0 weight got id 7
+		Device z3-192.168.56.13:6002/sdb3_"" with 100.0 weight got id 8
+		swift@swift-proxy:/etc/swift$ 
+
+
+
+		root@swift003:~# for i in `seq 1 3`;do dd if=/dev/zero of=/srv/sdb${i} bs=1024 count=0 seek=500000;mkfs.xfs -i size=1024 /srv/sdb${i};mkdir -p /srv/node/sdb${i};done;chown -R swift:swift /srv/node
+
+
+
+		swift1.4.4时，官方的多接点部署，需要使用下面的配置文件，关键是在swauth里面添加上default_swift_cluster = local这么行，
+		Accept-Ranges: bytes
+"""
+		root@swift-proxy:/swauth# cat /etc/swift/proxy-server.conf 
+		[DEFAULT]
+		cert_file = /etc/swift/cert.crt
+		key_file = /etc/swift/cert.key
+		bind_port = 8080
+		workers = 8
+		user = swift
+
+		[pipeline:main]
+#pipeline = healthcheck cache tempauth proxy-server
+		pipeline = healthcheck cache swauth proxy-server
+
+		[app:proxy-server]
+		use = egg:swift#proxy
+		allow_account_management = true
+
+		[filter:swauth]
+		use = egg:swauth#swauth
+		set log_name = swauth
+		super_admin_key = swauthkey_zz2
+		default_swift_cluster = local#https://192.168.56.10:8080/v1
+
+
+
+		[filter:tempauth]
+		use = egg:swift#tempauth
+		user_system_root = testpass .admin https://192.168.56.10:8080/v1/AUTH_system
+
+		[filter:healthcheck]
+		use = egg:swift#healthcheck
+
+		[filter:cache]
+		use = egg:swift#memcache
+		memcache_servers = 192.168.56.10:11211
+"""
+
+
+db_replicator:
+
+run_once -->
+
+roundrobin_datadirs 来收集要执行replicator的db文件，   ---》 _replicate_object 来处理每一个文件。
+self._repl_to_node(node, broker, partition, info)
+根据node, partion等给节点发送一个replicator的请求，
+response = http.replicate('sync', info['max_row'], info['hash'],
+                info['id'], info['created_at'], info['put_timestamp'],
+                info['delete_timestamp'], info['metadata'])
+
+					服务器端接受这个请求，调用dispatch来执行sync
+							return getattr(self, op)(self.broker_class(db_file), args)
+					更新数据表的状态，
+							if info['put_timestamp'] != put_timestamp or \
+                    info['created_at'] != created_at or \
+                    info['delete_timestamp'] != delete_timestamp:
+							broker.merge_timestamps(
+									created_at, put_timestamp, delete_timestamp)
+					执行merge_syncs：
+							if hash_ == info['hash'] and info['point'] < remote_sync:
+									broker.merge_syncs([{'remote_id': id_,
+                                 'sync_point': remote_sync}])
+							info['point'] = remote_sync
+							return Response(simplejson.dumps(info))
+							设置remote_id 和sync_point
+							然后返回该数据的Info
+
+然后根据response的结果，进行_rsync_db或_usync_db
+    if not response:
+            return False
+        elif response.status == HTTPNotFound.code:  # completely missing, rsync
+            self.stats['rsync'] += 1
+            return self._rsync_db(broker, node, http, info['id'])
+        elif response.status == HTTPInsufficientStorage.code:
+            raise DriveNotMounted()
+        elif response.status >= 200 and response.status < 300:
+            rinfo = simplejson.loads(response.data)
+            local_sync = broker.get_sync(rinfo['id'], incoming=False)
+            if self._in_sync(rinfo, info, broker, local_sync):
+                return True
+            # if the difference in rowids between the two differs by
+            # more than 50%, rsync then do a remote merge.
+            if rinfo['max_row'] / float(info['max_row']) < 0.5:
+                self.stats['remote_merge'] += 1
+                return self._rsync_db(broker, node, http, info['id'],
+                        replicate_method='rsync_then_merge',
+                        replicate_timeout=(info['count'] / 2000))
+            # else send diffs over to the remote server
+            return self._usync_db(max(rinfo['point'], local_sync),
+                        broker, http, rinfo['id'], info['id'])
 

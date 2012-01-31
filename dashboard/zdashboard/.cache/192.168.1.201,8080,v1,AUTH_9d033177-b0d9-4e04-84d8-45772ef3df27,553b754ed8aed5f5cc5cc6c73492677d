@@ -1,0 +1,10 @@
+status: 200
+content-length: 11
+content-location: http://192.168.1.201:8080/v1/AUTH_9d033177-b0d9-4e04-84d8-45772ef3df27
+x-account-object-count: 0
+date: Mon, 31 Oct 2011 14:27:02 GMT
+x-account-bytes-used: 0
+x-account-container-count: 1
+content-type: text/plain; charset=utf8
+
+container1

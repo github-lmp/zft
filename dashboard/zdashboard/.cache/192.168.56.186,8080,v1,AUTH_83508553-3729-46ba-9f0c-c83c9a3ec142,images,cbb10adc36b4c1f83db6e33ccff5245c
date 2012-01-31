@@ -1,0 +1,10 @@
+status: 200
+content-length: 18
+x-container-object-count: 2
+content-location: http://192.168.56.186:8080/v1/AUTH_83508553-3729-46ba-9f0c-c83c9a3ec142/images
+date: Sat, 10 Dec 2011 18:37:36 GMT
+x-container-bytes-used: 914764
+content-type: text/plain; charset=utf8
+
+lihe.tmp
+test.log

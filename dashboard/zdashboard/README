@@ -1,0 +1,28 @@
+代码地址：
+http://www.svnchina.com/svn/swift_demo/
+
+
+到当前目录下运行python swift_demo.py 8000
+即可访问:http://0.0.0.0:8000
+
+程序需要有一个swift服务器。common/config.py里面描述了配置
+
+1,
+	要修改common/config.py里面的内容。config.py里面有说明
+
+2,
+这个是为了帮助调试学习swift而编写的，参考swift提供的REST接口。
+通过界面在swift集群中创建一个容器，上传下载文件。
+
+更多swift相关内容请参考下面网址
+http://swift.openstack.org/
+http://blog.sina.com.cn/s/articlelist_1805154091_2_1.html
+
+3, docs/目录下有openstack object storage 的rest接口手册
+
+
+##########################
+swift_test
+在界面上，account对应根目录，根下面的目录对应一个continaer，改目录下面的所有文件都放在这个container里面，在这个界面上可以创建带有多级目录结构，这样，数据存在于这个container下面，如果通过其他的客户端也可以查看，通过这个客户端则可以更有目录层次的查看。
+如果用户使用其他的客户端在系统中创建的文件，怎么处理？在这个界面上呈现一个独立的目录，（这个优先级低）
+控制在界面上每个目录下文件的个数，在目录的最后，点击更多，展开更多（优先级低）

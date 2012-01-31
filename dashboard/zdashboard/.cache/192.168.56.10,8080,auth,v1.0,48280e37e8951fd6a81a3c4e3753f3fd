@@ -1,0 +1,9 @@
+status: 200
+content-length: 117
+content-location: https://192.168.56.10:8080/auth/v1.0
+x-auth-token: AUTH_tk2feb66966abe4ca88981143f2e04e62a
+x-storage-token: AUTH_tk2feb66966abe4ca88981143f2e04e62a
+date: Sun, 11 Dec 2011 06:35:55 GMT
+x-storage-url: https://192.168.56.10:8080/v1/AUTH_d991af9f-5527-4ea9-84d1-7ab895612754
+
+{"storage": {"default": "local", "local": "https://192.168.56.10:8080/v1/AUTH_d991af9f-5527-4ea9-84d1-7ab895612754"}}

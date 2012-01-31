@@ -1,0 +1,9 @@
+status: 200
+content-length: 7
+x-container-object-count: 1
+content-location: http://192.168.56.186:8080/v1/AUTH_9d033177-b0d9-4e04-84d8-45772ef3df27/abc
+date: Wed, 21 Dec 2011 00:14:22 GMT
+x-container-bytes-used: 21108
+content-type: text/plain; charset=utf8
+
+.vimrc

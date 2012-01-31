@@ -1,0 +1,313 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html class="uss">
+	<head>
+		<meta name="Content-Type" content="text/html; charset=UTF-8" />
+		<title>jstree test!</title>
+
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js" ></script>
+		<script type="text/javascript" src="/static/js/i18n/grid.locale-cn.js" ></script>
+		<script type="text/javascript" src="/static/js/jquery.jqGrid.min.js" ></script>
+
+		<script type="text/javascript" src="/static/js/jquery.jstree.js" ></script>
+		<script type="text/javascript" src="/static/js/_lib/jquery.cookie.js" ></script>
+		<script type="text/javascript" src="/static/js/_lib/jquery.hotkeys.js" ></script>
+		<!--上面这四个是jstree用到的。 -->
+		<!--
+		这个jquery.js不能使用，加入之后，会报错。
+		<script type="text/javascript" src="/static/js/_lib/jquery.js" ></script>
+		-->
+
+
+		<!--
+		<script type="text/javascript" src="http://static.jstree.com/v.1.0rc/jquery.js"></script>
+		<link rel="canonical" href="http://www.jstree.com/documentation/core" />
+		<link type="text/css" rel="stylesheet" href="http://static.jstree.com/v.1.0rc/_docs/syntax/!style.css"/>
+		<script type="text/javascript" src="http://static.jstree.com/v.1.0rc/_docs/syntax/!script.js"></script>
+		<link rel="stylesheet" type="text/css" href="http://static.jstree.com/v.1.0rc/_docs/!style.css" />
+		<script type="text/javascript" src="http://static.jstree.com/v.1.0rc/jquery.cookie.js"></script>
+		<script type="text/javascript" src="http://static.jstree.com/v.1.0rc/jquery.hotkeys.js"></script>
+		<script type="text/javascript" src="http://static.jstree.com/v.1.0rc/jquery.jstree.js"></script>
+		-->
+		<script type="text/javascript" src="/static/js/index.js" ></script>
+		<script type="text/javascript" src="/static/js/common.js" ></script>
+
+		<link rel="stylesheet" type="text/css" href="/static/css/ui.jqgrid.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui-1.8.5.custom.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/common.css" />
+		<link rel="stylesheet" type="text/css" href="/static/css/index.css" />
+
+		<script type="text/javascript">
+			$(document).ready(function () {
+					$("#demo00").jstree({
+						"plugins": ["json_data", "themes"],	
+						"json_data" : {
+						"data" : [
+						{
+						"data" : "A node",
+						"children" : [ "Child 1", "Child 2" ],
+						},
+						{
+						"data" : "B node",
+						"children" : [ "Child 3", "Child 4" ],
+						}
+
+						]
+						},
+						});
+
+					$("#demo01").jstree({
+						"plugins": ["json_data", "themes"],	
+				// I usually configure the plugin that handles the data first - in this case JSON as it is most common
+				"json_data" : { 
+				// I chose an ajax enabled tree - again - as this is most common, and maybe a bit more complex
+				// All the options are the same as jQuery's except for `data` which CAN (not should) be a function
+				"ajax" : {
+				// the URL to fetch the data
+				//"url" : "/static/v.1.0rc2/_demo/server.php",
+				"url":"/test?demo=demo01",
+				// this function is executed in the instance's scope (this refers to the tree instance)
+				// the parameter is the node being loaded (may be -1, 0, or undefined when loading the root nodes)
+				"data" : function (n) { 
+				// the result is fed to the AJAX request `data` option
+				return { 
+				"operation" : "get_children", 
+				"id" : n.attr ? n.attr("id") : 1 
+				}; 
+				}
+				}
+				},});
+
+					$("#demo02").jstree({
+							"plugins": ["json_data", "themes"],	
+							"json_data":{
+							"data": [
+							{
+							"data":"A node",	
+							"children":["child 1", "Child 2"],
+							},
+							{
+							"attr": {"id": "li.node.id"},															
+							"data":{
+							"title":"Long format demo",	
+							"attr": {"href":"#"}
+							}
+							}
+							],
+							//    											"progressive_render":true,
+							},
+							});
+
+
+					$("#demo03").jstree({
+							"plugins": ["json_data", "themes"],	
+							"json_data":{
+							"data": [
+							{
+							"data":"A node",	
+							"children":["child 1", "Child 2"],
+							},
+							{
+							"attr": {"id": "li.node.id"},															
+							"data":{
+							"title":"Long format demo",	
+							"attr": {"href":"#"}
+							}
+							}
+							],
+							"ajax":{"url": "/static/js/_docs/_json_data.json"},
+							},
+							});
+
+			});
+</script>
+
+
+
+<script type="text/javascript">
+	$(function () {
+			// Settings up the tree - using $(selector).jstree(options);
+			// All those configuration options are documented in the _docs folder
+			$("#demo04")
+			.jstree({ 
+				// the list of plugins to include
+				"plugins" : [ "themes", "json_data", "ui", "crrm", "cookies", "dnd", "search", "types", "hotkeys", "contextmenu" ],
+				// Plugin configuration
+
+				// I usually configure the plugin that handles the data first - in this case JSON as it is most common
+				"json_data" : { 
+				// I chose an ajax enabled tree - again - as this is most common, and maybe a bit more complex
+				// All the options are the same as jQuery's except for `data` which CAN (not should) be a function
+				"ajax" : {
+				// the URL to fetch the data
+				//"url" : "/static/v.1.0rc2/_demo/server.php",
+				"url":"/test?demo=demo04",
+				// this function is executed in the instance's scope (this refers to the tree instance)
+				// the parameter is the node being loaded (may be -1, 0, or undefined when loading the root nodes)
+				"data" : function (n) { 
+				// the result is fed to the AJAX request `data` option
+				return { 
+				"operation" : "get_children", 
+				"id" : n.attr ? n.attr("id").replace("node_","") : 1 
+				}; 
+				}
+				}
+				},
+				// Configuring the search plugin
+				"search" : {
+					// As this has been a common question - async search
+					// Same as above - the `ajax` config option is actually jQuery's object (only `data` can be a function)
+					"ajax" : {
+					"url":"/test?demo=demo01",
+				// this function is executed in the instance's scope (this refers to the tree instance)
+						// You get the search string as a parameter
+						"data" : function (str) {
+							return { 
+								"operation" : "search", 
+								"search_str" : str 
+							}; 
+						}
+					}
+				},
+			// For UI & core - the nodes to initially select and open will be overwritten by the cookie plugin
+
+				// the UI plugin - it handles selecting/deselecting/hovering nodes
+				"ui" : {
+					// this makes the node with ID node_4 selected onload
+					"initially_select" : [ "node_4" ]
+				},
+				// the core plugin - not many options here
+				"core" : { 
+					// just open those two nodes up
+					// as this is an AJAX enabled tree, both will be downloaded from the server
+						"initially_open" : [ "node_2" , "node_3" ] 
+				}
+			})
+	.bind("create.jstree", function (e, data) {
+			alert("abc");
+			$.post(
+				"/test?demo=demo04", 
+				{ 
+				"operation" : "create_node", 
+				"id" : data.rslt.parent.attr("id").replace("node_",""), 
+				"position" : data.rslt.position,
+				"title" : data.rslt.name,
+				}, 
+				function (r) {
+				alert(r);
+				if(r == "success") {
+				alert("success");
+				$(data.rslt.obj).attr("id", "node_" + r.id);
+				}
+				else {
+				alert("fail");
+				$.jstree.rollback(data.rlbk);
+				}
+				}
+				);
+			})
+	.bind("remove.jstree", function (e, data) {
+			data.rslt.obj.each(function () {
+				$.ajax({
+async : false,
+type: 'POST',
+url: "/test?demo=demo04",
+data : { 
+"operation" : "remove_node", 
+"id" : this.id.replace("node_","")
+}, 
+success : function (r) {
+alert("success");
+if(!r.status) {
+data.inst.refresh();
+}
+}
+});
+				});
+			})
+.bind("rename.jstree", function (e, data) {
+		$.post(
+			"/test?demo=demo04", 
+			{ 
+			"operation" : "rename_node", 
+			"id" : data.rslt.obj.attr("id").replace("node_",""),
+			"title" : data.rslt.new_name
+			}, 
+			function (r) {
+			if(!r.status) {
+			$.jstree.rollback(data.rlbk);
+			}
+			}
+			);
+		})
+.bind("move_node.jstree", function (e, data) {
+		data.rslt.o.each(function (i) {
+			$.ajax({
+async : false,
+type: 'POST',
+url: "/test?demo=demo04",
+data : { 
+"operation" : "move_node", 
+"id" : $(this).attr("id").replace("node_",""), 
+"ref" : data.rslt.np.attr("id").replace("node_",""), 
+"position" : data.rslt.cp + i,
+"title" : data.rslt.name,
+"copy" : data.rslt.cy ? 1 : 0
+},
+success : function (r) {
+if(!r.status) {
+$.jstree.rollback(data.rlbk);
+}
+else {
+$(data.rslt.oc).attr("id", "node_" + r.id);
+if(data.rslt.cy && $(data.rslt.oc).children("UL").length) {
+data.inst.refresh(data.inst._get_parent(data.rslt.oc));
+}
+}
+$("#analyze").click();
+}
+});
+});
+});
+});
+</script>
+
+	</head>
+	<div>
+		<a>demo00</a>
+		<div id="demo00">
+		</div>
+	</div>
+
+	<div>
+		<a>demo01</a>
+		<div id="demo01">
+		</div>
+	</div>
+
+	<div>
+		<a>damo02</a>
+		<div id="demo02">
+		</div>
+	</div>
+
+	<div>
+		<a>damo03</a>
+		<div id="demo03">
+		</div>
+	</div>
+
+
+	<div>
+		<a>damo04</a>
+		<div id="demo04">
+		</div>
+	</div>
+
+
+
+
+
+	<div id="log1">
+	</div>
+</body>
+</html>

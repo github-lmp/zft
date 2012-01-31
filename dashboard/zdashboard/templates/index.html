@@ -1,0 +1,186 @@
+$def with (resp , content)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html class="swift_demo">
+	<head>
+		<meta name="Content-Type" content="text/html; charset=UTF-8" />
+		<title>swift_demo</title>
+	
+		<script type="text/javascript" src="static/js/jquery-1.4.2.min.js" ></script>
+		<!--
+		<script type="text/javascript" src="static/js/index.js" ></script>
+		-->
+		
+	</head>
+  
+	<div id="logout" >
+		<a>welcome, swifter!</a>
+		<a id="logout" href="/login.html?do=logout">Logout</a>
+		<br/>
+		<br/>
+	</div>
+
+	<hr/>
+		<a id="show" href="/">show</a>
+
+  <body class="swift_demo">
+    <div id="">
+			<p>
+			resp: 
+			<br/>
+			$resp
+			</p>
+			<br/>
+			<br/>
+			<p>
+			content:<br/>$content
+			</p>
+    </div>
+
+	<hr/>
+	<div>
+		<a >create container</a>
+		<form name="ccont" id="login_form" action="/ccont" method="post">
+			<table>
+				<tr>
+					<td>
+						<label>container name<br>
+						</td>
+						<td>
+							<input type="txt" name="ccont_name" id="ccont_name" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+					<input type="submit" value="create container">
+				</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+	<hr/>
+	<div>
+		<a >delete container</a>
+		<form name="dcont" id="d_form" action="/dcont" method="post">
+			<table>
+				<tr>
+					<td>
+						<label>container name<br>
+							</td><td>
+							<input type="txt" name="ccont_name" id="ccont_name" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" value="delete container">
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+
+	<hr/>
+	<div>
+		<a> upload object</a>
+		<form name="upload" id="d_form" action="/upload_object" enctype="MULTIPART/FORM-DATA" method="post">
+			<table>
+				<tr>
+					<td>
+						<label>container name<br>
+						</td>
+						<td>
+							<input type="txt" name="ccont_name" id="ccont_name" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>choose<br>
+						</td>
+						<td>
+							<input type="file" name="file" id="file" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>file save name<br>
+						</td>
+						<td>
+							<input type="txt" name="filename" id="filename" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+				 <input type="submit" value="upload object">
+			 </td>
+			</table>
+			</form>
+		</div>
+
+
+	<hr/>
+	<div>
+		<a> delete object</a>
+		<form name="upload" id="d_form" action="/delete_object" enctype="MULTIPART/FORM-DATA" method="post">
+			<table>
+				<tr>
+					<td>
+						<label>container name<br>
+						</td>
+						<td>
+							<input type="txt" name="ccont_name" id="ccont_name" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>filename<br>
+						</td>
+						<td>
+							<input type="txt" name="filename" id="filename" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+				 <input type="submit" value="delete object">
+			 </td>
+			</table>
+			</form>
+		</div>
+
+	<hr/>
+	<div id="retrieve_object_div">
+		<a> down/retrieve object</a>
+		<form name="upload" id="retrieve_object_form" action="/retrieve_object" enctype="MULTIPART/FORM-DATA" method="post">
+			<table>
+				<tr>
+					<td>
+						<label>container name<br>
+						</td>
+						<td>
+							<input type="txt" name="ccont_name" id="ccont_name" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label>filename<br>
+						</td>
+						<td>
+							<input type="txt" name="filename" id="filename" ></label>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+				 <input id="retrieve_object_submit"  type="submit" value="retrieve object">
+			 </td>
+			</table>
+			</form>
+		</div>
+ 
+  </body>
+
+</html>

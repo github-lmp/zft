@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>jsTree »test  Demo </title>
+		<meta name="title" content="jsTree - jQuery tree plugin - Demo"><meta name="description" content="A demo covering most of the functions and plugins.">
+		<link rel="canonical" href="http://www.jstree.com/demo">	<link rel="stylesheet" type="text/css" href="demo_files/style.css">
+
+		<script type="text/javascript" src="/static/js/jquery-1.4.2.min.js" ></script>
+
+		<script type="text/javascript" src="/static/js/jquery.jstree.js" ></script>
+		<script type="text/javascript" src="/static/js/_lib/jquery.cookie.js" ></script>
+		<script type="text/javascript" src="/static/js/_lib/jquery.hotkeys.js" ></script>
+
+		<script type="text/javascript" src="/static/js/jquery.livequery.js" ></script>
+
+		<script type="text/javascript" src="/static/js/index2_jstree.js" ></script>
+		<style type="text/css">
+			#demo {
+				margin: 0px;
+				overflow: auto;
+				border: 1px solid gray;
+				background:white;
+			}
+		</style>
+
+	</head>
+	<body class="nosidebar">
+		<div id="container">
+			<div id="content" class="demo">
+
+				<div id="mmenu" style="height: 30px; overflow: auto;">
+					<!--
+					<input id="add_group" value="add group" style="display: block; float: left;" type="button">
+					<input id="add_default" value="add user" style="display: block; float: left;" type="button">
+					<input id="rename" value="rename" style="display: block; float: left;" type="button">
+					<input id="remove" value="remove" style="display: block; float: left;" type="button">
+					<input id="cut" value="cut" style="display: block; float: left;" type="button">
+					<input id="copy" value="copy" style="display: block; float: left;" type="button">
+					<input id="paste" value="paste" style="display: block; float: left;" type="button">
+					-->
+					<input id="clear_search" value="clear" style="display: block; float: right;" type="button">
+					<input id="search" value="search" style="display: block; float: right;" type="button">
+					<input id="text" style="display: block; float: right;" type="text">
+				</div>
+				<!-- the tree container (notice NOT an UL node) -->
+				<div id="demo" >
+				</div>
+
+				<div id="txtSelectedValue">
+				</div>
+
+				<div id="add">
+					<table>
+
+						<tr>
+							<td>
+								<div id="addGroupDiv" style="display:none;">
+									<table>
+										<tr>
+											<td class="optionkey">folder name</td>
+											<td><input type="txt"  class="userInput" name="groupName">
+											</td>
+										</tr>
+
+										<tr stype=''>
+											<td class="optionkey">father folder</td>
+											<td><input readonly class="userInput" id="groupGroup" type="txt"  name="groupGroup">
+											</td>
+										</tr>
+
+										<tr>
+											<td class="optionkey">tag</td>
+											<td><input type="txt" class="userInput"  name="permis">
+											</td>
+										</tr>
+
+										<tr>
+											<td class="optionkey"></td>
+											<td><input class="userInput" style="border:0px" type="txt"  name="">
+											</td>
+										</tr>
+
+
+										<tr>
+											<td class="optionkey"></td>
+											<td align="right"><input id="addGroup" type="submit" name="addGroup" value="添加文件夹">
+											</td>
+										</tr>
+
+									</table>
+								</div>
+							</td>
+
+							<td>
+								<div id="addUserDiv" style="display:none;">
+									<table>
+										<tr>
+											<td class="optionkey">userName</td>
+											<td><input class="userInput" type="txt"  name="userName">
+											</td>
+										</tr>
+
+										<tr>
+											<td class="optionkey">userGroup</td>
+											<td><input readonly class="userInput" id="userGroup" type="txt"  name="userGroup">
+											</td>
+										</tr>
+
+										<tr>
+											<td class="optionkey">password</td>
+											<td><input type="password" class="userInput"  name="password">
+											</td>
+										</tr>
+
+										<tr>
+											<td class="optionkey">password</td>
+											<td><input type="password"  class="userInput" name="password">
+											</td>
+										</tr>
+
+										<tr>
+											<td class="optionkey"></td>
+											<td  align=right><input id="addUser" type="submit" name="addUser" value="添加用户">
+											</td>
+										</tr>
+									</table>
+								</div>
+							</td>
+
+						</tr>
+					</table>
+				</div>
+
+			</div>
+		</div>
+
+	</body>
+</html>

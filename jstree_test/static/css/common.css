@@ -1,0 +1,64 @@
+body{ font: 62.5% "Trebuchet MS", sans-serif; margin: 50px;}/*jQuery UI所需 定义了字体*/
+
+.uss{
+	margin: 5px;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.clearer {
+	clear: both;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+}
+
+/***********************************************************/
+#top_nav, #user_settings {
+    font-size: 14px;
+    color: #6D6D6D;
+}
+
+#top_nav {
+	float: left;
+	margin-left: 5px;
+}
+#top_nav label {
+	font-size: 24px;
+	font-weight:bold;
+}
+
+#top_nav a {
+    margin-left: 10px; 
+}
+
+#user_settings {
+	float: right;
+	margin-top: 12px;
+	margin-right: 10px;
+}
+#user_settings span {
+	font-weight: bold;
+}
+
+/***********************************************************/
+#footer {
+	position:absolute;
+	top: 98%;
+	left: 0px;
+	width: 100%;
+	font-size: 14px;
+}
+
+#footer a {
+	margin: 0 5px;
+}
+/***********************************************************/
+
+.defaultHidden {
+	display:none;
+}
+
+.defaultShow {
+	display: block;
+}

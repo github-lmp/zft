@@ -1,0 +1,61 @@
+url:
+https://blueprints.launchpad.net/swift/+spec/bexar-swauth
+writeboard
+
+Incorporated Swauth into Swift as an optional DevAuth replacement. Swauth was created to fulfill the use case of DevAuth (already in the swift project). It was mainly created to fill in DevAuth's main shortcoming: scalability.
+
+The best place to start looking at this is to build the docs and read doc/build/html/overview_auth.html
+
+New things:
+
+- Scalable. As scalable as Swift itself. web+scale2.0
+- List accounts.
+- List users.
+- List groups.
+- Delete accounts.
+- Delete users.
+- Update account service end points.
+- Update users.
+- Preliminary support for multiple clusters and services under one auth.
+
+To switch to Swauth from DevAuth on an SAIO:
+
+$ resetswift
+$ mv /etc/swift/auth-server.conf /etc/swift/auth-server.conf.bak
+
+Edit /etc/swift/proxy-server.conf:
+Change 'auth' in your pipeline to 'swauth'
+Add the following section:
+[filter:swauth]
+use = egg:swift#swauth
+super_admin_key = swauthkey
+
+Edit ~/bin/startmain and comment out 'swift-init auth-server start'
+
+Edit ~/bin/startrest and comment out
+'swift-auth-recreate-accounts -K devauth'
+
+Create ~/bin/recreateaccounts:
+#!/bin/bash
+
+# Replace swauthkey with whatever your super_admin_key is
+# (recorded in /etc/swift/proxy-server.conf).
+swauth-prep -K swauthkey
+swauth-add-user -K swauthkey -a test tester testing
+swauth-add-user -K swauthkey -a test2 tester2 testing2
+swauth-add-user -K swauthkey test tester3 testing3
+swauth-add-user -K swauthkey -a -r reseller reseller reseller
+
+Edit /etc/swift/func_test.conf:
+Change auth_port to 8080
+Add 'auth_prefix = /auth/'
+
+$ startmain
+$ recreateaccounts
+$ ./.functests
+$ ./.probetests
+
+If you just really, really have to have your exact accounts from your old auth.db, you can use the swift-auth-to-swauth script.
+Dependency tree
+
+* Blueprints in grey have been implemented. 
